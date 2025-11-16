@@ -1,8 +1,15 @@
 {
   "private": true,
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
   "workspaces": [
     "clyde-bot",
     "clyde-dashboard",
     "clyde-server"
-  ]
+  ],
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
 }
