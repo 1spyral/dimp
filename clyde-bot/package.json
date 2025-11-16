@@ -1,0 +1,17 @@
+{
+  "name": "clyde-bot",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "discord.js": "^14.24.2"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

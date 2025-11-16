@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "workspaces": [
+    "clyde-bot",
+    "clyde-dashboard",
+    "clyde-server"
+  ]
+}
