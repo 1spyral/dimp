@@ -2,16 +2,19 @@
   "name": "clyde-bot",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "bun run --watch --no-check src/app.ts",
+    "sync-commands": "bun run sync-commands.ts"
   },
   "type": "module",
+  "dependencies": {
+    "discord.js": "^14.24.2",
+    "glob": "^13.0.0",
+    "zod": "^4.1.12"
+  },
   "devDependencies": {
     "typescript": "^5.9.3"
   },
-  "dependencies": {
-    "discord.js": "^14.24.2"
-  },
   "engines": {
-    "node": ">=22.0.0"
+    "bun": ">=1.0.0"
   }
 }
