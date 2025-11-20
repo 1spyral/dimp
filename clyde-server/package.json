@@ -2,9 +2,17 @@
   "name": "clyde-server",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "bun run --watch --no-check src/app.ts"
   },
   "engines": {
     "bun": ">=1.0.0"
+  },
+  "dependencies": {
+    "fastify": "^5.6.2",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3"
   }
 }
