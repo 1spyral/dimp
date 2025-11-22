@@ -2,15 +2,21 @@
   "name": "clyde-server",
   "private": true,
   "scripts": {
-    "dev": "bun run --watch --no-check src/app.ts"
+    "dev": "bun run --watch --no-check src/app.ts",
+    "generate-schema": "bun run scripts/generate-schema.ts"
   },
   "engines": {
     "bun": ">=1.0.0"
   },
   "dependencies": {
+    "@pothos/core": "^4.10.0",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.7",
+    "drizzle-zod": "^0.8.3",
     "fastify": "^5.6.2",
+    "graphql": "^16.12.0",
+    "graphql-scalars": "^1.25.0",
+    "mercurius": "^16.6.0",
     "postgres": "^3.4.7",
     "zod": "^4.1.12"
   },

@@ -5,7 +5,8 @@
         "moduleResolution": "bundler",
         "paths": {
             "@/*": ["./src/*"],
-            "@schema": ["./src/db/schema/index.ts"]
+            "@schema": ["./src/db/schema/index.ts"],
+            "@graphql": ["./src/graphql/index.ts"]
         },
         "types": ["bun-types"],
 
