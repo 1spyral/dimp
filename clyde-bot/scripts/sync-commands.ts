@@ -8,10 +8,7 @@ const token = process.env.DISCORD_TOKEN!
 export const commands: any[] = []
 
 // Load commands
-const foldersPath = path.join(
-    process.cwd(),
-    "src/commands"
-)
+const foldersPath = path.join(process.cwd(), "src/commands")
 const commandFiles = await glob(`${foldersPath}/**/*.ts`)
 
 for (const file of commandFiles) {
