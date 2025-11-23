@@ -1,6 +1,7 @@
 import { Client, MessageFlags, Events, GatewayIntentBits } from "discord.js"
 import { commands } from "@/commands"
 import { env } from "@/env"
+import { api } from "@/graphql"
 
 const client = new Client({
     intents: [
@@ -10,6 +11,18 @@ const client = new Client({
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.DirectMessages,
     ],
+})
+
+client.on(Events.MessageCreate, async message => {
+    await api.createMessage({
+        id: message.id,
+        userId: message.author.id,
+        channelId: message.channelId,
+        guildId: message.guildId!, // TODO: handle DMs
+        discordCreatedAt: message.createdAt,
+        discordUpdatedAt: message.createdAt,
+        content: message.content,
+    })
 })
 
 // TODO: offload to separate command handler module
