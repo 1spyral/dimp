@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "paths": {
+            "@/*": ["./src/*"]
+        },
+        "types": ["bun-types"],
+
+        "strict": true,
+
+        "baseUrl": "."
+    }
+}

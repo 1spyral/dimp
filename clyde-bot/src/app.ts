@@ -1,6 +1,6 @@
 import { Client, MessageFlags, Events, GatewayIntentBits } from "discord.js"
-import { commands } from "./commands.ts"
-import { env } from "./env"
+import { commands } from "@/commands"
+import { env } from "@/env"
 
 const client = new Client({
     intents: [

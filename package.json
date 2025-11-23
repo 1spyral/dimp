@@ -1,7 +1,5 @@
 {
-  "devDependencies": {
-    "prettier": "^3.6.2"
-  },
+  "name": "clyde",
   "private": true,
   "scripts": {
     "format": "prettier --write .",
@@ -11,5 +9,8 @@
     "clyde-bot",
     "clyde-dashboard",
     "clyde-server"
-  ]
+  ],
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
 }

@@ -1,5 +1,7 @@
 package.json
 bun.lock
 
+clyde-bot/src/graphql/generated.ts
+
 clyde-server/schema.graphql
 clyde-server/drizzle/meta
