@@ -20,7 +20,6 @@ client.on(Events.MessageCreate, async message => {
         channelId: message.channelId,
         guildId: message.guildId!, // TODO: handle DMs
         discordCreatedAt: message.createdAt,
-        discordUpdatedAt: message.createdAt,
         content: message.content,
     })
 })

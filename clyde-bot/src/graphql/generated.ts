@@ -70,7 +70,6 @@ export type CreateMessageMutationVariables = Exact<{
   guildId: Scalars['ID']['input'];
   content: Scalars['String']['input'];
   discordCreatedAt: Scalars['DateTime']['input'];
-  discordUpdatedAt: Scalars['DateTime']['input'];
 }>;
 
 
@@ -78,7 +77,7 @@ export type CreateMessageMutation = { __typename?: 'Mutation', createMessage?: {
 
 
 export const CreateMessageDocument = gql`
-    mutation createMessage($id: ID!, $userId: ID!, $channelId: ID!, $guildId: ID!, $content: String!, $discordCreatedAt: DateTime!, $discordUpdatedAt: DateTime!) {
+    mutation createMessage($id: ID!, $userId: ID!, $channelId: ID!, $guildId: ID!, $content: String!, $discordCreatedAt: DateTime!) {
   createMessage(
     id: $id
     userId: $userId
@@ -86,7 +85,7 @@ export const CreateMessageDocument = gql`
     guildId: $guildId
     content: $content
     discordCreatedAt: $discordCreatedAt
-    discordUpdatedAt: $discordUpdatedAt
+    discordUpdatedAt: $discordCreatedAt
   ) {
     id
   }

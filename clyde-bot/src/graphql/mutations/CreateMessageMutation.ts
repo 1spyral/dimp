@@ -8,7 +8,6 @@ export const CreateMessageMutation = gql`
         $guildId: ID!
         $content: String!
         $discordCreatedAt: DateTime!
-        $discordUpdatedAt: DateTime!
     ) {
         createMessage(
             id: $id
@@ -17,7 +16,7 @@ export const CreateMessageMutation = gql`
             guildId: $guildId
             content: $content
             discordCreatedAt: $discordCreatedAt
-            discordUpdatedAt: $discordUpdatedAt
+            discordUpdatedAt: $discordCreatedAt
         ) {
             id
         }
