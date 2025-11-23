@@ -61,6 +61,7 @@ jobs:
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
       - name: Check Prettier formatting
         run: |
           if bun run format:check; then
@@ -94,6 +95,7 @@ jobs:
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
       - name: Generate GraphQL schema
         run: bun run --cwd clyde-server generate-schema
       - name: Check GraphQL schema up to date
@@ -105,11 +107,47 @@ jobs:
             exit 1
           fi
 
+  graphql-codegen:
+    needs: lockfile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.2
+
+      - name: Cache bun modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            node_modules
+            clyde-bot/node_modules
+            clyde-dashboard/node_modules
+            clyde-server/node_modules
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run GraphQL codegen
+        run: bun run --cwd clyde-bot codegen
+      - name: Check GraphQL codegen up to date
+        run: |
+          if git diff --exit-code clyde-bot/src/graphql/generated.ts > /dev/null 2>&1; then
+            echo "GraphQL codegen is up to date ✔"
+          else
+            echo "::error::❌ GraphQL codegen is out of date. Please run 'bun run --cwd clyde-bot codegen'."
+            exit 1
+          fi
+
   # ---------- Preflight Barrier ----------
 
   # TODO: add changed workspace detection
   preflight:
-    needs: [lockfile, prettier, graphql-schema]
+    needs: [lockfile, prettier, graphql-schema, graphql-codegen]
     runs-on: ubuntu-latest
     steps:
       - name: Preflight checks passed
