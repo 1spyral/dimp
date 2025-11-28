@@ -21,28 +21,7 @@ export type Scalars = {
   JSON: { input: any; output: any; }
 };
 
-export type Message = {
-  __typename?: 'Message';
-  channelId?: Maybe<Scalars['ID']['output']>;
-  content?: Maybe<Scalars['String']['output']>;
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
-  deletedAt?: Maybe<Scalars['DateTime']['output']>;
-  discordCreatedAt?: Maybe<Scalars['DateTime']['output']>;
-  discordDeletedAt?: Maybe<Scalars['DateTime']['output']>;
-  discordUpdatedAt?: Maybe<Scalars['DateTime']['output']>;
-  guildId?: Maybe<Scalars['ID']['output']>;
-  id?: Maybe<Scalars['ID']['output']>;
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
-  userId?: Maybe<Scalars['ID']['output']>;
-};
-
-export type Mutation = {
-  __typename?: 'Mutation';
-  createMessage?: Maybe<Message>;
-};
-
-
-export type MutationCreateMessageArgs = {
+export type CreateMessageInput = {
   channelId: Scalars['ID']['input'];
   content: Scalars['String']['input'];
   discordCreatedAt: Scalars['DateTime']['input'];
@@ -51,6 +30,31 @@ export type MutationCreateMessageArgs = {
   guildId: Scalars['ID']['input'];
   id: Scalars['ID']['input'];
   userId: Scalars['ID']['input'];
+};
+
+export type Message = {
+  __typename?: 'Message';
+  channelId: Scalars['ID']['output'];
+  content?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['DateTime']['output'];
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  discordCreatedAt: Scalars['DateTime']['output'];
+  discordDeletedAt?: Maybe<Scalars['DateTime']['output']>;
+  discordUpdatedAt: Scalars['DateTime']['output'];
+  guildId: Scalars['ID']['output'];
+  id: Scalars['ID']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  userId: Scalars['ID']['output'];
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  createMessage: Message;
+};
+
+
+export type MutationCreateMessageArgs = {
+  input: CreateMessageInput;
 };
 
 export type Query = {
@@ -64,28 +68,23 @@ export type QueryMessageArgs = {
 };
 
 export type CreateMessageMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-  userId: Scalars['ID']['input'];
   channelId: Scalars['ID']['input'];
-  guildId: Scalars['ID']['input'];
   content: Scalars['String']['input'];
   discordCreatedAt: Scalars['DateTime']['input'];
+  discordDeletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  guildId: Scalars['ID']['input'];
+  id: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 }>;
 
 
-export type CreateMessageMutation = { __typename?: 'Mutation', createMessage?: { __typename?: 'Message', id?: string | null } | null };
+export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { __typename?: 'Message', id: string } };
 
 
 export const CreateMessageDocument = gql`
-    mutation createMessage($id: ID!, $userId: ID!, $channelId: ID!, $guildId: ID!, $content: String!, $discordCreatedAt: DateTime!) {
+    mutation createMessage($channelId: ID!, $content: String!, $discordCreatedAt: DateTime!, $discordDeletedAt: DateTime, $guildId: ID!, $id: ID!, $userId: ID!) {
   createMessage(
-    id: $id
-    userId: $userId
-    channelId: $channelId
-    guildId: $guildId
-    content: $content
-    discordCreatedAt: $discordCreatedAt
-    discordUpdatedAt: $discordCreatedAt
+    input: {channelId: $channelId, content: $content, discordCreatedAt: $discordCreatedAt, discordUpdatedAt: $discordCreatedAt, discordDeletedAt: $discordDeletedAt, guildId: $guildId, id: $id, userId: $userId}
   ) {
     id
   }
