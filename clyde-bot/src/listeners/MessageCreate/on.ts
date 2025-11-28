@@ -16,7 +16,10 @@ client.on(Events.MessageCreate, async message => {
 })
 
 client.on(Events.MessageCreate, async message => {
-    if (message.mentions.has(client.user!.id)) {
+    if (
+        message.mentions.has(client.user!.id) &&
+        message.author !== client.user
+    ) {
         await message.channel.sendTyping()
 
         const response = await api.generateChatResponse({
