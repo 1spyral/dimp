@@ -15,6 +15,13 @@
       "when": 1763920463998,
       "tag": "0001_create_updated_at_trigger",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1764294631674,
+      "tag": "0002_messages_content_nullable",
+      "breakpoints": true
     }
   ]
 }

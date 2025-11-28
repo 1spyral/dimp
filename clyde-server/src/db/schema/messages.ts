@@ -12,7 +12,7 @@ export const messages = pgTable("messages", {
     guildId: t.text().notNull(),
     channelId: t.text().notNull(),
     userId: t.text().notNull(),
-    content: t.text().notNull(),
+    content: t.text(),
     ...timestamps,
     ...discordTimestamps,
 })
