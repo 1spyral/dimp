@@ -1,13 +1,14 @@
 import { Events, MessageFlags } from "discord.js"
 import { commands } from "@/commands"
 import { client } from "@/app"
+import { logger } from "@/logger"
 
 // Handle chat input commands
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return
     const command = commands.get(interaction.commandName)
     if (!command) {
-        console.error(
+        logger.error(
             `No command matching ${interaction.commandName} was found.`
         )
         return
@@ -15,7 +16,7 @@ client.on(Events.InteractionCreate, async interaction => {
     try {
         await command.execute(interaction)
     } catch (error) {
-        console.error(error)
+        logger.error(error)
         if (interaction.replied || interaction.deferred) {
             await interaction.followUp({
                 content: "There was an error while executing this command!",

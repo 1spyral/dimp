@@ -1,5 +1,3 @@
-const COMMANDS = ["./ping"]
-
 import {
     Collection,
     ChatInputCommandInteraction,
@@ -10,6 +8,8 @@ interface Command {
     data: SlashCommandBuilder
     execute: (interaction: ChatInputCommandInteraction) => Promise<void>
 }
+
+const COMMANDS = ["./ping"]
 
 const collection = new Collection<string, Command>()
 
