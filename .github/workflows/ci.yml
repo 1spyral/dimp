@@ -252,7 +252,16 @@ jobs:
 
   # TODO: add changed workspace detection
   preflight:
-    needs: [lockfile, prettier, graphql-schema, graphql-codegen, bot-lint, dashboard-lint]
+    needs:
+      [
+        lockfile,
+        prettier,
+        graphql-schema,
+        graphql-codegen,
+        bot-lint,
+        dashboard-lint,
+        server-lint,
+      ]
     runs-on: ubuntu-latest
     steps:
       - name: Preflight checks passed
