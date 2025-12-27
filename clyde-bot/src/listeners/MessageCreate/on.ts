@@ -5,6 +5,7 @@ import { logger } from "@/logger"
 
 // TODO: be picker with messages (ignore system messages)
 
+// Write message to backend
 client.on(Events.MessageCreate, async message => {
     try {
         await api.createMessage({
@@ -20,6 +21,7 @@ client.on(Events.MessageCreate, async message => {
     }
 })
 
+// Respond to mentions
 client.on(Events.MessageCreate, async message => {
     try {
         if (

@@ -2,6 +2,7 @@ import { Events, MessageFlags } from "discord.js"
 import { commands } from "@/commands"
 import { client } from "@/app"
 
+// Handle chat input commands
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return
     const command = commands.get(interaction.commandName)
