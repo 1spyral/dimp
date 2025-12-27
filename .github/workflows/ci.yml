@@ -173,7 +173,7 @@ jobs:
 
       - name: Run dashboard linter
         run: |
-          if bun --cwd clyde-dashboard run lint; then
+          if bun run --cwd clyde-dashboard lint; then
             echo "Dashboard linting passed ✔"
           else
             echo "::error::❌ Dashboard linting failed. Please fix the linting errors."
