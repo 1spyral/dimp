@@ -8,11 +8,7 @@ builder.mutationField("updateMessage", t =>
         type: MessageRef,
         args: {
             id: t.arg.id({ required: true }),
-            guildId: t.arg.id({ required: true }),
-            channelId: t.arg.id({ required: true }),
-            userId: t.arg.id({ required: true }),
             content: t.arg.string({ required: true }),
-            discordCreatedAt: t.arg({ type: "DateTime", required: true }),
             discordUpdatedAt: t.arg({ type: "DateTime", required: true }),
             discordDeletedAt: t.arg({ type: "DateTime" }),
         },
