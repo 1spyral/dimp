@@ -7,6 +7,15 @@ on:
   push:
   pull_request:
 
+env:
+  BUN_CACHE_PATHS: &bun-cache-paths |
+    ~/.bun/install/cache
+    node_modules
+    clyde-auth/node_modules
+    clyde-bot/node_modules
+    clyde-dashboard/node_modules
+    clyde-server/node_modules
+
 jobs:
   # ---------- Preflight Checks ----------
 
@@ -21,12 +30,7 @@ jobs:
       - name: Cache bun modules
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-            clyde-bot/node_modules
-            clyde-dashboard/node_modules
-            clyde-server/node_modules
+          path: *bun-cache-paths
           key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-bun-
@@ -53,12 +57,7 @@ jobs:
       - name: Cache bun modules
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-            clyde-bot/node_modules
-            clyde-dashboard/node_modules
-            clyde-server/node_modules
+          path: *bun-cache-paths
           key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-bun-
@@ -87,12 +86,7 @@ jobs:
       - name: Cache bun modules
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-            clyde-bot/node_modules
-            clyde-dashboard/node_modules
-            clyde-server/node_modules
+          path: *bun-cache-paths
           key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-bun-
@@ -123,12 +117,7 @@ jobs:
       - name: Cache bun modules
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-            clyde-bot/node_modules
-            clyde-dashboard/node_modules
-            clyde-server/node_modules
+          path: *bun-cache-paths
           key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-bun-
@@ -159,12 +148,7 @@ jobs:
       - name: Cache bun modules
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-            clyde-bot/node_modules
-            clyde-dashboard/node_modules
-            clyde-server/node_modules
+          path: *bun-cache-paths
           key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-bun-
@@ -193,12 +177,7 @@ jobs:
       - name: Cache bun modules
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-            clyde-bot/node_modules
-            clyde-dashboard/node_modules
-            clyde-server/node_modules
+          path: *bun-cache-paths
           key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-bun-
@@ -227,12 +206,7 @@ jobs:
       - name: Cache bun modules
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-            clyde-bot/node_modules
-            clyde-dashboard/node_modules
-            clyde-server/node_modules
+          path: *bun-cache-paths
           key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-bun-
