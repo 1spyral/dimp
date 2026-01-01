@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package.json bun.lock ./
 COPY dimp-auth/package.json dimp-auth/
 COPY dimp-bot/package.json dimp-bot/
-COPY clyde-dashboard/package.json clyde-dashboard/
+COPY dimp-dashboard/package.json dimp-dashboard/
 COPY clyde-server/package.json clyde-server/
 
 RUN bun install --frozen-lockfile --production --filter dimp-bot

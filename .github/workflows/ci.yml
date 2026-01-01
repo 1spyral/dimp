@@ -13,7 +13,7 @@ env:
     node_modules
     dimp-auth/node_modules
     dimp-bot/node_modules
-    clyde-dashboard/node_modules
+    dimp-dashboard/node_modules
     clyde-server/node_modules
 
 jobs:
@@ -216,7 +216,7 @@ jobs:
 
       - name: Run dashboard linter
         run: |
-          if bun run --cwd clyde-dashboard lint; then
+          if bun run --cwd dimp-dashboard lint; then
             echo "Dashboard linting passed ✔"
           else
             echo "::error::❌ Dashboard linting failed. Please fix the linting errors."

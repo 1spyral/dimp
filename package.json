@@ -4,7 +4,7 @@
   "scripts": {
     "docker:build:auth": "docker build -f dimp-auth/Dockerfile -t dimp-auth .",
     "docker:build:bot": "docker build -f dimp-bot/Dockerfile -t dimp-bot .",
-    "docker:build:dashboard": "docker build -f clyde-dashboard/Dockerfile -t clyde-dashboard .",
+    "docker:build:dashboard": "docker build -f dimp-dashboard/Dockerfile -t dimp-dashboard .",
     "docker:build:server": "docker build -f clyde-server/Dockerfile --target server -t clyde-server .",
     "docker:build:server:migrate": "docker build -f clyde-server/Dockerfile --target migrate -t clyde-server-migrate .",
     "format": "prettier --write .",
@@ -13,7 +13,7 @@
   "workspaces": [
     "dimp-auth",
     "dimp-bot",
-    "clyde-dashboard",
+    "dimp-dashboard",
     "clyde-server"
   ],
   "devDependencies": {

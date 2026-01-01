@@ -5,17 +5,17 @@ WORKDIR /app
 COPY package.json bun.lock ./
 COPY dimp-auth/package.json dimp-auth/
 COPY dimp-bot/package.json dimp-bot/
-COPY clyde-dashboard/package.json clyde-dashboard/
+COPY dimp-dashboard/package.json dimp-dashboard/
 COPY clyde-server/package.json clyde-server/
 
-RUN bun install --frozen-lockfile --filter clyde-dashboard
+RUN bun install --frozen-lockfile --filter dimp-dashboard
 
-COPY clyde-dashboard clyde-dashboard
-RUN bun run --filter clyde-dashboard build
+COPY dimp-dashboard dimp-dashboard
+RUN bun run --filter dimp-dashboard build
 
 FROM nginx:1.29-alpine AS runtime
 
-COPY --from=build /app/clyde-dashboard/dist /usr/share/nginx/html
+COPY --from=build /app/dimp-dashboard/dist /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
