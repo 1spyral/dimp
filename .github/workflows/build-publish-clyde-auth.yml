@@ -1,4 +1,4 @@
-name: Build & Publish clyde-auth Docker Image
+name: Build & Publish dimp-auth Docker Image
 
 on:
   push:
@@ -10,15 +10,15 @@ permissions:
   packages: write
 
 concurrency:
-  group: clyde-auth-image-${{ github.ref }}
+  group: dimp-auth-image-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  clyde-auth:
+  dimp-auth:
     uses: ./.github/workflows/_build-publish.yml
     with:
-      image: ghcr.io/${{ github.repository_owner }}/clyde-auth
+      image: ghcr.io/${{ github.repository_owner }}/dimp-auth
       context: .
-      dockerfile: clyde-auth/Dockerfile
-      scope: clyde-auth
+      dockerfile: dimp-auth/Dockerfile
+      scope: dimp-auth
       push_latest_on_main: true

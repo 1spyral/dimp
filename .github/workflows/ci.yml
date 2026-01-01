@@ -11,7 +11,7 @@ env:
   BUN_CACHE_PATHS: &bun-cache-paths |
     ~/.bun/install/cache
     node_modules
-    clyde-auth/node_modules
+    dimp-auth/node_modules
     clyde-bot/node_modules
     clyde-dashboard/node_modules
     clyde-server/node_modules
@@ -158,7 +158,7 @@ jobs:
 
       - name: Run auth linter
         run: |
-          if bun run --cwd clyde-auth lint; then
+          if bun run --cwd dimp-auth lint; then
             echo "Auth linting passed ✔"
           else
             echo "::error::❌ Auth linting failed. Please fix the linting errors."

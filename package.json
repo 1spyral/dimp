@@ -2,7 +2,7 @@
   "name": "clyde",
   "private": true,
   "scripts": {
-    "docker:build:auth": "docker build -f clyde-auth/Dockerfile -t clyde-auth .",
+    "docker:build:auth": "docker build -f dimp-auth/Dockerfile -t dimp-auth .",
     "docker:build:bot": "docker build -f clyde-bot/Dockerfile -t clyde-bot .",
     "docker:build:dashboard": "docker build -f clyde-dashboard/Dockerfile -t clyde-dashboard .",
     "docker:build:server": "docker build -f clyde-server/Dockerfile --target server -t clyde-server .",
@@ -11,7 +11,7 @@
     "format:check": "prettier --check ."
   },
   "workspaces": [
-    "clyde-auth",
+    "dimp-auth",
     "clyde-bot",
     "clyde-dashboard",
     "clyde-server"

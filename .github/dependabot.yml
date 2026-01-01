@@ -9,7 +9,7 @@ updates:
 
   - package-ecosystem: "docker"
     directories:
-      - "clyde-auth"
+      - "/dimp-auth"
       - "/clyde-bot"
       - "/clyde-dashboard"
       - "/clyde-server"
