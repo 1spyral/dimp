@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "docker:build:bot": "docker build -f clyde-bot/Dockerfile -t clyde-bot .",
+    "docker:build:dashboard": "docker build -f clyde-dashboard/Dockerfile -t clyde-dashboard .",
     "docker:build:server": "docker build -f clyde-server/Dockerfile -t clyde-server .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
