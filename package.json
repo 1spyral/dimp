@@ -1,5 +1,5 @@
 {
-  "name": "clyde",
+  "name": "dimp",
   "private": true,
   "scripts": {
     "docker:build:auth": "docker build -f dimp-auth/Dockerfile -t dimp-auth .",
