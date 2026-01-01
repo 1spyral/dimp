@@ -1,4 +1,4 @@
-name: Build & Publish clyde-server Docker Image
+name: Build & Publish clyde-server Docker Images
 
 on:
   push:
@@ -20,5 +20,16 @@ jobs:
       image: ghcr.io/${{ github.repository_owner }}/clyde-server
       context: .
       dockerfile: clyde-server/Dockerfile
+      target: server
       scope: clyde-server
       push_latest_on_main: true
+
+  clyde-server-migrate:
+    uses: ./.github/workflows/_build-publish.yml
+    with:
+      image: ghcr.io/${{ github.repository_owner }}/clyde-server-migrate
+      context: .
+      dockerfile: clyde-server/Dockerfile
+      target: migrate
+      scope: clyde-server-migrate
+      push_latest_on_main: false

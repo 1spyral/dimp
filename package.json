@@ -5,7 +5,8 @@
     "docker:build:auth": "docker build -f clyde-auth/Dockerfile -t clyde-auth .",
     "docker:build:bot": "docker build -f clyde-bot/Dockerfile -t clyde-bot .",
     "docker:build:dashboard": "docker build -f clyde-dashboard/Dockerfile -t clyde-dashboard .",
-    "docker:build:server": "docker build -f clyde-server/Dockerfile -t clyde-server .",
+    "docker:build:server": "docker build -f clyde-server/Dockerfile --target server -t clyde-server .",
+    "docker:build:server:migrate": "docker build -f clyde-server/Dockerfile --target migrate -t clyde-server-migrate .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
