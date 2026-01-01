@@ -13,7 +13,7 @@ RUN bun install --frozen-lockfile --filter clyde-dashboard
 COPY clyde-dashboard clyde-dashboard
 RUN bun run --filter clyde-dashboard build
 
-FROM nginx:1.27-alpine AS runtime
+FROM nginx:1.29-alpine AS runtime
 
 COPY --from=build /app/clyde-dashboard/dist /usr/share/nginx/html
 
