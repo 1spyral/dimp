@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun run --watch --no-check src/app.ts",
+    "start": "bun run --no-check src/app.ts",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },
