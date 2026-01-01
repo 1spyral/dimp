@@ -6,3 +6,12 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+
+  - package-ecosystem: "docker"
+    directories:
+      - "clyde-auth"
+      - "/clyde-bot"
+      - "/clyde-dashboard"
+      - "/clyde-server"
+    schedule:
+      interval: "weekly"
