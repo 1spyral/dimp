@@ -59,13 +59,6 @@
 **/Dockerfile
 **/.dockerignore
 
-# ------------------------------
-# Monorepo-specific exclusions
-# ------------------------------
-# Ignore generated GraphQL, drizzle, prisma outputs if applicable
-**/drizzle
-**/.prisma
-
 # Ignore runtime data
 **/data
 **/uploads

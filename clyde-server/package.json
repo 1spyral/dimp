@@ -7,7 +7,8 @@
     "start": "bun run --no-check src/app.ts",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "generate-schema": "bun run scripts/generate-schema.ts"
+    "generate-schema": "bun run scripts/generate-schema.ts",
+    "db:migrate": "drizzle-kit migrate"
   },
   "engines": {
     "bun": ">=1.0.0"
