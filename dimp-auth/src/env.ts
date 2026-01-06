@@ -6,6 +6,7 @@ const envSchema = z.object({
         .catch("development"),
 
     PORT: z.coerce.number().default(3000),
+    HOST: z.string().default("0.0.0.0"),
 
     LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).catch("info"),
 })
