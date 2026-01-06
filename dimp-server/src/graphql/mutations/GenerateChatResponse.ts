@@ -53,7 +53,7 @@ builder.mutationField("generateChatResponse", t =>
 
                 const result = await ctx.agents.chatAgent.invoke(initialState)
 
-                return result.response || "No response generated."
+                return result.response ?? "No response generated."
             } catch (e: unknown) {
                 ctx.logger.error(
                     {
