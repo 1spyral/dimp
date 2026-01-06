@@ -16,8 +16,15 @@ builder.queryField("message", t =>
             } catch (e: unknown) {
                 ctx.logger.error(
                     {
-                        error: e,
+                        err: e,
                         id: args.id,
+                        message:
+                            e instanceof Error
+                                ? e.message
+                                : typeof e === "string"
+                                  ? e
+                                  : undefined,
+                        stack: e instanceof Error ? e.stack : undefined,
                     },
                     "getMessage failed"
                 )

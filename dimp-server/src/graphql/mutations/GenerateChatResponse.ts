@@ -57,8 +57,15 @@ builder.mutationField("generateChatResponse", t =>
             } catch (e: unknown) {
                 ctx.logger.error(
                     {
-                        error: e,
+                        err: e,
                         input: args.input,
+                        message:
+                            e instanceof Error
+                                ? e.message
+                                : typeof e === "string"
+                                  ? e
+                                  : undefined,
+                        stack: e instanceof Error ? e.stack : undefined,
                     },
                     "generateChatResponse failed"
                 )
