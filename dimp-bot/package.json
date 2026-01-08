@@ -23,7 +23,7 @@
   "devDependencies": {
     "@graphql-codegen/cli": "^6.1.0",
     "@graphql-codegen/typescript": "^5.0.7",
-    "@graphql-codegen/typescript-graphql-request": "^6.3.0",
+    "@graphql-codegen/typescript-graphql-request": "^6.4.0",
     "@graphql-codegen/typescript-operations": "^5.0.7",
     "@types/node": "^25.0.3",
     "@types/pino": "^7.0.5",
