@@ -14,7 +14,7 @@
     "bun": ">=1.0.0"
   },
   "dependencies": {
-    "@langchain/core": "^1.1.13",
+    "@langchain/core": "^1.1.15",
     "@langchain/langgraph": "^1.0.15",
     "@langchain/openai": "^1.2.2",
     "@pothos/core": "^4.12.0",
