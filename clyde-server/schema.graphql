@@ -24,6 +24,7 @@ type Message {
 
 type Mutation {
   createMessage(channelId: ID!, content: String!, discordCreatedAt: DateTime!, discordDeletedAt: DateTime, discordUpdatedAt: DateTime!, guildId: ID!, id: ID!, userId: ID!): Message
+  updateMessage(content: String!, discordDeletedAt: DateTime, discordUpdatedAt: DateTime!, id: ID!): Message
 }
 
 type Query {

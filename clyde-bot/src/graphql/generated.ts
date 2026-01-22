@@ -39,6 +39,7 @@ export type Message = {
 export type Mutation = {
   __typename?: 'Mutation';
   createMessage?: Maybe<Message>;
+  updateMessage?: Maybe<Message>;
 };
 
 
@@ -51,6 +52,14 @@ export type MutationCreateMessageArgs = {
   guildId: Scalars['ID']['input'];
   id: Scalars['ID']['input'];
   userId: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateMessageArgs = {
+  content: Scalars['String']['input'];
+  discordDeletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  discordUpdatedAt: Scalars['DateTime']['input'];
+  id: Scalars['ID']['input'];
 };
 
 export type Query = {
@@ -75,6 +84,16 @@ export type CreateMessageMutationVariables = Exact<{
 
 export type CreateMessageMutation = { __typename?: 'Mutation', createMessage?: { __typename?: 'Message', id?: string | null } | null };
 
+export type UpdateMessageMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  content: Scalars['String']['input'];
+  discordUpdatedAt: Scalars['DateTime']['input'];
+  discordDeletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+}>;
+
+
+export type UpdateMessageMutation = { __typename?: 'Mutation', updateMessage?: { __typename?: 'Message', id?: string | null } | null };
+
 
 export const CreateMessageDocument = gql`
     mutation createMessage($id: ID!, $userId: ID!, $channelId: ID!, $guildId: ID!, $content: String!, $discordCreatedAt: DateTime!) {
@@ -91,6 +110,18 @@ export const CreateMessageDocument = gql`
   }
 }
     `;
+export const UpdateMessageDocument = gql`
+    mutation updateMessage($id: ID!, $content: String!, $discordUpdatedAt: DateTime!, $discordDeletedAt: DateTime) {
+  updateMessage(
+    id: $id
+    content: $content
+    discordUpdatedAt: $discordUpdatedAt
+    discordDeletedAt: $discordDeletedAt
+  ) {
+    id
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -101,6 +132,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     createMessage(variables: CreateMessageMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<CreateMessageMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateMessageMutation>({ document: CreateMessageDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'createMessage', 'mutation', variables);
+    },
+    updateMessage(variables: UpdateMessageMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<UpdateMessageMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateMessageMutation>({ document: UpdateMessageDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'updateMessage', 'mutation', variables);
     }
   };
 }
