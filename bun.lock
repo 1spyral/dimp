@@ -12,7 +12,7 @@
       "dependencies": {
         "fastify": "^5.7.1",
         "pino": "^10.2.1",
-        "zod": "^4.3.5",
+        "zod": "^4.3.6",
       },
       "devDependencies": {
         "@eslint/js": "^9.39.2",
@@ -39,7 +39,7 @@
         "graphql-tag": "^2.12.6",
         "pino": "^10.2.1",
         "pino-pretty": "^13.1.3",
-        "zod": "^4.3.5",
+        "zod": "^4.3.6",
       },
       "devDependencies": {
         "@eslint/js": "^9.39.2",
@@ -98,7 +98,7 @@
         "pino": "^10.2.1",
         "pino-pretty": "^13.1.3",
         "postgres": "^3.4.8",
-        "zod": "^4.3.5",
+        "zod": "^4.3.6",
       },
       "devDependencies": {
         "@eslint/js": "^9.39.2",
@@ -1704,7 +1704,7 @@
 
     "yoctocolors-cjs": ["yoctocolors-cjs@2.1.3", "", {}, "sha512-U/PBtDf35ff0D8X8D0jfdzHYEPFxAI7jJlxZXwCSez5M3190m+QobIfh+sWDWSHMCWWJN2AWamkegn6vr6YBTw=="],
 
-    "zod": ["zod@4.3.5", "", {}, "sha512-k7Nwx6vuWx1IJ9Bjuf4Zt1PEllcwe7cls3VNzm4CQ1/hgtFUK2bRNG3rvnpPUhFjmqJKAKtjV576KnUkHocg/g=="],
+    "zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
 
     "zod-validation-error": ["zod-validation-error@4.0.2", "", { "peerDependencies": { "zod": "^3.25.0 || ^4.0.0" } }, "sha512-Q6/nZLe6jxuU80qb/4uJ4t5v2VEZ44lzQjPDhYJNztRQ4wyWc6VF3D3Kb/fAuPetZQnhS3hnajCf9CsWesghLQ=="],
 
@@ -1770,9 +1770,13 @@
 
     "@inquirer/core/wrap-ansi": ["wrap-ansi@6.2.0", "", { "dependencies": { "ansi-styles": "^4.0.0", "string-width": "^4.1.0", "strip-ansi": "^6.0.0" } }, "sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA=="],
 
+    "@langchain/core/zod": ["zod@4.3.5", "", {}, "sha512-k7Nwx6vuWx1IJ9Bjuf4Zt1PEllcwe7cls3VNzm4CQ1/hgtFUK2bRNG3rvnpPUhFjmqJKAKtjV576KnUkHocg/g=="],
+
     "@langchain/langgraph-sdk/p-queue": ["p-queue@9.1.0", "", { "dependencies": { "eventemitter3": "^5.0.1", "p-timeout": "^7.0.0" } }, "sha512-O/ZPaXuQV29uSLbxWBGGZO1mCQXV2BLIwUr59JUU9SoH76mnYvtms7aafH/isNSNGwuEfP6W/4xD0/TJXxrizw=="],
 
     "@langchain/langgraph-sdk/uuid": ["uuid@13.0.0", "", { "bin": { "uuid": "dist-node/bin/uuid" } }, "sha512-XQegIaBTVUjSHliKqcnFqYypAd4S+WCYt5NIeRs6w/UAry7z8Y9j5ZwRRL4kzq9U3sD6v+85er9FvkEaBpji2w=="],
+
+    "@langchain/openai/zod": ["zod@4.3.5", "", {}, "sha512-k7Nwx6vuWx1IJ9Bjuf4Zt1PEllcwe7cls3VNzm4CQ1/hgtFUK2bRNG3rvnpPUhFjmqJKAKtjV576KnUkHocg/g=="],
 
     "@theguild/federation-composition/json5": ["json5@2.2.3", "", { "bin": { "json5": "lib/cli.js" } }, "sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg=="],
 
