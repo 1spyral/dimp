@@ -59,6 +59,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createMessage: Message;
   generateChatResponse: Scalars['String']['output'];
+  updateMessage?: Maybe<Message>;
 };
 
 
@@ -71,6 +72,11 @@ export type MutationGenerateChatResponseArgs = {
   input: GenerateChatResponseInput;
 };
 
+
+export type MutationUpdateMessageArgs = {
+  input: UpdateMessageInput;
+};
+
 export type Query = {
   __typename?: 'Query';
   message?: Maybe<Message>;
@@ -78,6 +84,13 @@ export type Query = {
 
 
 export type QueryMessageArgs = {
+  id: Scalars['ID']['input'];
+};
+
+export type UpdateMessageInput = {
+  content: Scalars['String']['input'];
+  discordDeletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  discordUpdatedAt: Scalars['DateTime']['input'];
   id: Scalars['ID']['input'];
 };
 

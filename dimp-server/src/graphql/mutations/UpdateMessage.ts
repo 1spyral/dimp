@@ -16,7 +16,7 @@ builder.mutationField("updateMessage", t =>
     t.field({
         type: MessageRef,
         args: {
-            input: t.arg({ type: UpdateMessageInput, required: true })
+            input: t.arg({ type: UpdateMessageInput, required: true }),
         },
         resolve: async (_parent, args, ctx) => {
             return await ctx.db
