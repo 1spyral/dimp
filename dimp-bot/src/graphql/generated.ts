@@ -118,6 +118,16 @@ export type GenerateChatResponseMutationVariables = Exact<{
 
 export type GenerateChatResponseMutation = { __typename?: 'Mutation', generateChatResponse: string };
 
+export type UpdateMessageMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  content: Scalars['String']['input'];
+  discordUpdatedAt: Scalars['DateTime']['input'];
+  discordDeletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+}>;
+
+
+export type UpdateMessageMutation = { __typename?: 'Mutation', updateMessage?: { __typename?: 'Message', id: string } | null };
+
 
 export const CreateMessageDocument = gql`
     mutation createMessage($channelId: ID!, $content: String!, $discordCreatedAt: DateTime!, $discordDeletedAt: DateTime, $guildId: ID!, $id: ID!, $userId: ID!) {
@@ -135,6 +145,15 @@ export const GenerateChatResponseDocument = gql`
   )
 }
     `;
+export const UpdateMessageDocument = gql`
+    mutation updateMessage($id: ID!, $content: String!, $discordUpdatedAt: DateTime!, $discordDeletedAt: DateTime) {
+  updateMessage(
+    input: {id: $id, content: $content, discordUpdatedAt: $discordUpdatedAt, discordDeletedAt: $discordDeletedAt}
+  ) {
+    id
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -148,6 +167,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     generateChatResponse(variables: GenerateChatResponseMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GenerateChatResponseMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<GenerateChatResponseMutation>({ document: GenerateChatResponseDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'generateChatResponse', 'mutation', variables);
+    },
+    updateMessage(variables: UpdateMessageMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<UpdateMessageMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateMessageMutation>({ document: UpdateMessageDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'updateMessage', 'mutation', variables);
     }
   };
 }
