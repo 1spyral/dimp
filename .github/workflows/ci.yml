@@ -262,6 +262,7 @@ jobs:
         prettier,
         graphql-schema,
         graphql-codegen,
+        auth-lint,
         bot-lint,
         dashboard-lint,
         server-lint,
