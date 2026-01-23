@@ -298,6 +298,7 @@ jobs:
         graphql-schema,
         graphql-codegen,
         drizzle-migrations,
+        auth-lint,
         bot-lint,
         dashboard-lint,
         server-lint,
