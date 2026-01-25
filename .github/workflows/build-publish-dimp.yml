@@ -1,0 +1,59 @@
+name: Build & Publish Dimp Docker Images
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["**"]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-publish:
+    name: ${{ matrix.name }}
+    concurrency:
+      group: ${{ matrix.scope }}-image-${{ github.ref }}
+      cancel-in-progress: true
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: dimp-auth
+            image: ghcr.io/${{ github.repository_owner }}/dimp-auth
+            dockerfile: dimp-auth/Dockerfile
+            target: ""
+            scope: dimp-auth
+            push_latest_on_main: true
+          - name: dimp-bot
+            image: ghcr.io/${{ github.repository_owner }}/dimp-bot
+            dockerfile: dimp-bot/Dockerfile
+            target: ""
+            scope: dimp-bot
+            push_latest_on_main: true
+          - name: dimp-dashboard
+            image: ghcr.io/${{ github.repository_owner }}/dimp-dashboard
+            dockerfile: dimp-dashboard/Dockerfile
+            target: ""
+            scope: dimp-dashboard
+            push_latest_on_main: true
+          - name: dimp-server
+            image: ghcr.io/${{ github.repository_owner }}/dimp-server
+            dockerfile: dimp-server/Dockerfile
+            target: server
+            scope: dimp-server
+            push_latest_on_main: true
+          - name: dimp-server-migrate
+            image: ghcr.io/${{ github.repository_owner }}/dimp-server-migrate
+            dockerfile: dimp-server/Dockerfile
+            target: migrate
+            scope: dimp-server-migrate
+            push_latest_on_main: false
+    uses: ./.github/workflows/_build-publish.yml
+    with:
+      image: ${{ matrix.image }}
+      context: .
+      dockerfile: ${{ matrix.dockerfile }}
+      target: ${{ matrix.target }}
+      scope: ${{ matrix.scope }}
+      push_latest_on_main: ${{ matrix.push_latest_on_main }}
