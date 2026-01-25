@@ -150,6 +150,14 @@ jobs:
     env:
       # Dummy DATABASE_URL
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: dimp-auth
+            path: dimp-auth
+          - name: dimp-server
+            path: dimp-server
     steps:
       - uses: actions/checkout@v5
         with:
@@ -169,15 +177,15 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Check Drizzle migrations are up to date
+      - name: Check Drizzle migrations for ${{ matrix.name }} are up to date
         run: |
-          bun run --cwd dimp-server drizzle-kit generate --config=drizzle.config.ts
+          bun run --cwd ${{ matrix.path }} drizzle-kit generate
 
           git status --porcelain
           if test -z "$(git status --porcelain)"; then
-            echo "Drizzle migrations are up to date ✔"
+            echo "Drizzle migrations for ${{ matrix.name }} are up to date ✔"
           else
-            echo "::error::❌ Drizzle migrations are out of date. Please generate a migration using 'bun run --cwd dimp-server drizzle-kit generate --name <migration_name>'."
+            echo "::error::❌ Drizzle migrations for ${{ matrix.name }} are out of date. Please generate a migration using 'bun run --cwd ${{ matrix.path }} drizzle-kit generate --name <migration_name>'."
             exit 1
           fi
 
