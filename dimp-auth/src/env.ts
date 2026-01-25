@@ -9,6 +9,8 @@ const envSchema = z.object({
     HOST: z.string().default("0.0.0.0"),
 
     LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).catch("info"),
+
+    JWKS_FILE: z.string().default("keys/jwks.json"),
 })
 
 export const env = envSchema.parse(process.env)
