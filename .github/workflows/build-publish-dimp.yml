@@ -4,7 +4,10 @@ on:
   push:
     branches: ["**"]
     tags: ["**"]
-  release:
+  # push or release events from GitHub Actions can't invoke another workflow
+  workflow_run:
+    workflows: ["Create Release"]
+    types: [completed]
 
 permissions:
   contents: read
@@ -13,6 +16,7 @@ permissions:
 jobs:
   build-publish:
     name: ${{ matrix.name }}
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     concurrency:
       group: ${{ matrix.scope }}-image-${{ github.ref }}
       cancel-in-progress: true

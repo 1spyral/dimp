@@ -34,6 +34,7 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 1
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
@@ -45,17 +46,58 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Determine release tag
+        id: tag
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_run" ]]; then
+            git fetch --tags --force
+            tag="$(git tag --points-at "${WORKFLOW_HEAD_SHA}" | head -n1 || true)"
+            echo "tag_name=${tag}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag_name=" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          WORKFLOW_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Compute metadata tags
+        id: tags
+        run: |
+          set -euo pipefail
+          tags=$'type=sha,format=long,prefix=sha-\n'
+          tags+=$'type=ref,event=branch,prefix=branch-\n'
+          tags+=$'type=ref,event=pr,prefix=pr-\n'
+          tags+=$'type=ref,event=tag'
+
+          if [[ -n "${TAG_NAME}" ]]; then
+            tags="${tags}"$'\n'"type=raw,value=${TAG_NAME}"
+          fi
+
+          latest_enable="false"
+          if [[ "${PUSH_LATEST_ON_MAIN}" == "true" && "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            latest_enable="true"
+          fi
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_run" && "${PUSH_LATEST_ON_MAIN}" == "true" && "${WORKFLOW_HEAD_BRANCH}" == "main" ]]; then
+            latest_enable="true"
+          fi
+          tags="${tags}"$'\n'"type=raw,value=latest,enable=${latest_enable}"
+
+          {
+            echo "tags<<'EOF'"
+            echo "$tags"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+        env:
+          TAG_NAME: ${{ steps.tag.outputs.tag_name }}
+          PUSH_LATEST_ON_MAIN: ${{ inputs.push_latest_on_main }}
+          WORKFLOW_HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+
       - name: Docker metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ inputs.image }}
-          tags: |
-            type=sha,format=long,prefix=sha-
-            type=ref,event=branch,prefix=branch-
-            type=ref,event=pr,prefix=pr-
-            type=ref,event=tag
-            type=raw,value=latest,enable=${{ inputs.push_latest_on_main && github.ref == 'refs/heads/main' }}
+          tags: ${{ steps.tags.outputs.tags }}
 
       - name: Build & push
         uses: docker/build-push-action@v6
