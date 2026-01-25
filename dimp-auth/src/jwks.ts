@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises"
-import { watch } from "node:fs"
+import { watch, watchFile, unwatchFile, type Stats } from "node:fs"
 import { env } from "@/env"
 import { logger } from "@/logger"
 
@@ -23,6 +23,7 @@ export class JwksStore {
     private watcher: ReturnType<typeof watch> | null = null
     private reloadTimer: NodeJS.Timeout | null = null
     private loading: Promise<void> | null = null
+    private pollListener: ((curr: Stats, prev: Stats) => void) | null = null
 
     constructor(private readonly filePath: string = env.JWKS_FILE) {}
 
@@ -35,6 +36,10 @@ export class JwksStore {
         if (this.watcher) {
             this.watcher.close()
             this.watcher = null
+        }
+        if (this.pollListener) {
+            unwatchFile(this.filePath, this.pollListener)
+            this.pollListener = null
         }
         if (this.reloadTimer) {
             clearTimeout(this.reloadTimer)
@@ -55,13 +60,64 @@ export class JwksStore {
     }
 
     private startWatching(): void {
-        if (this.watcher) {
+        if (this.watcher || this.pollListener) {
             return
         }
 
-        this.watcher = watch(this.filePath, { persistent: false }, () => {
+        try {
+            this.watcher = watch(this.filePath, { persistent: false }, () => {
+                this.scheduleReload()
+            })
+            this.watcher.on("error", err => {
+                if (this.isWatchLimitError(err)) {
+                    logger.warn(
+                        { err, filePath: this.filePath },
+                        "Watch limit reached for JWKS file; falling back to polling"
+                    )
+                    this.watcher?.close()
+                    this.watcher = null
+                    this.startPolling()
+                    return
+                }
+                logger.error(
+                    { err, filePath: this.filePath },
+                    "JWKS watch error"
+                )
+            })
+        } catch (err) {
+            if (this.isWatchLimitError(err)) {
+                logger.warn(
+                    { err, filePath: this.filePath },
+                    "Watch limit reached for JWKS file; falling back to polling"
+                )
+                this.startPolling()
+                return
+            }
+            throw err
+        }
+    }
+
+    private startPolling(): void {
+        if (this.pollListener) {
+            return
+        }
+
+        this.pollListener = () => {
             this.scheduleReload()
-        })
+        }
+        watchFile(
+            this.filePath,
+            { persistent: false, interval: 1000 },
+            this.pollListener
+        )
+    }
+
+    private isWatchLimitError(err: unknown): boolean {
+        if (!err || typeof err !== "object") {
+            return false
+        }
+        const code = "code" in err ? (err as { code?: string }).code : undefined
+        return code === "EMFILE" || code === "ENOSPC"
     }
 
     private scheduleReload(): void {
