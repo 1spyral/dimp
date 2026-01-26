@@ -20,6 +20,14 @@ const envSchema = z.object({
     DB_MAX_CONNECTIONS: z.coerce.number().default(10),
     DB_IDLE_TIMEOUT: z.coerce.number().default(30),
     DB_CONNECT_TIMEOUT: z.coerce.number().default(30),
+
+    JWT_ISSUER: z.string().default("dimp-auth"),
+    JWT_ACCESS_TTL_SECONDS: z.coerce.number().int().positive().default(900),
+    JWT_REFRESH_TTL_SECONDS: z.coerce
+        .number()
+        .int()
+        .positive()
+        .default(60 * 60 * 24 * 30),
 })
 
 export const env = envSchema.parse(process.env)
