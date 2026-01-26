@@ -15,11 +15,20 @@ const envSchema = z.object({
     DISCORD_CLIENT_ID: z.string(),
     DISCORD_OAUTH_TOKEN: z.string(),
     DISCORD_OAUTH_REDIRECT_URI: z.string().url(),
+    DISCORD_OAUTH_REDIRECT_SUCCESS_URI: z.string().url(),
 
     DATABASE_URL: z.string().url(),
     DB_MAX_CONNECTIONS: z.coerce.number().default(10),
     DB_IDLE_TIMEOUT: z.coerce.number().default(30),
     DB_CONNECT_TIMEOUT: z.coerce.number().default(30),
+
+    JWT_ISSUER: z.string().default("dimp-auth"),
+    JWT_ACCESS_TTL_SECONDS: z.coerce.number().int().positive().default(900),
+    JWT_REFRESH_TTL_SECONDS: z.coerce
+        .number()
+        .int()
+        .positive()
+        .default(60 * 60 * 24 * 30),
 })
 
 export const env = envSchema.parse(process.env)

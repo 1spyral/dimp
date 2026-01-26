@@ -2,8 +2,10 @@ import type { RouteHandler } from "fastify"
 import { env } from "@/env"
 import { exchangeDiscordToken, fetchDiscordUser } from "@/services/discordOauth"
 import { db } from "@/drizzle"
-import { oauthTokens } from "@/db/schema"
+import { oauthTokens, oauthRefreshTokens } from "@/db/schema"
 import { and, eq } from "drizzle-orm"
+import { setRefreshCookie } from "@/http/cookies"
+import { JwtService } from "@/services/jwt"
 
 const discordScopes = ["identify", "guilds"]
 
@@ -83,7 +85,17 @@ export const discordOauthCallback: RouteHandler<{
         })
     }
 
-    return reply.code(200).send({
+    // Issue refresh token
+    const refresh = new JwtService(
+        () => request.server.jwksStore.getJwks().keys
+    ).issueRefreshToken()
+    await db.insert(oauthRefreshTokens).values({
         userId,
+        tokenHash: refresh.refreshTokenHash,
+        expiresAt: refresh.expiresAt,
     })
+
+    setRefreshCookie(reply, refresh.refreshToken, refresh.expiresAt)
+
+    return reply.redirect(env.DISCORD_OAUTH_REDIRECT_SUCCESS_URI)
 }
