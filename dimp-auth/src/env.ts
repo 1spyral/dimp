@@ -12,6 +12,10 @@ const envSchema = z.object({
 
     JWKS_FILE: z.string().default("keys/jwks.json"),
 
+    DISCORD_CLIENT_ID: z.string(),
+    DISCORD_OAUTH_TOKEN: z.string(),
+    DISCORD_OAUTH_REDIRECT_URI: z.string().url(),
+
     DATABASE_URL: z.string().url(),
     DB_MAX_CONNECTIONS: z.coerce.number().default(10),
     DB_IDLE_TIMEOUT: z.coerce.number().default(30),
