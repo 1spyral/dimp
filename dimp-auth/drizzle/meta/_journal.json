@@ -15,6 +15,20 @@
       "when": 1769454818224,
       "tag": "0001_create_updated_at_trigger",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1769464753812,
+      "tag": "0002_create_refresh_tokens",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1769464781817,
+      "tag": "0003_refresh_tokens_updated_at_trigger",
+      "breakpoints": true
     }
   ]
 }
