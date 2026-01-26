@@ -4,6 +4,7 @@ import { exchangeDiscordToken, fetchDiscordUser } from "@/services/discordOauth"
 import { db } from "@/drizzle"
 import { oauthTokens, oauthRefreshTokens } from "@/db/schema"
 import { and, eq } from "drizzle-orm"
+import { setRefreshCookie } from "@/http/cookies"
 import { JwtService } from "@/services/jwt"
 
 const discordScopes = ["identify", "guilds"]
@@ -84,32 +85,17 @@ export const discordOauthCallback: RouteHandler<{
         })
     }
 
-    // Issue JWT token
-    const jwtService = new JwtService(
-        () => request.server.jwksStore.getJwks().keys
-    )
-    const { accessToken, expiresIn, tokenType } =
-        await jwtService.issueAccessToken({
-            userId,
-            provider: "discord",
-        })
-
     // Issue refresh token
-    const refresh = jwtService.issueRefreshToken()
-    await db.insert(authRefreshTokens).values({
+    const refresh = new JwtService(
+        () => request.server.jwksStore.getJwks().keys
+    ).issueRefreshToken()
+    await db.insert(oauthRefreshTokens).values({
         userId,
         tokenHash: refresh.refreshTokenHash,
         expiresAt: refresh.expiresAt,
     })
 
-    return reply.code(200).send({
-        userId,
-        accessToken,
-        expiresIn,
-        tokenType,
-        refreshToken: refresh.refreshToken,
-        refreshExpiresIn: env.JWT_REFRESH_TTL_SECONDS,
-        issuer: env.JWT_ISSUER,
-        audience: "dimp", // TODO: differentiate based on requester
-    })
+    setRefreshCookie(reply, refresh.refreshToken, refresh.expiresAt)
+
+    return reply.redirect(env.DISCORD_OAUTH_REDIRECT_SUCCESS_URI)
 }

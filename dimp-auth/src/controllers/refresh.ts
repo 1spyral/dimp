@@ -6,14 +6,13 @@ import { oauthRefreshTokens } from "@/db/schema"
 import { JwtService, generateRefreshToken } from "@/services/jwt"
 import { createHash } from "node:crypto"
 import { env } from "@/env"
+import { setRefreshCookie } from "@/http/cookies"
 
 const hashRefreshToken = (token: string): string =>
     createHash("sha256").update(token, "utf8").digest("hex")
 
-export const refreshAccessToken: RouteHandler<{
-    Body: { refreshToken?: string }
-}> = async (request, reply) => {
-    const refreshToken = request.body?.refreshToken
+export const refreshAccessToken: RouteHandler = async (request, reply) => {
+    const refreshToken = request.cookies?.refresh_token
     if (!refreshToken) {
         return reply.code(400).send({ error: "missing_refresh_token" })
     }
@@ -75,12 +74,12 @@ export const refreshAccessToken: RouteHandler<{
             provider: "discord",
         })
 
+    setRefreshCookie(reply, newRefreshToken, newExpiresAt)
+
     return reply.code(200).send({
         accessToken,
         expiresIn,
         tokenType,
-        refreshToken: newRefreshToken,
-        refreshExpiresIn: env.JWT_REFRESH_TTL_SECONDS,
         issuer: env.JWT_ISSUER,
         audience: "dimp", // TODO: differentiate based on requester
     })

@@ -15,6 +15,7 @@ const envSchema = z.object({
     DISCORD_CLIENT_ID: z.string(),
     DISCORD_OAUTH_TOKEN: z.string(),
     DISCORD_OAUTH_REDIRECT_URI: z.string().url(),
+    DISCORD_OAUTH_REDIRECT_SUCCESS_URI: z.string().url(),
 
     DATABASE_URL: z.string().url(),
     DB_MAX_CONNECTIONS: z.coerce.number().default(10),
