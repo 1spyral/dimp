@@ -16,6 +16,7 @@ const envSchema = z.object({
     DB_CONNECT_TIMEOUT: z.coerce.number().default(30),
 
     OPENAI_API_KEY: z.string().optional(),
+    ANTHROPIC_API_KEY: z.string().optional(),
 })
 
 export const env = envSchema.parse(process.env)

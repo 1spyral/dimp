@@ -1,5 +1,5 @@
 import { Command, END } from "@langchain/langgraph"
-import { gpt_4_1_nano } from "@/ai/models"
+import { claude_haiku_4_5 } from "@/ai/models"
 import type { ChatStateType } from "."
 
 export async function respondChat(state: ChatStateType) {
@@ -16,7 +16,7 @@ export async function respondChat(state: ChatStateType) {
         { role: "user", content: state.message.content || "" },
     ]
 
-    const response = await gpt_4_1_nano.invoke(context)
+    const response = await claude_haiku_4_5.invoke(context)
 
     return new Command({
         update: { response: response.text },
