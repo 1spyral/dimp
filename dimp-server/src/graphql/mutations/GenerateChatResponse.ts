@@ -2,7 +2,7 @@ import { messages } from "@/db/schema"
 import { and, desc, eq, lt } from "drizzle-orm"
 import { builder } from "@graphql"
 import { GraphQLError } from "graphql"
-import { type ChatStateType } from "@/ai/agents/chat"
+import { type ChatStateType } from "@/ai/workflows/chat"
 
 const GenerateChatResponseInput = builder.inputType(
     "GenerateChatResponseInput",
@@ -51,7 +51,8 @@ builder.mutationField("generateChatResponse", t =>
                     },
                 }
 
-                const result = await ctx.agents.chatAgent.invoke(initialState)
+                const result =
+                    await ctx.agents.chatWorkflow.invoke(initialState)
 
                 return result.response ?? "No response generated."
             } catch (e: unknown) {

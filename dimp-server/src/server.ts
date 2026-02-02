@@ -1,7 +1,7 @@
 import Fastify from "fastify"
 import mercurius from "mercurius"
 import { db } from "@/drizzle"
-import * as agents from "@/ai/agents"
+import * as agents from "@/ai/workflows"
 import { env } from "@/env"
 import { loggerConfig } from "@/logger"
 import { schema } from "@graphql"
