@@ -10,6 +10,8 @@ const envSchema = z.object({
 
     LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).catch("info"),
 
+    DISCORD_CLIENT_ID: z.string(),
+
     DATABASE_URL: z.string().url(),
     DB_MAX_CONNECTIONS: z.coerce.number().default(10),
     DB_IDLE_TIMEOUT: z.coerce.number().default(30),
