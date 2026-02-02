@@ -16,8 +16,6 @@ export async function respondChat(state: ChatStateType) {
         new HumanMessage(state.message.content || ""),
     ]
 
-    console.log("Chat context:", context)
-
     const response = await agent.invoke({ messages: context })
 
     return new Command({
