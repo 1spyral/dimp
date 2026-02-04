@@ -38,7 +38,23 @@ client.on(Events.MessageCreate, async message => {
                 content: message.content,
             })
 
-            await message.reply(response.generateChatResponse)
+            const replyContent = response.generateChatResponse
+            const maxLength = 2000
+
+            if (replyContent.length <= maxLength) {
+                await message.reply(replyContent)
+                return
+            }
+
+            // Discord messages must not exceed 2000 characters; chunk and send sequentially.
+            for (let i = 0; i < replyContent.length; i += maxLength) {
+                const chunk = replyContent.slice(i, i + maxLength)
+                if (i === 0) {
+                    await message.reply(chunk)
+                } else {
+                    await message.channel.send(chunk)
+                }
+            }
         }
     } catch (error) {
         logger.error(`Failed to generate chat response: ${error}`)
