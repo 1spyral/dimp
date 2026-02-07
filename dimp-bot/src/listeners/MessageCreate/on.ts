@@ -7,6 +7,9 @@ import { logger } from "@/logger"
 
 // Write message to backend
 client.on(Events.MessageCreate, async message => {
+    // Ignore system messages
+    if (message.system) return
+
     try {
         await api.createMessage({
             id: message.id,
@@ -23,6 +26,9 @@ client.on(Events.MessageCreate, async message => {
 
 // Respond to mentions
 client.on(Events.MessageCreate, async message => {
+    // Ignore system messages
+    if (message.system) return
+
     try {
         if (
             message.mentions.has(client.user!.id) &&
