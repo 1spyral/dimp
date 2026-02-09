@@ -1,8 +1,8 @@
+import { exportJWK, generateKeyPair, type JWK } from "jose"
+import { randomUUID } from "node:crypto"
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import { dirname } from "node:path"
 import { parseArgs } from "node:util"
-import { randomUUID } from "node:crypto"
-import { exportJWK, generateKeyPair, type JWK } from "jose"
 
 type StoredKey = {
     kid: string

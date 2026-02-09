@@ -1,7 +1,7 @@
-import { Events } from "discord.js"
 import { client } from "@/app"
 import { commands } from "@/commands"
 import { logger } from "@/logger"
+import { Events } from "discord.js"
 
 // Log when the client is ready
 client.once(Events.ClientReady, c => {

@@ -1,7 +1,7 @@
-import postgres from "postgres"
-import { drizzle } from "drizzle-orm/postgres-js"
 import { env } from "@/env"
 import * as schema from "@schema"
+import { drizzle } from "drizzle-orm/postgres-js"
+import postgres from "postgres"
 
 export const pgClient = postgres(env.DATABASE_URL, {
     max: env.DB_MAX_CONNECTIONS,

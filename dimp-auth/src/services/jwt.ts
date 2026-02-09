@@ -1,13 +1,13 @@
 import { SignJWT, importJWK } from "jose"
 import {
+    createHash,
     randomBytes,
     randomUUID,
-    createHash,
     timingSafeEqual,
 } from "node:crypto"
 
-import type { JwksEntry } from "@/jwks"
 import { env } from "@/env"
+import type { JwksEntry } from "@/jwks"
 
 export type IssueAccessTokenParams = {
     userId: string

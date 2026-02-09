@@ -1,6 +1,6 @@
-import { pgTable } from "drizzle-orm/pg-core"
-import * as t from "drizzle-orm/pg-core"
 import { discordTimestamps, timestamps } from "@/db/columns.helpers"
+import * as t from "drizzle-orm/pg-core"
+import { pgTable } from "drizzle-orm/pg-core"
 import {
     createInsertSchema,
     createSelectSchema,

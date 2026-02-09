@@ -1,5 +1,5 @@
-import type { FastifyReply } from "fastify"
 import { env } from "@/env"
+import type { FastifyReply } from "fastify"
 
 export const REFRESH_COOKIE_NAME = "refresh_token"
 

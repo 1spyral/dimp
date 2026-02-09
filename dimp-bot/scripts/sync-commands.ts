@@ -1,5 +1,5 @@
-import { REST, Routes } from "discord.js"
 import { commands } from "@/commands"
+import { REST, Routes } from "discord.js"
 
 const clientId = process.env.DISCORD_CLIENT_ID!
 const token = process.env.DISCORD_TOKEN!

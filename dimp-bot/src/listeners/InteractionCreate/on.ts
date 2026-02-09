@@ -1,7 +1,7 @@
-import { Events, MessageFlags } from "discord.js"
-import { commands } from "@/commands"
 import { client } from "@/app"
+import { commands } from "@/commands"
 import { logger } from "@/logger"
+import { Events, MessageFlags } from "discord.js"
 
 // Handle chat input commands
 client.on(Events.InteractionCreate, async interaction => {

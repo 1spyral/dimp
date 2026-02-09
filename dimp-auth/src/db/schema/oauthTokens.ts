@@ -1,6 +1,6 @@
-import { pgTable } from "drizzle-orm/pg-core"
-import * as t from "drizzle-orm/pg-core"
 import { timestamps } from "@/db/columns.helpers"
+import * as t from "drizzle-orm/pg-core"
+import { pgTable } from "drizzle-orm/pg-core"
 
 export const oauthTokens = pgTable(
     "oauth_tokens",

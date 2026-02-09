@@ -1,8 +1,8 @@
-import Fastify from "fastify"
-import cookie from "@fastify/cookie"
-import { loggerConfig } from "@/logger"
 import { JwksStore } from "@/jwks"
+import { loggerConfig } from "@/logger"
 import { oauthRoutes } from "@/routes/oauth"
+import cookie from "@fastify/cookie"
+import Fastify from "fastify"
 
 const fastify = Fastify({ logger: loggerConfig })
 const jwksStore = new JwksStore()

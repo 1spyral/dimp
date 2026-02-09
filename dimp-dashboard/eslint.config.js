@@ -1,10 +1,10 @@
 import js from "@eslint/js"
-import globals from "globals"
+import prettier from "eslint-config-prettier/flat"
 import react from "eslint-plugin-react"
 import reactHooks from "eslint-plugin-react-hooks"
-import tseslint from "typescript-eslint"
-import prettier from "eslint-config-prettier/flat"
 import { defineConfig, globalIgnores } from "eslint/config"
+import globals from "globals"
+import tseslint from "typescript-eslint"
 
 export default defineConfig([
     globalIgnores(["dist"]),

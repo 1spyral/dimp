@@ -1,10 +1,10 @@
-import Fastify from "fastify"
-import mercurius from "mercurius"
-import { db } from "@/drizzle"
 import * as agents from "@/ai/workflows"
+import { db } from "@/drizzle"
 import { env } from "@/env"
 import { loggerConfig } from "@/logger"
 import { schema } from "@graphql"
+import Fastify from "fastify"
+import mercurius from "mercurius"
 
 const fastify = Fastify({ logger: loggerConfig })
 
