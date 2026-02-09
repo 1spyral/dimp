@@ -7,8 +7,8 @@
     "docker:build:dashboard": "docker build -f dimp-dashboard/Dockerfile -t dimp-dashboard .",
     "docker:build:server": "docker build -f dimp-server/Dockerfile --target server -t dimp-server .",
     "docker:build:server:migrate": "docker build -f dimp-server/Dockerfile --target migrate -t dimp-server-migrate .",
-    "format": "prettier --write --plugin=prettier-plugin-organize-imports .",
-    "format:check": "prettier --check --plugin=prettier-plugin-organize-imports ."
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "workspaces": [
     "dimp-auth",
