@@ -1,12 +1,12 @@
+import { and, eq, gt, isNull } from "drizzle-orm"
 import type { RouteHandler } from "fastify"
-import { and, eq, isNull, gt } from "drizzle-orm"
 
-import { db } from "@/drizzle"
 import { oauthRefreshTokens } from "@/db/schema"
-import { JwtService, generateRefreshToken } from "@/services/jwt"
-import { createHash } from "node:crypto"
+import { db } from "@/drizzle"
 import { env } from "@/env"
 import { setRefreshCookie } from "@/http/cookies"
+import { JwtService, generateRefreshToken } from "@/services/jwt"
+import { createHash } from "node:crypto"
 
 const hashRefreshToken = (token: string): string =>
     createHash("sha256").update(token, "utf8").digest("hex")

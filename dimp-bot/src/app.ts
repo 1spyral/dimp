@@ -1,5 +1,5 @@
-import { Client, GatewayIntentBits } from "discord.js"
 import { env } from "@/env"
+import { Client, GatewayIntentBits } from "discord.js"
 
 export const client = new Client({
     intents: [

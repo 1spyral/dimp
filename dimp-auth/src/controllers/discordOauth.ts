@@ -1,11 +1,11 @@
-import type { RouteHandler } from "fastify"
-import { env } from "@/env"
-import { exchangeDiscordToken, fetchDiscordUser } from "@/services/discordOauth"
+import { oauthRefreshTokens, oauthTokens } from "@/db/schema"
 import { db } from "@/drizzle"
-import { oauthTokens, oauthRefreshTokens } from "@/db/schema"
-import { and, eq } from "drizzle-orm"
+import { env } from "@/env"
 import { setRefreshCookie } from "@/http/cookies"
+import { exchangeDiscordToken, fetchDiscordUser } from "@/services/discordOauth"
 import { JwtService } from "@/services/jwt"
+import { and, eq } from "drizzle-orm"
+import type { RouteHandler } from "fastify"
 
 const discordScopes = ["identify", "guilds"]
 

@@ -1,5 +1,5 @@
 import { builder } from "."
-import "./queries"
 import "./mutations"
+import "./queries"
 
 export const schema = builder.toSchema({})

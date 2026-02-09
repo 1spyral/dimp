@@ -1,5 +1,5 @@
-import { env } from "@/env"
 import { pgClient } from "@/drizzle"
+import { env } from "@/env"
 import { server } from "@/server"
 
 const start = async () => {

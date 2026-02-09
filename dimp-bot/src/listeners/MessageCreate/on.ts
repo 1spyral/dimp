@@ -1,7 +1,7 @@
-import { Events } from "discord.js"
-import { api } from "@/graphql"
 import { client } from "@/app"
+import { api } from "@/graphql"
 import { logger } from "@/logger"
+import { Events } from "discord.js"
 
 // TODO: be picker with messages (ignore system messages)
 

@@ -1,7 +1,7 @@
 import { schema } from "@graphql"
+import fs from "fs"
 import { printSchema } from "graphql"
 import path from "path"
-import fs from "fs"
 
 const sdl = printSchema(schema)
 

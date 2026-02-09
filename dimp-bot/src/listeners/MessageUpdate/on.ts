@@ -1,7 +1,7 @@
-import { Events } from "discord.js"
-import { api } from "@/graphql"
 import { client } from "@/app"
+import { api } from "@/graphql"
 import { logger } from "@/logger"
+import { Events } from "discord.js"
 
 // Write message to backend
 client.on(Events.MessageUpdate, async (_oldMessage, newMessage) => {

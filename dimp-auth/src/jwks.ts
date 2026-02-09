@@ -1,7 +1,7 @@
-import { readFile } from "node:fs/promises"
-import { watch, watchFile, unwatchFile, type Stats } from "node:fs"
 import { env } from "@/env"
 import { logger } from "@/logger"
+import { unwatchFile, watch, watchFile, type Stats } from "node:fs"
+import { readFile } from "node:fs/promises"
 
 export type Jwk = Record<string, string>
 
