@@ -49,6 +49,20 @@ bun run --cwd dimp-dashboard lint
 bun run --cwd dimp-server lint
 ```
 
+### Tests (write + run)
+
+If your change affects behavior, add or update tests in the touched workspace whenever practical.
+
+- For `dimp-server` runtime logic (GraphQL resolvers, DB repositories, validation/config behavior), run:
+
+```bash
+bun run --cwd dimp-server test
+bun run --cwd dimp-server test:coverage
+```
+
+- Prefer fast unit tests for changed logic (for example resolver/repository tests) and include regression tests for bug fixes.
+- If you skip tests, explain why in the PR.
+
 ### GraphQL schema generation (server)
 
 If you changed GraphQL types/resolvers, regenerate and commit the schema:
@@ -74,3 +88,4 @@ CI checks that `dimp-bot/src/graphql/generated.ts` has no diff.
 - Keep PRs small and focused.
 - Update docs when behavior or setup changes.
 - Prefer matching existing patterns in the workspace you’re touching.
+- Include a short "Testing" section in the PR describing what was run (lint/tests/generators) and results.

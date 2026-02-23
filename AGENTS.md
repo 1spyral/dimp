@@ -25,6 +25,7 @@ Common commands:
 - `bun run --cwd dimp-server dev`: run a backend service in watch mode (same pattern for `dimp-auth` and `dimp-bot`)
 - `bun run --cwd dimp-dashboard dev`: start the Vite frontend
 - `bun run --cwd <workspace> lint`: run ESLint in a workspace
+- `bun run --cwd dimp-server test` / `bun run --cwd dimp-server test:coverage`: run Bun unit tests and coverage for server changes
 - `bun run --cwd dimp-server generate-schema`: regenerate `dimp-server/schema.graphql`
 - `bun run --cwd dimp-bot codegen`: regenerate `dimp-bot/src/graphql/generated.ts`
 
@@ -39,9 +40,11 @@ TypeScript + ESM is the default. Follow existing workspace patterns.
 
 ## Testing Guidelines
 
-There is no unified automated test suite configured at the root today. Treat linting, schema/codegen generation, and manual verification as the baseline:
+There is no unified automated test suite configured at the root today. Treat linting, tests (when available), schema/codegen generation, and manual verification as the baseline:
 
 - Run `bun run --cwd <workspace> lint`
+- Add or update tests for behavior changes when practical (especially bug fixes and server runtime logic)
+- For `dimp-server` runtime changes, run `bun run --cwd dimp-server test` and `bun run --cwd dimp-server test:coverage`
 - Run impacted generators (`generate-schema`, `codegen`) and commit outputs
 - Smoke-test changed services locally with their `dev` command
 
@@ -51,10 +54,11 @@ Recent commits use short, imperative subjects (for example, `Move plugin to .pre
 
 - Keep commit messages concise and action-oriented
 - Before committing, run relevant checks for touched workspaces (formatting, linting, generators, and available tests/smoke checks)
-- Example: `bun run format:check` and `bun run --cwd dimp-server lint` before committing server changes
+- Example (server logic change): `bun run format:check`, `bun run --cwd dimp-server lint`, `bun run --cwd dimp-server test`, and `bun run --cwd dimp-server test:coverage` before committing
 - AI agents should create their own commits for completed changes (do not leave edits uncommitted unless asked)
 - Use a descriptive commit subject and, when helpful, a short body explaining what changed and why
 - Keep PRs small and focused
 - Link the related issue in the PR
 - Update docs/setup notes when behavior or configuration changes
 - Include screenshots for `dimp-dashboard` UI changes when relevant
+- PR descriptions should include a brief testing summary (what was run and results)
