@@ -21,12 +21,13 @@ describe("createMessageResolver", () => {
         const result = await resolver(
             null,
             { input },
-            { db: {} as never, logger }
-        )
+        const db = {} as never
+
+        const result = await resolver(null, { input }, { db, logger })
 
         expect(result).toMatchObject({ id: "m-1", content: "hello" })
         expect(createMessage).toHaveBeenCalledTimes(1)
-        expect(createMessage).toHaveBeenCalledWith({} as never, input)
+        expect(createMessage).toHaveBeenCalledWith(db, input)
         expect(logger.error).not.toHaveBeenCalled()
     })
 
