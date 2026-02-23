@@ -22,6 +22,13 @@
       "when": 1764294631674,
       "tag": "0002_messages_content_nullable",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1771813411393,
+      "tag": "0003_create_users_table",
+      "breakpoints": true
     }
   ]
 }
