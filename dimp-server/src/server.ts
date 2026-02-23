@@ -1,4 +1,3 @@
-import * as agents from "@/ai/workflows"
 import { db } from "@/drizzle"
 import { env } from "@/env"
 import { loggerConfig } from "@/logger"
@@ -7,15 +6,22 @@ import Fastify from "fastify"
 import mercurius from "mercurius"
 
 const fastify = Fastify({ logger: loggerConfig })
+let agentsPromise: Promise<typeof import("@/ai/workflows")> | undefined
+
+const getAgents = () => {
+    agentsPromise ??= import("@/ai/workflows")
+
+    return agentsPromise
+}
 
 fastify.register(mercurius, {
     schema,
     graphiql: env.NODE_ENV === "development",
-    context: (request, reply) => ({
+    context: async (request, reply) => ({
         request,
         reply,
         db,
-        agents,
+        agents: await getAgents(),
         logger: request.log,
     }),
 })
