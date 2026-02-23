@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "bun run --watch --no-check src/app.ts",
     "start": "bun run --no-check src/app.ts",
-    "test": "bun test --preload ./tests/setup.ts --env-file ./env.test",
+    "test": "bun run test:unit",
+    "test:unit": "bun test ./tests/env.test.ts ./tests/logger.test.ts ./tests/ai ./tests/db ./tests/graphql --preload ./tests/setup.ts --env-file ./env.test",
+    "test:unit:watch": "bun test ./tests/env.test.ts ./tests/logger.test.ts ./tests/ai ./tests/db ./tests/graphql --watch --preload ./tests/setup.ts --env-file ./env.test",
     "test:integration": "bun test ./tests/integration --preload ./tests/integration/setup.ts --env-file ./env.test --max-concurrency 1",
     "test:integration:watch": "bun test ./tests/integration --watch --preload ./tests/integration/setup.ts --env-file ./env.test --max-concurrency 1",
     "test:integration:db:up": "docker compose -f ./docker-compose.test.yml up -d --wait postgres-test",
