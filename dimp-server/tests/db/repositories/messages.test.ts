@@ -1,9 +1,9 @@
-import { messages } from "@/db/schema"
 import {
     createMessage,
     getMessageById,
     updateMessage,
 } from "@/db/repositories/messages"
+import { messages } from "@/db/schema"
 import { describe, expect, mock, test } from "bun:test"
 
 describe("messageRepository", () => {
