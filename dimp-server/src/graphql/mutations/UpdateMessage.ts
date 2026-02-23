@@ -1,6 +1,6 @@
-import { messages } from "@/db/schema"
-import { eq } from "drizzle-orm"
+import { messageRepository } from "@/db/repositories"
 import { builder } from "../builder"
+import type { Context } from "../context"
 import { MessageRef } from "../types"
 
 const UpdateMessageInput = builder.inputType("UpdateMessageInput", {
@@ -12,19 +12,33 @@ const UpdateMessageInput = builder.inputType("UpdateMessageInput", {
     }),
 })
 
+interface UpdateMessageResolverArgs {
+    input: messageRepository.UpdateMessageInput
+}
+
+interface UpdateMessageResolverDeps {
+    updateMessage: typeof messageRepository.updateMessage
+}
+
+export const makeUpdateMessageResolver =
+    (deps: UpdateMessageResolverDeps) =>
+    async (
+        _parent: unknown,
+        args: UpdateMessageResolverArgs,
+        ctx: Pick<Context, "db">
+    ) => {
+        return await deps.updateMessage(ctx.db, args.input)
+    }
+
+export const updateMessageResolver =
+    makeUpdateMessageResolver(messageRepository)
+
 builder.mutationField("updateMessage", t =>
     t.field({
         type: MessageRef,
         args: {
             input: t.arg({ type: UpdateMessageInput, required: true }),
         },
-        resolve: async (_parent, args, ctx) => {
-            return await ctx.db
-                .update(messages)
-                .set(args.input)
-                .where(eq(messages.id, args.input.id))
-                .returning()
-                .then(r => r[0])
-        },
+        resolve: updateMessageResolver,
     })
 )

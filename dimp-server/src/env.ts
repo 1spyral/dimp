@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-const envSchema = z.object({
+export const envSchema = z.object({
     NODE_ENV: z
         .enum(["development", "production", "test"])
         .catch("development"),
@@ -21,4 +21,7 @@ const envSchema = z.object({
     ANTHROPIC_API_KEY: z.string().optional(),
 })
 
-export const env = envSchema.parse(process.env)
+export const parseEnv = (input: Record<string, unknown>) =>
+    envSchema.parse(input)
+
+export const env = parseEnv(process.env)
