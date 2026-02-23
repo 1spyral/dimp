@@ -18,9 +18,6 @@ describe("createMessageResolver", () => {
         const logger = { error: mock(() => {}) }
         const resolver = makeCreateMessageResolver({ createMessage })
 
-        const result = await resolver(
-            null,
-            { input },
         const db = {} as never
 
         const result = await resolver(null, { input }, { db, logger })
