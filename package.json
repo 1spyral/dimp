@@ -7,6 +7,8 @@
     "docker:build:dashboard": "docker build -f dimp-dashboard/Dockerfile -t dimp-dashboard .",
     "docker:build:server": "docker build -f dimp-server/Dockerfile --target server -t dimp-server .",
     "docker:build:server:migrate": "docker build -f dimp-server/Dockerfile --target migrate -t dimp-server-migrate .",
+    "worktree:setup": "bun run scripts/setup-worktree.ts",
+    "worktree:teardown": "bun run scripts/teardown-worktree.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

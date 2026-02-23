@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DIMP_POSTGRES_DB:-dimp}
+      POSTGRES_USER: ${DIMP_POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${DIMP_POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "${DIMP_PG_PORT:-54329}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

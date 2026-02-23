@@ -16,6 +16,29 @@ From the repo root:
 bun install
 ```
 
+## Local worktree bootstrap (Postgres + env + migrations)
+
+Use this to prepare a fresh git worktree with local Postgres and baseline `.env` files.
+It resets each workspace `.env` from `env.example` on every run:
+
+```bash
+bun run worktree:setup
+```
+
+The script will auto-pick an open local Postgres port (starting at `54329`) to avoid collisions across parallel worktrees.
+
+If you want to pin a specific host port, set it before running:
+
+```bash
+DIMP_PG_PORT=54330 bun run worktree:setup
+```
+
+Teardown for a worktree (stops/removes the local Postgres container and volume, then deletes the generated `.env` files):
+
+```bash
+bun run worktree:teardown
+```
+
 ## Run (pick what you need)
 
 In most cases you’ll run these in separate terminals:
