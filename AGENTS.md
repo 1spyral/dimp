@@ -25,7 +25,10 @@ Common commands:
 - `bun run --cwd dimp-server dev`: run a backend service in watch mode (same pattern for `dimp-auth` and `dimp-bot`)
 - `bun run --cwd dimp-dashboard dev`: start the Vite frontend
 - `bun run --cwd <workspace> lint`: run ESLint in a workspace
-- `bun run --cwd dimp-server test` / `bun run --cwd dimp-server test:coverage`: run Bun unit tests and coverage for server changes
+- `bun run --cwd dimp-server test` / `bun run --cwd dimp-server test:unit`: run Bun unit tests for server changes
+- `bun run --cwd dimp-server test:integration:local`: run `dimp-server` integration tests with local Docker Postgres orchestration (start/migrate/test/teardown)
+- `bun run --cwd dimp-server test:integration`: run `dimp-server` integration tests against an already-running test Postgres (migrations auto-apply in setup)
+- `bun run --cwd dimp-server test:coverage`: run Bun unit test coverage for server changes
 - `bun run --cwd dimp-server generate-schema`: regenerate `dimp-server/schema.graphql`
 - `bun run --cwd dimp-bot codegen`: regenerate `dimp-bot/src/graphql/generated.ts`
 
@@ -46,7 +49,8 @@ There is no unified automated test suite configured at the root today. Treat lin
 - Run `bun run --cwd <workspace> lint`
 - Run `bun run format:check` when touching formatted source/docs across the repo (or `bun run format` if explicitly requested)
 - Add or update tests for behavior changes when practical (especially bug fixes and server runtime logic)
-- For `dimp-server` runtime changes, run `bun run --cwd dimp-server test` and `bun run --cwd dimp-server test:coverage`
+- For `dimp-server` runtime changes, run `bun run --cwd dimp-server test` (unit) and `bun run --cwd dimp-server test:coverage`
+- For `dimp-server` GraphQL/HTTP/DB integration behavior changes, also run `bun run --cwd dimp-server test:integration:local` (preferred) or document why it was skipped
 - Run impacted generators (`generate-schema`, `codegen`) and commit outputs
 - Smoke-test changed services locally with their `dev` command
 - If a check is skipped or cannot run, the agent must state the reason in the final response and PR description
@@ -58,6 +62,7 @@ Recent commits use short, imperative subjects (for example, `Move plugin to .pre
 - Keep commit messages concise and action-oriented
 - Before committing, run relevant checks for touched workspaces (formatting, linting, generators, and available tests/smoke checks)
 - Example (server logic change): `bun run format:check`, `bun run --cwd dimp-server lint`, `bun run --cwd dimp-server test`, and `bun run --cwd dimp-server test:coverage` before committing
+- Example (server GraphQL/DB behavior change): add `bun run --cwd dimp-server test:integration:local` to the checks above
 - AI agents should create their own commits for completed changes (do not leave edits uncommitted unless asked)
 - AI agents should split changes into focused commits by concern (for example: setup/config, `src/` refactors, `tests/`, docs)
 - When practical, keep `src/` code changes and `tests/` changes in separate commits for easier review

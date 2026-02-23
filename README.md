@@ -13,5 +13,18 @@ See [SETUP.md](SETUP.md) for dev environment setup.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## Testing
+
+### `dimp-server`
+
+- Unit tests: `bun run --cwd dimp-server test:unit`
+- Integration tests (local Docker Postgres + migrations + tests + teardown): `bun run --cwd dimp-server test:integration:local`
+
+Notes:
+
+- `bun run --cwd dimp-server test` now runs `test:unit`
+- `bun run --cwd dimp-server test:integration` expects a reachable Postgres test database and will auto-apply migrations during test setup
+- `test:integration:local` selects a free local port automatically, so it does not depend on `54329` being available
+
 [ci-pipeline]: https://github.com/1spyral/dimp/actions/workflows/ci.yml
 [latest-release]: https://github.com/1spyral/dimp/releases/latest
