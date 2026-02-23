@@ -1,8 +1,6 @@
 import { messageRepository } from "@/db/repositories"
+import { builder, MessageRef } from "@graphql"
 import { GraphQLError } from "graphql"
-import { builder } from "../builder"
-import type { Context } from "../context"
-import { MessageRef } from "../types"
 
 const CreateMessageInput = builder.inputType("CreateMessageInput", {
     fields: t => ({

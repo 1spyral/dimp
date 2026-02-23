@@ -5,6 +5,10 @@
   "scripts": {
     "dev": "bun run --watch --no-check src/app.ts",
     "start": "bun run --no-check src/app.ts",
+    "test": "bun test --preload ./tests/setup.ts --env-file ./env.test",
+    "test:watch": "bun test --watch --preload ./tests/setup.ts --env-file ./env.test",
+    "test:coverage": "bun test --coverage --coverage-reporter=text --coverage-reporter=lcov --coverage-dir ./coverage --preload ./tests/setup.ts --env-file ./env.test",
+    "test:coverage:watch": "bun test --watch --coverage --coverage-reporter=text --coverage-dir ./coverage --preload ./tests/setup.ts --env-file ./env.test",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "generate-schema": "bun run scripts/generate-schema.ts",
