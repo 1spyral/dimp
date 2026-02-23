@@ -1,6 +1,8 @@
-import { messages } from "@/db/schema"
-import { builder, MessageRef } from "@graphql"
+import { messageRepository } from "@/db/repositories"
 import { GraphQLError } from "graphql"
+import { builder } from "../builder"
+import type { Context } from "../context"
+import { MessageRef } from "../types"
 
 const CreateMessageInput = builder.inputType("CreateMessageInput", {
     fields: t => ({
@@ -15,37 +17,51 @@ const CreateMessageInput = builder.inputType("CreateMessageInput", {
     }),
 })
 
+interface CreateMessageResolverArgs {
+    input: messageRepository.CreateMessageInput
+}
+
+interface CreateMessageResolverDeps {
+    createMessage: typeof messageRepository.createMessage
+}
+
+export const makeCreateMessageResolver =
+    (deps: CreateMessageResolverDeps) =>
+    async (
+        _parent: unknown,
+        args: CreateMessageResolverArgs,
+        ctx: Pick<Context, "db" | "logger">
+    ) => {
+        try {
+            return await deps.createMessage(ctx.db, args.input)
+        } catch (e: unknown) {
+            ctx.logger.error(
+                {
+                    err: e,
+                    input: args.input,
+                    message:
+                        e instanceof Error
+                            ? e.message
+                            : typeof e === "string"
+                              ? e
+                              : undefined,
+                    stack: e instanceof Error ? e.stack : undefined,
+                },
+                "createMessage failed"
+            )
+
+            throw new GraphQLError("Failed to create message")
+        }
+    }
+
+export const createMessageResolver =
+    makeCreateMessageResolver(messageRepository)
+
 builder.mutationField("createMessage", t =>
     t.field({
         type: MessageRef,
         nullable: false,
         args: { input: t.arg({ type: CreateMessageInput, required: true }) },
-        resolve: async (_parent, args, ctx) => {
-            try {
-                const [row] = await ctx.db
-                    .insert(messages)
-                    .values(args.input)
-                    .onConflictDoNothing()
-                    .returning()
-                return row
-            } catch (e: unknown) {
-                ctx.logger.error(
-                    {
-                        err: e,
-                        input: args.input,
-                        message:
-                            e instanceof Error
-                                ? e.message
-                                : typeof e === "string"
-                                  ? e
-                                  : undefined,
-                        stack: e instanceof Error ? e.stack : undefined,
-                    },
-                    "createMessage failed"
-                )
-
-                throw new GraphQLError("Failed to create message")
-            }
-        },
+        resolve: createMessageResolver,
     })
 )
