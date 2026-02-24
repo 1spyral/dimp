@@ -1,9 +1,18 @@
-import { ChatState } from "@/ai/workflows/chat/state"
+import { ChatStateSchema, type ChatStateType } from "@/ai/workflows/chat/state"
+import { Value } from "@sinclair/typebox/value"
 import { describe, expect, test } from "bun:test"
+
+const parseChatState = (input: unknown): ChatStateType => {
+    if (!Value.Check(ChatStateSchema, input)) {
+        throw new Error("Invalid chat state")
+    }
+
+    return input as ChatStateType
+}
 
 describe("ChatState", () => {
     test("accepts valid chat state payloads", () => {
-        const parsed = ChatState.parse({
+        const parsed = parseChatState({
             history: [{ content: "hello", user: "user-1" }, { content: null }],
             message: { content: "what's up?", user: "user-2" },
             response: "all good",
@@ -16,7 +25,7 @@ describe("ChatState", () => {
 
     test("rejects messages with non-string content", () => {
         expect(() =>
-            ChatState.parse({
+            parseChatState({
                 history: [],
                 message: { content: 123 },
             })

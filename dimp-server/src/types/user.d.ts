@@ -1,4 +1,4 @@
 import { userSelectSchema } from "@schema"
-import { z } from "zod"
+import { type Static } from "@sinclair/typebox"
 
-export type User = z.infer<typeof userSelectSchema>
+export type User = Static<typeof userSelectSchema>

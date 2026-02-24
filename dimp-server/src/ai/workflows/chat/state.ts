@@ -1,15 +1,21 @@
-import { z } from "zod"
+import { Annotation } from "@langchain/langgraph"
+import { Type, type Static } from "@sinclair/typebox"
 
-const ChatMessageSchema = z.object({
-    content: z.string().nullable(),
-    user: z.string().optional(),
+const ChatMessageSchema = Type.Object({
+    content: Type.Union([Type.String(), Type.Null()]),
+    user: Type.Optional(Type.String()),
 })
 
-export const ChatState = z.object({
-    history: z.array(ChatMessageSchema),
+export const ChatStateSchema = Type.Object({
+    history: Type.Array(ChatMessageSchema),
     message: ChatMessageSchema,
-
-    response: z.string().optional(),
+    response: Type.Optional(Type.String()),
 })
 
-export type ChatStateType = z.infer<typeof ChatState>
+export type ChatStateType = Static<typeof ChatStateSchema>
+
+export const ChatState = Annotation.Root({
+    history: Annotation<ChatStateType["history"]>(),
+    message: Annotation<ChatStateType["message"]>(),
+    response: Annotation<ChatStateType["response"]>(),
+})

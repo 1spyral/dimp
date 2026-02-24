@@ -5,7 +5,7 @@ import {
     createInsertSchema,
     createSelectSchema,
     createUpdateSchema,
-} from "drizzle-zod"
+} from "drizzle-typebox"
 
 export const messages = pgTable(
     "messages",
