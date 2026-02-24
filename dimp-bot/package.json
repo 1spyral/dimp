@@ -11,7 +11,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@langchain/openai": "^1.2.4",
+    "@langchain/openai": "^1.2.10",
     "@sinclair/typebox": "^0.34.48",
     "discord.js": "^14.25.1",
     "graphql": "^16.12.0",
