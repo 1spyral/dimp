@@ -68,7 +68,10 @@ export const makeGenerateChatResponseResolver =
                 },
             }
 
-            const result = await deps.invokeChatWorkflow(ctx.getAgents, initialState)
+            const result = await deps.invokeChatWorkflow(
+                ctx.getAgents,
+                initialState
+            )
 
             return result.response ?? "No response generated."
         } catch (e: unknown) {
