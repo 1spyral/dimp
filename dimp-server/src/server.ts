@@ -27,10 +27,29 @@ server.use(
             logger,
         }),
     })
-).get("/", () => {
+)
+    .get("/readyz", () => {
+        return new Response("Ready", {
+            status: 200,
+            headers: { "content-type": "text/plain" },
+        })
+    })
+    .get("/livez", () => {
+        return new Response("Live", {
+            status: 200,
+            headers: { "content-type": "text/plain" },
+        })
+    })
+    .get("/", () => {
     return new Response("Healthcheck healthy", {
         status: 200,
-        headers: { "content-type": "text/plain" },
+        headers: {
+            "content-type": "text/plain",
+            Deprecation: "true",
+            Link: '</readyz>; rel="successor-version", </livez>; rel="successor-version"',
+            Warning:
+                '299 - "Deprecated healthcheck endpoint. Use /readyz or /livez instead."',
+        },
     })
 })
 
