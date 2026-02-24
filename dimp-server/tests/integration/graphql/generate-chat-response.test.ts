@@ -117,7 +117,7 @@ describe("integration: GraphQL generateChatResponse", () => {
             },
         })
 
-        expect(result.data).toBeUndefined()
+        expect(result.data).toBeNull()
         expect(result.errors?.[0]?.message).toBe(
             "Failed to generate chat response"
         )
