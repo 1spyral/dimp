@@ -1,0 +1,1 @@
+CREATE INDEX "messages_guild_id_channel_id_id_index" ON "messages" USING btree ("guild_id","channel_id","id");

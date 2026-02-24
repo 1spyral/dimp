@@ -11,5 +11,5 @@ export const oauthTokens = pgTable(
         oauthProvider: t.text().notNull(),
         ...timestamps,
     },
-    table => [t.index().on(table.userId)]
+    table => [t.index().on(table.userId, table.oauthProvider)]
 )

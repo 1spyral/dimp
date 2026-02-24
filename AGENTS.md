@@ -52,6 +52,8 @@ There is no unified automated test suite configured at the root today. Treat lin
 - For `dimp-server` runtime changes, run `bun run --cwd dimp-server test` (unit) and `bun run --cwd dimp-server test:coverage`
 - For `dimp-server` GraphQL/HTTP/DB integration behavior changes, also run `bun run --cwd dimp-server test:integration:local` (preferred) or document why it was skipped
 - Run impacted generators (`generate-schema`, `codegen`) and commit outputs
+- Drizzle migrations must be generated, not manually created: use `bun run db:generate --name <name>` for standard migrations
+- If a custom Drizzle migration is needed, generate the migration scaffold with `bun run db:generate --custom` (do not create migration files by hand)
 - Smoke-test changed services locally with their `dev` command
 - If a check is skipped or cannot run, the agent must state the reason in the final response and PR description
 
