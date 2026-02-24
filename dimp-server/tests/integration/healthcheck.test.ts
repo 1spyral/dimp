@@ -1,11 +1,9 @@
-import { server } from "@/server"
 import { describe, expect, test } from "bun:test"
+import { request } from "./helpers"
 
 describe("integration: healthcheck", () => {
     test("GET /readyz returns a ready response", async () => {
-        const response = await server.handle(
-            new Request("http://localhost/readyz", { method: "GET" })
-        )
+        const response = await request("/readyz", { method: "GET" })
 
         expect(response.status).toBe(200)
         expect(response.headers.get("content-type")).toContain("text/plain")
@@ -13,9 +11,7 @@ describe("integration: healthcheck", () => {
     })
 
     test("GET /livez returns a live response", async () => {
-        const response = await server.handle(
-            new Request("http://localhost/livez", { method: "GET" })
-        )
+        const response = await request("/livez", { method: "GET" })
 
         expect(response.status).toBe(200)
         expect(response.headers.get("content-type")).toContain("text/plain")
@@ -23,9 +19,7 @@ describe("integration: healthcheck", () => {
     })
 
     test("GET / returns a deprecated healthcheck response", async () => {
-        const response = await server.handle(
-            new Request("http://localhost/", { method: "GET" })
-        )
+        const response = await request("/", { method: "GET" })
 
         expect(response.status).toBe(200)
         expect(response.headers.get("content-type")).toContain("text/plain")

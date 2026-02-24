@@ -45,30 +45,24 @@ server
                 logger: createRequestLogger(request),
             }),
         })
-    )
-    .get("/readyz", () => {
-        return new Response("Ready", {
-            status: 200,
-            headers: { "content-type": "text/plain" },
-        })
+)
+    .get("/readyz", ({ set }) => {
+        set.headers["content-type"] = "text/plain"
+        return "Ready"
     })
-    .get("/livez", () => {
-        return new Response("Live", {
-            status: 200,
-            headers: { "content-type": "text/plain" },
-        })
+    .get("/livez", ({ set }) => {
+        set.headers["content-type"] = "text/plain"
+        return "Live"
     })
-    .get("/", () => {
-        return new Response("Healthcheck healthy", {
-            status: 200,
-            headers: {
-                "content-type": "text/plain",
-                Deprecation: "true",
-                Link: '</readyz>; rel="successor-version", </livez>; rel="successor-version"',
-                Warning:
-                    '299 - "Deprecated healthcheck endpoint. Use /readyz or /livez instead."',
-            },
-        })
+    .get("/", ({ set }) => {
+        set.headers["content-type"] = "text/plain"
+        set.headers.Deprecation = "true"
+        set.headers.Link =
+            '</readyz>; rel="successor-version", </livez>; rel="successor-version"'
+        set.headers.Warning =
+            '299 - "Deprecated healthcheck endpoint. Use /readyz or /livez instead."'
+
+        return "Healthcheck healthy"
     })
 
 export { server }

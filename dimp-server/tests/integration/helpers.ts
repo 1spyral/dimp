@@ -13,19 +13,20 @@ export interface GraphQLResponse<TData> {
     errors?: GraphQLErrorShape[]
 }
 
+export const request = (path: string, init?: RequestInit) =>
+    server.handle(new Request(`http://localhost${path}`, init))
+
 export const graphqlRequest = async <TData>(
     query: string,
     variables?: Record<string, unknown>
 ) => {
-    const response = await server.handle(
-        new Request("http://localhost/graphql", {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-            },
-            body: JSON.stringify({ query, variables }),
-        })
-    )
+    const response = await request("/graphql", {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ query, variables }),
+    })
 
     expect(response.status).toBe(200)
 
