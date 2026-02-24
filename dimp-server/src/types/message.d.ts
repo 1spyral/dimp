@@ -1,4 +1,4 @@
 import { messageSelectSchema } from "@schema"
-import { z } from "zod"
+import { type Static } from "@sinclair/typebox"
 
-export type Message = z.infer<typeof messageSelectSchema>
+export type Message = Static<typeof messageSelectSchema>
