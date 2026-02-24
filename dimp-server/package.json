@@ -39,7 +39,7 @@
     "elysia": "^1.4.25",
     "graphql": "^16.12.0",
     "graphql-scalars": "^1.25.0",
-    "langchain": "^1.2.17",
+    "langchain": "^1.2.27",
     "pino": "^10.3.0",
     "postgres": "^3.4.8"
   },
