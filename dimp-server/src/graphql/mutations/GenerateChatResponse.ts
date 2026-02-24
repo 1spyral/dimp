@@ -51,8 +51,8 @@ builder.mutationField("generateChatResponse", t =>
                     },
                 }
 
-                const result =
-                    await ctx.agents.chatWorkflow.invoke(initialState)
+                const agents = await ctx.getAgents()
+                const result = await agents.chatWorkflow.invoke(initialState)
 
                 return result.response ?? "No response generated."
             } catch (e: unknown) {

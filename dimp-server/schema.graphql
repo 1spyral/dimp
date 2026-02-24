@@ -45,10 +45,12 @@ type Mutation {
   createMessage(input: CreateMessageInput!): Message!
   generateChatResponse(input: GenerateChatResponseInput!): String!
   updateMessage(input: UpdateMessageInput!): Message
+  upsertUser(input: UpsertUserInput!): User!
 }
 
 type Query {
   message(id: ID!): Message
+  user(id: ID!): User
 }
 
 input UpdateMessageInput {
@@ -56,4 +58,19 @@ input UpdateMessageInput {
   discordDeletedAt: DateTime
   discordUpdatedAt: DateTime!
   id: ID!
+}
+
+input UpsertUserInput {
+  discriminator: String!
+  id: ID!
+  username: String!
+}
+
+type User {
+  createdAt: DateTime!
+  deletedAt: DateTime
+  discriminator: String!
+  id: ID!
+  updatedAt: DateTime!
+  username: String!
 }
