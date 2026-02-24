@@ -45,7 +45,7 @@ server
                 logger: createRequestLogger(request),
             }),
         })
-)
+    )
     .get("/readyz", ({ set }) => {
         set.headers["content-type"] = "text/plain"
         return "Ready"
