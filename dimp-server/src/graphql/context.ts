@@ -3,6 +3,10 @@ import type { BunSQLDatabase } from "drizzle-orm/bun-sql"
 
 export interface ContextLogger {
     error: (...args: unknown[]) => void
+    warn: (...args: unknown[]) => void
+    info: (...args: unknown[]) => void
+    debug: (...args: unknown[]) => void
+    child: (bindings: Record<string, unknown>) => ContextLogger
 }
 
 export interface Context {

@@ -1,6 +1,7 @@
 import { makeGetUserResolver } from "@/graphql/queries/GetUser"
 import { describe, expect, mock, test } from "bun:test"
 import { GraphQLError } from "graphql"
+import { createMockContextLogger } from "./test-logger"
 
 describe("getUserResolver", () => {
     test("returns found user", async () => {
@@ -9,7 +10,7 @@ describe("getUserResolver", () => {
             username: "luke",
             discriminator: "0001",
         }))
-        const logger = { error: mock(() => {}) }
+        const logger = createMockContextLogger()
         const resolver = makeGetUserResolver({ getUserById })
         const db = {} as never
 
@@ -25,7 +26,7 @@ describe("getUserResolver", () => {
         const getUserById = mock(async () => {
             throw new Error("read failed")
         })
-        const logger = { error: mock(() => {}) }
+        const logger = createMockContextLogger()
         const resolver = makeGetUserResolver({ getUserById })
         const db = {} as never
 

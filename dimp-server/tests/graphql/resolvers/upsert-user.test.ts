@@ -1,6 +1,7 @@
 import { makeUpsertUserResolver } from "@/graphql/mutations/UpsertUser"
 import { describe, expect, mock, test } from "bun:test"
 import { GraphQLError } from "graphql"
+import { createMockContextLogger } from "./test-logger"
 
 const input = {
     id: "u-1",
@@ -11,7 +12,7 @@ const input = {
 describe("upsertUserResolver", () => {
     test("returns upserted row", async () => {
         const upsertUser = mock(async () => ({ ...input }))
-        const logger = { error: mock(() => {}) }
+        const logger = createMockContextLogger()
         const resolver = makeUpsertUserResolver({ upsertUser })
         const db = {} as never
 
@@ -28,7 +29,7 @@ describe("upsertUserResolver", () => {
         const upsertUser = mock(async () => {
             throw dbError
         })
-        const logger = { error: mock(() => {}) }
+        const logger = createMockContextLogger()
         const resolver = makeUpsertUserResolver({ upsertUser })
         const db = {} as never
 

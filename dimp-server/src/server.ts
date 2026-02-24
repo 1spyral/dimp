@@ -15,6 +15,23 @@ const getAgents = () => {
     return agentsPromise
 }
 
+const createRequestLogger = (request: Request) => {
+    const requestId = request.headers.get("x-request-id") ?? crypto.randomUUID()
+
+    let path = request.url
+    try {
+        path = new URL(request.url).pathname
+    } catch {
+        // Keep the raw URL if parsing fails in a test or non-standard runtime.
+    }
+
+    return logger.child({
+        requestId,
+        method: request.method,
+        path,
+    })
+}
+
 server.use(
     yoga({
         schema,
@@ -24,7 +41,7 @@ server.use(
             reply: null,
             db,
             getAgents,
-            logger,
+            logger: createRequestLogger(request),
         }),
     })
 )
@@ -41,16 +58,16 @@ server.use(
         })
     })
     .get("/", () => {
-    return new Response("Healthcheck healthy", {
-        status: 200,
-        headers: {
-            "content-type": "text/plain",
-            Deprecation: "true",
-            Link: '</readyz>; rel="successor-version", </livez>; rel="successor-version"',
-            Warning:
-                '299 - "Deprecated healthcheck endpoint. Use /readyz or /livez instead."',
-        },
+        return new Response("Healthcheck healthy", {
+            status: 200,
+            headers: {
+                "content-type": "text/plain",
+                Deprecation: "true",
+                Link: '</readyz>; rel="successor-version", </livez>; rel="successor-version"',
+                Warning:
+                    '299 - "Deprecated healthcheck endpoint. Use /readyz or /livez instead."',
+            },
+        })
     })
-})
 
 export { server }
