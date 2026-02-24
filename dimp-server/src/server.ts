@@ -26,7 +26,26 @@ fastify.register(mercurius, {
     }),
 })
 
-fastify.get("/", async (_request, reply) => {
+fastify.get("/readyz", { logLevel: "silent" }, async (_request, reply) => {
+    return reply.code(200).type("text/plain").send("Ready")
+})
+
+fastify.get("/livez", { logLevel: "silent" }, async (_request, reply) => {
+    return reply.code(200).type("text/plain").send("Live")
+})
+
+fastify.get("/", { logLevel: "silent" }, async (_request, reply) => {
+    reply
+        .header("Deprecation", "true")
+        .header(
+            "Link",
+            '</readyz>; rel="successor-version", </livez>; rel="successor-version"'
+        )
+        .header(
+            "Warning",
+            '299 - "Deprecated healthcheck endpoint. Use /readyz or /livez instead."'
+        )
+
     return reply.code(200).type("text/plain").send("Healthcheck healthy")
 })
 
