@@ -1,16 +1,17 @@
 import { pgClient } from "@/drizzle"
 import { env } from "@/env"
+import { logger } from "@/logger"
 import { server } from "@/server"
 
 const start = async () => {
     try {
         await pgClient`select 1`
-        server.log.info("Database connection check OK")
+        logger.info("Database connection check OK")
 
-        await server.listen({ port: env.PORT, host: env.HOST })
-        server.log.info(`Server running on ${env.HOST}:${env.PORT}`)
+        server.listen({ port: env.PORT, hostname: env.HOST })
+        logger.info(`Server running on ${env.HOST}:${env.PORT}`)
     } catch (err) {
-        server.log.error(err)
+        logger.error(err)
         process.exit(1)
     }
 }

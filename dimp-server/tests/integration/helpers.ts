@@ -13,19 +13,24 @@ export interface GraphQLResponse<TData> {
     errors?: GraphQLErrorShape[]
 }
 
+export const request = (path: string, init?: RequestInit) =>
+    server.handle(new Request(`http://localhost${path}`, init))
+
 export const graphqlRequest = async <TData>(
     query: string,
     variables?: Record<string, unknown>
 ) => {
-    const response = await server.inject({
+    const response = await request("/graphql", {
         method: "POST",
-        url: "/graphql",
-        payload: { query, variables },
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ query, variables }),
     })
 
-    expect(response.statusCode).toBe(200)
+    expect(response.status).toBe(200)
 
-    return response.json() as GraphQLResponse<TData>
+    return (await response.json()) as GraphQLResponse<TData>
 }
 
 interface SeedMessageOverrides {

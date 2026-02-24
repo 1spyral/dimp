@@ -1,6 +1,7 @@
 import { makeGetMessageResolver } from "@/graphql/queries/GetMessage"
 import { describe, expect, mock, test } from "bun:test"
 import { GraphQLError } from "graphql"
+import { createMockContextLogger } from "./test-logger"
 
 describe("getMessageResolver", () => {
     test("returns found message", async () => {
@@ -8,7 +9,7 @@ describe("getMessageResolver", () => {
             id: "m-1",
             content: "hello",
         }))
-        const logger = { error: mock(() => {}) }
+        const logger = createMockContextLogger()
         const resolver = makeGetMessageResolver({ getMessageById })
         const db = {} as never
 
@@ -24,7 +25,7 @@ describe("getMessageResolver", () => {
         const getMessageById = mock(async () => {
             throw new Error("read failed")
         })
-        const logger = { error: mock(() => {}) }
+        const logger = createMockContextLogger()
         const resolver = makeGetMessageResolver({ getMessageById })
         const db = {} as never
 

@@ -1,11 +1,12 @@
 import { db } from "@/drizzle"
 import { env } from "@/env"
-import { loggerConfig } from "@/logger"
+import { logger } from "@/logger"
+import { yoga } from "@elysiajs/graphql-yoga"
 import { schema } from "@graphql"
-import Fastify from "fastify"
-import mercurius from "mercurius"
+import { Elysia } from "elysia"
 
-const fastify = Fastify({ logger: loggerConfig })
+const server = new Elysia()
+
 let agentsPromise: Promise<typeof import("@/ai/workflows")> | undefined
 
 const getAgents = () => {
@@ -14,39 +15,54 @@ const getAgents = () => {
     return agentsPromise
 }
 
-fastify.register(mercurius, {
-    schema,
-    graphiql: env.NODE_ENV === "development",
-    context: async (request, reply) => ({
-        request,
-        reply,
-        db,
-        getAgents,
-        logger: request.log,
-    }),
-})
+const createRequestLogger = (request: Request) => {
+    const requestId = request.headers.get("x-request-id") ?? crypto.randomUUID()
 
-fastify.get("/readyz", { logLevel: "silent" }, async (_request, reply) => {
-    return reply.code(200).type("text/plain").send("Ready")
-})
+    let path = request.url
+    try {
+        path = new URL(request.url).pathname
+    } catch {
+        // Keep the raw URL if parsing fails in a test or non-standard runtime.
+    }
 
-fastify.get("/livez", { logLevel: "silent" }, async (_request, reply) => {
-    return reply.code(200).type("text/plain").send("Live")
-})
+    return logger.child({
+        requestId,
+        method: request.method,
+        path,
+    })
+}
 
-fastify.get("/", { logLevel: "silent" }, async (_request, reply) => {
-    reply
-        .header("Deprecation", "true")
-        .header(
-            "Link",
+server
+    .use(
+        yoga({
+            schema,
+            graphiql: env.NODE_ENV === "development",
+            context: async ({ request }) => ({
+                request,
+                reply: null,
+                db,
+                getAgents,
+                logger: createRequestLogger(request),
+            }),
+        })
+    )
+    .get("/readyz", ({ set }) => {
+        set.headers["content-type"] = "text/plain"
+        return "Ready"
+    })
+    .get("/livez", ({ set }) => {
+        set.headers["content-type"] = "text/plain"
+        return "Live"
+    })
+    .get("/", ({ set }) => {
+        set.headers["content-type"] = "text/plain"
+        set.headers.Deprecation = "true"
+        set.headers.Link =
             '</readyz>; rel="successor-version", </livez>; rel="successor-version"'
-        )
-        .header(
-            "Warning",
+        set.headers.Warning =
             '299 - "Deprecated healthcheck endpoint. Use /readyz or /livez instead."'
-        )
 
-    return reply.code(200).type("text/plain").send("Healthcheck healthy")
-})
+        return "Healthcheck healthy"
+    })
 
-export { fastify as server }
+export { server }

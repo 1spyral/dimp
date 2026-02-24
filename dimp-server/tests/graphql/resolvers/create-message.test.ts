@@ -1,6 +1,7 @@
 import { makeCreateMessageResolver } from "@/graphql/mutations/CreateMessage"
 import { describe, expect, mock, test } from "bun:test"
 import { GraphQLError } from "graphql"
+import { createMockContextLogger } from "./test-logger"
 
 const input = {
     id: "m-1",
@@ -15,7 +16,7 @@ const input = {
 describe("createMessageResolver", () => {
     test("returns inserted row", async () => {
         const createMessage = mock(async () => ({ ...input }))
-        const logger = { error: mock(() => {}) }
+        const logger = createMockContextLogger()
         const resolver = makeCreateMessageResolver({ createMessage })
 
         const db = {} as never
@@ -33,7 +34,7 @@ describe("createMessageResolver", () => {
         const createMessage = mock(async () => {
             throw dbError
         })
-        const logger = { error: mock(() => {}) }
+        const logger = createMockContextLogger()
         const resolver = makeCreateMessageResolver({ createMessage })
         const db = {} as never
 
