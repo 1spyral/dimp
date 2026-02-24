@@ -1,8 +1,8 @@
 import { db } from "@/drizzle"
 import { env } from "@/env"
 import { logger } from "@/logger"
-import { schema } from "@graphql"
 import { yoga } from "@elysiajs/graphql-yoga"
+import { schema } from "@graphql"
 import { Elysia } from "elysia"
 
 const server = new Elysia()
@@ -32,19 +32,20 @@ const createRequestLogger = (request: Request) => {
     })
 }
 
-server.use(
-    yoga({
-        schema,
-        graphiql: env.NODE_ENV === "development",
-        context: async ({ request }) => ({
-            request,
-            reply: null,
-            db,
-            getAgents,
-            logger: createRequestLogger(request),
-        }),
-    })
-)
+server
+    .use(
+        yoga({
+            schema,
+            graphiql: env.NODE_ENV === "development",
+            context: async ({ request }) => ({
+                request,
+                reply: null,
+                db,
+                getAgents,
+                logger: createRequestLogger(request),
+            }),
+        })
+    )
     .get("/readyz", () => {
         return new Response("Ready", {
             status: 200,
