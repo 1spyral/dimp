@@ -12,7 +12,8 @@ Fixes #
 
 ## Testing
 
-<!-- List the exact commands you ran and the result. Include test coverage command(s) when server logic changes. -->
+<!-- List the exact commands you ran and the result. Include test coverage command(s) when server logic changes.
+If you changed dimp-server GraphQL/HTTP/DB behavior, include integration testing (`test:integration:local` preferred). -->
 
 - `...`
 
@@ -22,6 +23,7 @@ Fixes #
 - [ ] I have run relevant lint(s): `bun run --cwd <workspace> lint`.
 - [ ] I added/updated tests for behavior changes (or documented why tests are not applicable).
 - [ ] If I changed `dimp-server` runtime logic, I ran `bun run --cwd dimp-server test`.
+- [ ] If I changed `dimp-server` GraphQL/HTTP/DB behavior, I ran `bun run --cwd dimp-server test:integration:local` (or documented why I skipped it).
 - [ ] If I changed `dimp-server` runtime logic, I ran `bun run --cwd dimp-server test:coverage`.
 - [ ] If applicable, I have updated Drizzle migrations:
       <!-- If you changed DB schema in dimp-server/src/db/schema -->

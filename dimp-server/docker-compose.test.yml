@@ -1,0 +1,20 @@
+services:
+  postgres-test:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dimp_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "${DIMP_SERVER_TEST_PG_PORT:-54329}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    volumes:
+      - dimp-server-test-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  dimp-server-test-postgres-data:
