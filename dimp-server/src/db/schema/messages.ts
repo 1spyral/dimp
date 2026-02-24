@@ -7,15 +7,19 @@ import {
     createUpdateSchema,
 } from "drizzle-zod"
 
-export const messages = pgTable("messages", {
-    id: t.text().primaryKey(),
-    guildId: t.text().notNull(),
-    channelId: t.text().notNull(),
-    userId: t.text().notNull(),
-    content: t.text(),
-    ...timestamps,
-    ...discordTimestamps,
-})
+export const messages = pgTable(
+    "messages",
+    {
+        id: t.text().primaryKey(),
+        guildId: t.text().notNull(),
+        channelId: t.text().notNull(),
+        userId: t.text().notNull(),
+        content: t.text(),
+        ...timestamps,
+        ...discordTimestamps,
+    },
+    table => [t.index().on(table.guildId, table.channelId, table.id)]
+)
 
 export const messageSelectSchema = createSelectSchema(messages)
 export const messageInsertSchema = createInsertSchema(messages)

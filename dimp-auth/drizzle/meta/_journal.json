@@ -29,6 +29,13 @@
       "when": 1769464781817,
       "tag": "0003_refresh_tokens_updated_at_trigger",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1771901606257,
+      "tag": "0004_add_oauth_tokens_user_provider_index",
+      "breakpoints": true
     }
   ]
 }
