@@ -1,0 +1,125 @@
+import type { ChatStateType } from "@/ai/workflows/chat"
+import { beforeEach, describe, expect, mock, test } from "bun:test"
+import { graphqlRequest, seedMessage } from "../helpers"
+
+let invokeImpl: (state: ChatStateType) => Promise<ChatStateType>
+let capturedState: ChatStateType | undefined
+
+mock.module("@/ai/workflows", () => ({
+    chatWorkflow: {
+        invoke: async (state: ChatStateType) => await invokeImpl(state),
+    },
+}))
+
+describe("integration: GraphQL generateChatResponse", () => {
+    beforeEach(() => {
+        capturedState = undefined
+        invokeImpl = async state => {
+            capturedState = state
+            return {
+                ...state,
+                response: "stubbed integration response",
+            }
+        }
+    })
+
+    test("builds chat state from prior channel history and returns workflow response", async () => {
+        await seedMessage({
+            id: "100",
+            guildId: "g-1",
+            channelId: "c-1",
+            userId: "u-older-1",
+            content: "first",
+        })
+        await seedMessage({
+            id: "200",
+            guildId: "g-1",
+            channelId: "c-1",
+            userId: "u-older-2",
+            content: "second",
+        })
+        await seedMessage({
+            id: "300",
+            guildId: "g-1",
+            channelId: "c-1",
+            userId: "u-newer",
+            content: "should be excluded",
+        })
+        await seedMessage({
+            id: "150",
+            guildId: "g-2",
+            channelId: "c-1",
+            userId: "u-other-guild",
+            content: "other guild",
+        })
+        await seedMessage({
+            id: "175",
+            guildId: "g-1",
+            channelId: "c-2",
+            userId: "u-other-channel",
+            content: "other channel",
+        })
+
+        const mutation = `
+            mutation GenerateChatResponse($input: GenerateChatResponseInput!) {
+                generateChatResponse(input: $input)
+            }
+        `
+
+        const result = await graphqlRequest<{
+            generateChatResponse: string
+        }>(mutation, {
+            input: {
+                id: "250",
+                guildId: "g-1",
+                channelId: "c-1",
+                userId: "u-current",
+                content: "current message",
+            },
+        })
+
+        expect(result.errors).toBeUndefined()
+        expect(result.data?.generateChatResponse).toBe(
+            "stubbed integration response"
+        )
+        expect(capturedState).toEqual({
+            history: [
+                { content: "first", user: "u-older-1" },
+                { content: "second", user: "u-older-2" },
+            ],
+            message: {
+                content: "current message",
+                user: "u-current",
+            },
+        })
+    })
+
+    test("returns a GraphQL error when workflow invocation fails", async () => {
+        invokeImpl = async () => {
+            throw new Error("workflow boom")
+        }
+
+        const mutation = `
+            mutation GenerateChatResponse($input: GenerateChatResponseInput!) {
+                generateChatResponse(input: $input)
+            }
+        `
+
+        const result = await graphqlRequest<{
+            generateChatResponse: string
+        }>(mutation, {
+            input: {
+                id: "500",
+                guildId: "g-1",
+                channelId: "c-1",
+                userId: "u-current",
+                content: "current message",
+            },
+        })
+
+        expect(result.data).toBeNull()
+        expect(result.errors?.[0]?.message).toBe(
+            "Failed to generate chat response"
+        )
+    })
+})
