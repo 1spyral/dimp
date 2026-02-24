@@ -60,6 +60,7 @@ export type Mutation = {
   createMessage: Message;
   generateChatResponse: Scalars['String']['output'];
   updateMessage?: Maybe<Message>;
+  upsertUser: User;
 };
 
 
@@ -77,13 +78,24 @@ export type MutationUpdateMessageArgs = {
   input: UpdateMessageInput;
 };
 
+
+export type MutationUpsertUserArgs = {
+  input: UpsertUserInput;
+};
+
 export type Query = {
   __typename?: 'Query';
   message?: Maybe<Message>;
+  user?: Maybe<User>;
 };
 
 
 export type QueryMessageArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryUserArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -92,6 +104,22 @@ export type UpdateMessageInput = {
   discordDeletedAt?: InputMaybe<Scalars['DateTime']['input']>;
   discordUpdatedAt: Scalars['DateTime']['input'];
   id: Scalars['ID']['input'];
+};
+
+export type UpsertUserInput = {
+  discriminator: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
+  username: Scalars['String']['input'];
+};
+
+export type User = {
+  __typename?: 'User';
+  createdAt: Scalars['DateTime']['output'];
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  discriminator: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  username: Scalars['String']['output'];
 };
 
 export type CreateMessageMutationVariables = Exact<{

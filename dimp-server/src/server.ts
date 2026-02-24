@@ -21,7 +21,7 @@ fastify.register(mercurius, {
         request,
         reply,
         db,
-        agents: await getAgents(),
+        getAgents,
         logger: request.log,
     }),
 })

@@ -30,7 +30,7 @@ interface GenerateChatResponseResolverArgs {
 
 interface GenerateChatResponseResolverDeps {
     invokeChatWorkflow: (
-        agents: Pick<Context, "agents">["agents"],
+        getAgents: Pick<Context, "getAgents">["getAgents"],
         state: ChatStateType
     ) => Promise<ChatStateType>
 }
@@ -40,7 +40,7 @@ export const makeGenerateChatResponseResolver =
     async (
         _parent: unknown,
         args: GenerateChatResponseResolverArgs,
-        ctx: Pick<Context, "db" | "agents" | "logger">
+        ctx: Pick<Context, "db" | "getAgents" | "logger">
     ): Promise<string> => {
         try {
             const history = await ctx.db
@@ -68,10 +68,7 @@ export const makeGenerateChatResponseResolver =
                 },
             }
 
-            const result = await deps.invokeChatWorkflow(
-                ctx.agents,
-                initialState
-            )
+            const result = await deps.invokeChatWorkflow(ctx.getAgents, initialState)
 
             return result.response ?? "No response generated."
         } catch (e: unknown) {
@@ -95,7 +92,10 @@ export const makeGenerateChatResponseResolver =
     }
 
 export const generateChatResponseResolver = makeGenerateChatResponseResolver({
-    invokeChatWorkflow: (agents, state) => agents.chatWorkflow.invoke(state),
+    invokeChatWorkflow: async (getAgents, state) => {
+        const agents = await getAgents()
+        return agents.chatWorkflow.invoke(state)
+    },
 })
 
 builder.mutationField("generateChatResponse", t =>
