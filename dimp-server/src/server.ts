@@ -23,7 +23,7 @@ server.use(
             request,
             reply: null,
             db,
-            agents: await getAgents(),
+            getAgents,
             logger,
         }),
     })

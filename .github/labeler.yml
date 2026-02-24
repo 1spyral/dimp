@@ -1,0 +1,19 @@
+dimp-auth:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "dimp-auth/**"
+
+dimp-bot:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "dimp-bot/**"
+
+dimp-server:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "dimp-server/**"
+
+dimp-dashboard:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "dimp-dashboard/**"

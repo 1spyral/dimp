@@ -9,6 +9,6 @@ export interface Context {
     request: Request
     reply: null
     db: BunSQLDatabase<typeof schema>
-    agents: typeof import("@/ai/workflows")
+    getAgents: () => Promise<typeof import("@/ai/workflows")>
     logger: ContextLogger
 }
