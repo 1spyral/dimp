@@ -1,7 +1,7 @@
 import { env } from "@/env"
 import pino from "pino"
 
-// Fastify uses pino under the hood, export pino config
+// Shared pino config for the server runtime
 export const loggerConfig = {
     level: env.LOG_LEVEL,
     transport:
