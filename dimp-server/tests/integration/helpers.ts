@@ -17,15 +17,19 @@ export const graphqlRequest = async <TData>(
     query: string,
     variables?: Record<string, unknown>
 ) => {
-    const response = await server.inject({
-        method: "POST",
-        url: "/graphql",
-        payload: { query, variables },
-    })
+    const response = await server.handle(
+        new Request("http://localhost/graphql", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify({ query, variables }),
+        })
+    )
 
-    expect(response.statusCode).toBe(200)
+    expect(response.status).toBe(200)
 
-    return response.json() as GraphQLResponse<TData>
+    return (await response.json()) as GraphQLResponse<TData>
 }
 
 interface SeedMessageOverrides {

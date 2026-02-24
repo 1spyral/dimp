@@ -20,7 +20,8 @@ if (!globalThis.__dimpIntegrationHooksRegistered) {
         await pgClient`select 1`
         // Make direct `bun run test:integration` usable after starting Postgres.
         await migrate((await import("@/drizzle")).db, { migrationsFolder })
-        await server.ready()
+        server.compile()
+        await server.modules
     })
 
     beforeEach(async () => {
@@ -30,7 +31,9 @@ if (!globalThis.__dimpIntegrationHooksRegistered) {
     })
 
     afterAll(async () => {
-        await server.close()
+        if (server.server) {
+            await server.stop()
+        }
         await pgClient.end()
     })
 }
