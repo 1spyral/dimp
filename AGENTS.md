@@ -66,6 +66,8 @@ Recent commits use short, imperative subjects (for example, `Move plugin to .pre
 - Example (server logic change): `bun run format:check`, `bun run --cwd dimp-server lint`, `bun run --cwd dimp-server test`, and `bun run --cwd dimp-server test:coverage` before committing
 - Example (server GraphQL/DB behavior change): add `bun run --cwd dimp-server test:integration:local` to the checks above
 - AI agents should create their own commits for completed changes (do not leave edits uncommitted unless asked)
+- AI agents must create a working branch (prefix `codex/`), push it, and open the GitHub PR themselves via `gh pr create` (use `gh pr edit` to update the PR)
+- PR descriptions should be detailed and follow the repository pull request template when available
 - AI agents should split changes into focused commits by concern (for example: setup/config, `src/` refactors, `tests/`, docs)
 - When practical, keep `src/` code changes and `tests/` changes in separate commits for easier review
 - Do not batch unrelated fixes into the same commit
