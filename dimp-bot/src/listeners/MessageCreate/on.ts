@@ -10,17 +10,28 @@ client.on(Events.MessageCreate, async message => {
     // Ignore system messages
     if (message.system) return
 
-    try {
-        await api.createMessage({
+    const [upsertUserResult, createMessageResult] = await Promise.allSettled([
+        api.upsertUser({
+            id: message.author.id,
+            username: message.author.username,
+            discriminator: message.author.discriminator,
+        }),
+        api.createMessage({
             id: message.id,
             userId: message.author.id,
             channelId: message.channelId,
             guildId: message.guildId!, // TODO: handle DMs
             discordCreatedAt: message.createdAt,
             content: message.content,
-        })
-    } catch (error) {
-        logger.error(`Failed to create message: ${error}`)
+        }),
+    ])
+
+    if (upsertUserResult.status === "rejected") {
+        logger.warn(`Failed to upsert user: ${upsertUserResult.reason}`)
+    }
+
+    if (createMessageResult.status === "rejected") {
+        logger.warn(`Failed to create message: ${createMessageResult.reason}`)
     }
 })
 
