@@ -1,6 +1,7 @@
 import { type ChatStateType } from "@/ai/workflows/chat"
 import { messages, users } from "@/db/schema"
 import type { Context } from "@/graphql/context"
+import { serializeErrorForLogging } from "@/logger"
 import { builder } from "@graphql"
 import { and, desc, eq, inArray, lt } from "drizzle-orm"
 import { GraphQLError } from "graphql"
@@ -99,15 +100,8 @@ export const makeGenerateChatResponseResolver =
         } catch (e: unknown) {
             ctx.logger.error(
                 {
-                    err: e,
+                    error: serializeErrorForLogging(e),
                     input: args.input,
-                    message:
-                        e instanceof Error
-                            ? e.message
-                            : typeof e === "string"
-                              ? e
-                              : undefined,
-                    stack: e instanceof Error ? e.stack : undefined,
                 },
                 "generateChatResponse failed"
             )

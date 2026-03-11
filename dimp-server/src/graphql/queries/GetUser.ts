@@ -1,4 +1,5 @@
 import { userRepository } from "@/db/repositories"
+import { serializeErrorForLogging } from "@/logger"
 import { builder, UserRef } from "@graphql"
 import { GraphQLError } from "graphql"
 import type { Context } from "../context"
@@ -19,15 +20,8 @@ export const makeGetUserResolver =
         } catch (e: unknown) {
             ctx.logger.error(
                 {
-                    err: e,
+                    error: serializeErrorForLogging(e),
                     id: args.id,
-                    message:
-                        e instanceof Error
-                            ? e.message
-                            : typeof e === "string"
-                              ? e
-                              : undefined,
-                    stack: e instanceof Error ? e.stack : undefined,
                 },
                 "getUser failed"
             )

@@ -1,4 +1,5 @@
 import { messageRepository } from "@/db/repositories"
+import { serializeErrorForLogging } from "@/logger"
 import { builder, MessageRef } from "@graphql"
 import { GraphQLError } from "graphql"
 
@@ -35,15 +36,8 @@ export const makeCreateMessageResolver =
         } catch (e: unknown) {
             ctx.logger.error(
                 {
-                    err: e,
+                    error: serializeErrorForLogging(e),
                     input: args.input,
-                    message:
-                        e instanceof Error
-                            ? e.message
-                            : typeof e === "string"
-                              ? e
-                              : undefined,
-                    stack: e instanceof Error ? e.stack : undefined,
                 },
                 "createMessage failed"
             )

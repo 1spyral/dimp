@@ -136,4 +136,55 @@ describe("generateChatResponseResolver", () => {
 
         expect(logger.error).toHaveBeenCalledTimes(1)
     })
+
+    test("logs a serializable payload when workflow throws a circular object", async () => {
+        const workflowError: Record<string, unknown> = {
+            reason: "workflow boom",
+        }
+        workflowError.self = workflowError
+
+        const invokeChatWorkflow = mock(async () => {
+            throw workflowError
+        })
+        const logger = createMockContextLogger()
+        const resolver = makeGenerateChatResponseResolver({
+            invokeChatWorkflow,
+        })
+
+        const input = {
+            id: "250",
+            guildId: "g-1",
+            channelId: "c-1",
+            userId: "u-current",
+            content: "current message",
+        }
+
+        await expect(
+            resolver(
+                null,
+                { input },
+                {
+                    db: createDb([], []),
+                    getAgents: async () => {
+                        throw new Error("not used")
+                    },
+                    logger,
+                }
+            )
+        ).rejects.toBeInstanceOf(GraphQLError)
+
+        expect(logger.error).toHaveBeenCalledTimes(1)
+        const logPayload = logger.error.mock.calls[0]?.[0]
+        expect(logPayload).toEqual({
+            error: {
+                type: "object",
+                value: {
+                    reason: "workflow boom",
+                    self: "[Circular]",
+                },
+            },
+            input,
+        })
+        expect(() => JSON.stringify(logPayload)).not.toThrow()
+    })
 })
