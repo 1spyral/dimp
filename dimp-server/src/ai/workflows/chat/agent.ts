@@ -1,4 +1,4 @@
-import { claude_haiku_4_5 } from "@/ai/models"
+import { claude_haiku_4_5 } from "@/ai/models/claude_haiku_4_5"
 import { anthropicPromptCachingMiddleware, createAgent } from "langchain"
 
 const PROMPT =
