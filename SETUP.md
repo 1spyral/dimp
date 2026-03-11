@@ -2,6 +2,8 @@
 
 This repo uses **Bun** workspaces.
 
+For agent-facing workflow and workspace guidance, see [docs/instructions/README.md](docs/instructions/README.md).
+
 ## Prereqs
 
 - Install Bun: https://bun.com/

@@ -5,6 +5,7 @@ Thanks for contributing! This repo is a monorepo using [Bun workspaces](https://
 ## Getting started
 
 - Follow the dev setup guide: [SETUP.md](SETUP.md)
+- For the canonical workflow and workspace guidance, see [docs/instructions/README.md](docs/instructions/README.md)
 - Install dependencies from the repo root:
 
 ```bash
@@ -21,67 +22,15 @@ bun install
 
 ## CI checks
 
-CI runs a few preflight checks that you can (and should) run locally before opening a PR:
+CI runs preflight checks that should be mirrored locally before opening a PR. Use the canonical workflow docs for the exact commands and triggers:
 
-### Lockfile is up to date
+- [Testing workflow](docs/instructions/workflows/testing.md)
+- [Generators and derived files](docs/instructions/workflows/generators.md)
+- [Pull request workflow](docs/instructions/workflows/pull-requests.md)
 
-If you changed dependencies, run:
-
-```bash
-bun install
-```
-
-CI will fail if `bun.lock` is out of sync.
-
-### Formatting (Prettier)
-
-```bash
-bun run format
-bun run format:check
-```
-
-### Linting (per workspace)
-
-```bash
-bun run --cwd dimp-auth lint
-bun run --cwd dimp-bot lint
-bun run --cwd dimp-dashboard lint
-bun run --cwd dimp-server lint
-```
-
-### Tests (write + run)
+If you changed dependencies, run `bun install`. CI will fail if `bun.lock` is out of sync.
 
 If your change affects behavior, add or update tests in the touched workspace whenever practical.
-
-- For `dimp-server` runtime logic (GraphQL resolvers, DB repositories, validation/config behavior), run:
-
-```bash
-bun run --cwd dimp-server test
-bun run --cwd dimp-server test:coverage
-```
-
-- Prefer fast unit tests for changed logic (for example resolver/repository tests) and include regression tests for bug fixes.
-- If you skip tests, explain why in the PR.
-
-### GraphQL schema generation (server)
-
-If you changed GraphQL types/resolvers, regenerate and commit the schema:
-
-```bash
-bun run --cwd dimp-server generate-schema
-```
-
-CI checks that `dimp-server/schema.graphql` has no diff.
-
-### GraphQL codegen (bot)
-
-If you changed GraphQL operations used by the bot (queries/mutations), regenerate and commit:
-
-```bash
-bun run --cwd dimp-bot codegen
-```
-
-CI checks that `dimp-bot/src/graphql/generated.ts` has no diff.
 
 ## PR conventions
 
@@ -89,3 +38,4 @@ CI checks that `dimp-bot/src/graphql/generated.ts` has no diff.
 - Update docs when behavior or setup changes.
 - Prefer matching existing patterns in the workspace you’re touching.
 - Include a short "Testing" section in the PR describing what was run (lint/tests/generators) and results.
+- If you skip a check, state the exact command and why it was skipped.
