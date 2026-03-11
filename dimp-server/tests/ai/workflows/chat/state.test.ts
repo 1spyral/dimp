@@ -13,13 +13,21 @@ const parseChatState = (input: unknown): ChatStateType => {
 describe("ChatState", () => {
     test("accepts valid chat state payloads", () => {
         const parsed = parseChatState({
-            history: [{ content: "hello", user: "user-1" }, { content: null }],
-            message: { content: "what's up?", user: "user-2" },
+            history: [
+                { content: "hello", user: "user-1", username: "alice" },
+                { content: null },
+            ],
+            message: {
+                content: "what's up?",
+                user: "user-2",
+                username: "bob",
+            },
             response: "all good",
         })
 
         expect(parsed.history).toHaveLength(2)
         expect(parsed.message.user).toBe("user-2")
+        expect(parsed.message.username).toBe("bob")
         expect(parsed.response).toBe("all good")
     })
 

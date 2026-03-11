@@ -1,8 +1,8 @@
 import { type ChatStateType } from "@/ai/workflows/chat"
-import { messages } from "@/db/schema"
+import { messages, users } from "@/db/schema"
 import type { Context } from "@/graphql/context"
 import { builder } from "@graphql"
-import { and, desc, eq, lt } from "drizzle-orm"
+import { and, desc, eq, inArray, lt } from "drizzle-orm"
 import { GraphQLError } from "graphql"
 
 const GenerateChatResponseInput = builder.inputType(
@@ -44,7 +44,10 @@ export const makeGenerateChatResponseResolver =
     ): Promise<string> => {
         try {
             const history = await ctx.db
-                .select()
+                .select({
+                    content: messages.content,
+                    userId: messages.userId,
+                })
                 .from(messages)
                 .where(
                     and(
@@ -57,14 +60,33 @@ export const makeGenerateChatResponseResolver =
                 .limit(100)
                 .then(rows => rows.reverse())
 
+            const participantIds = [
+                ...new Set([
+                    args.input.userId,
+                    ...history.map(message => message.userId),
+                ]),
+            ]
+            const knownUsers = await ctx.db
+                .select({
+                    id: users.id,
+                    username: users.username,
+                })
+                .from(users)
+                .where(inArray(users.id, participantIds))
+            const usernamesById = new Map(
+                knownUsers.map(user => [user.id, user.username])
+            )
+
             const initialState: ChatStateType = {
                 history: history.map(msg => ({
                     content: msg.content,
                     user: msg.userId,
+                    username: usernamesById.get(msg.userId),
                 })),
                 message: {
                     content: args.input.content,
                     user: args.input.userId,
+                    username: usernamesById.get(args.input.userId),
                 },
             }
 

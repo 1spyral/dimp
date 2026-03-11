@@ -1,6 +1,7 @@
 import type { ChatStateType } from "@/ai/workflows/chat"
+import { env } from "@/env"
 import { beforeEach, describe, expect, mock, test } from "bun:test"
-import { graphqlRequest, seedMessage } from "../helpers"
+import { graphqlRequest, seedMessage, seedUser } from "../helpers"
 
 let invokeImpl: (state: ChatStateType) => Promise<ChatStateType>
 let capturedState: ChatStateType | undefined
@@ -24,6 +25,8 @@ describe("integration: GraphQL generateChatResponse", () => {
     })
 
     test("builds chat state from prior channel history and returns workflow response", async () => {
+        await seedUser({ id: "u-older-1", username: "alice" })
+        await seedUser({ id: "u-current", username: "carol" })
         await seedMessage({
             id: "100",
             guildId: "g-1",
@@ -84,12 +87,61 @@ describe("integration: GraphQL generateChatResponse", () => {
         )
         expect(capturedState).toEqual({
             history: [
-                { content: "first", user: "u-older-1" },
-                { content: "second", user: "u-older-2" },
+                { content: "first", user: "u-older-1", username: "alice" },
+                { content: "second", user: "u-older-2", username: undefined },
             ],
             message: {
                 content: "current message",
                 user: "u-current",
+                username: "carol",
+            },
+        })
+    })
+
+    test("keeps bot history unprefixed while prefixing known human usernames", async () => {
+        await seedUser({ id: "u-human", username: "dave" })
+        await seedMessage({
+            id: "100",
+            guildId: "g-1",
+            channelId: "c-1",
+            userId: env.DISCORD_CLIENT_ID,
+            content: "bot reply",
+        })
+
+        const mutation = `
+            mutation GenerateChatResponse($input: GenerateChatResponseInput!) {
+                generateChatResponse(input: $input)
+            }
+        `
+
+        const result = await graphqlRequest<{
+            generateChatResponse: string
+        }>(mutation, {
+            input: {
+                id: "250",
+                guildId: "g-1",
+                channelId: "c-1",
+                userId: "u-human",
+                content: "follow up",
+            },
+        })
+
+        expect(result.errors).toBeUndefined()
+        expect(result.data?.generateChatResponse).toBe(
+            "stubbed integration response"
+        )
+        expect(capturedState).toEqual({
+            history: [
+                {
+                    content: "bot reply",
+                    user: env.DISCORD_CLIENT_ID,
+                    username: undefined,
+                },
+            ],
+            message: {
+                content: "follow up",
+                user: "u-human",
+                username: "dave",
             },
         })
     })

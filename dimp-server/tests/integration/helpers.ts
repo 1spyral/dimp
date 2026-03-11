@@ -1,4 +1,4 @@
-import { messages } from "@/db/schema"
+import { messages, users } from "@/db/schema"
 import { db } from "@/drizzle"
 import { server } from "@/server"
 import { expect } from "bun:test"
@@ -65,6 +65,24 @@ export const seedMessage = async (overrides: SeedMessageOverrides = {}) => {
     }
 
     await db.insert(messages).values(row)
+
+    return row
+}
+
+interface SeedUserOverrides {
+    id?: string
+    username?: string
+    discriminator?: string
+}
+
+export const seedUser = async (overrides: SeedUserOverrides = {}) => {
+    const row = {
+        id: overrides.id ?? `iu-${randomUUID()}`,
+        username: overrides.username ?? "seed-user",
+        discriminator: overrides.discriminator ?? "0001",
+    }
+
+    await db.insert(users).values(row)
 
     return row
 }
