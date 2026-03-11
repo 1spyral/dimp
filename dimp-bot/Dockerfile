@@ -13,5 +13,6 @@ COPY dimp-bot dimp-bot
 
 WORKDIR /app/dimp-bot
 ENV NODE_ENV=production
+EXPOSE 3000
 
 CMD ["bun", "run", "start"]
