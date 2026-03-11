@@ -1,11 +1,23 @@
 import { db } from "@/drizzle"
 import { env } from "@/env"
 import { logger } from "@/logger"
-import { yoga } from "@elysiajs/graphql-yoga"
 import { schema } from "@graphql"
 import { Elysia } from "elysia"
+import { createYoga } from "graphql-yoga"
 
 const server = new Elysia()
+const yoga = createYoga({
+    graphqlEndpoint: "/graphql",
+    schema,
+    graphiql: env.NODE_ENV === "development",
+    context: async ({ request }) => ({
+        request,
+        reply: null,
+        db,
+        getAgents,
+        logger: createRequestLogger(request),
+    }),
+})
 
 let agentsPromise: Promise<typeof import("@/ai/workflows")> | undefined
 
@@ -33,19 +45,10 @@ const createRequestLogger = (request: Request) => {
 }
 
 server
-    .use(
-        yoga({
-            schema,
-            graphiql: env.NODE_ENV === "development",
-            context: async ({ request }) => ({
-                request,
-                reply: null,
-                db,
-                getAgents,
-                logger: createRequestLogger(request),
-            }),
-        })
-    )
+    .get("/graphql", async ({ request }) => yoga.fetch(request))
+    .post("/graphql", async ({ request }) => yoga.fetch(request), {
+        parse: "none",
+    })
     .get("/readyz", ({ set }) => {
         set.headers["content-type"] = "text/plain"
         return "Ready"
