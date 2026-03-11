@@ -1,5 +1,4 @@
 import {
-    createModel,
     getModelDefinition,
     type AiModelDefinition,
     type AiModelId,
@@ -9,34 +8,12 @@ import {
     modelFallbackMiddleware,
     type AgentMiddleware,
 } from "langchain"
-
-export type AgentPolicyId = "discord-chat-default"
-
-export interface AgentPolicyDefinition {
-    id: AgentPolicyId
-    primaryModel: AiModelId
-    fallbackModels: AiModelId[]
-}
-
-export interface AgentPolicyResolutionContext {
-    modelOverrides?: Partial<Record<AiModelId, AiModelDefinition>>
-}
-
-export interface ResolvedAgentPolicy {
-    id: AgentPolicyId
-    primaryModel: AiModelDefinition
-    fallbackModels: AiModelDefinition[]
-    model: ReturnType<typeof createModel>
-    middleware: AgentMiddleware[]
-}
-
-const agentPolicyRegistry = {
-    "discord-chat-default": {
-        id: "discord-chat-default",
-        primaryModel: "claude_haiku_4_5",
-        fallbackModels: [],
-    },
-} as const satisfies Record<AgentPolicyId, AgentPolicyDefinition>
+import { getAgentPolicyDefinition } from "./registry"
+import type {
+    AgentPolicyId,
+    AgentPolicyResolutionContext,
+    ResolvedAgentPolicy,
+} from "./types"
 
 const resolveModelDefinition = (
     modelId: AiModelId,
@@ -63,10 +40,6 @@ const buildProviderMiddleware = (
 
     return middleware
 }
-
-export const getAgentPolicyDefinition = (
-    policyId: AgentPolicyId
-): AgentPolicyDefinition => agentPolicyRegistry[policyId]
 
 export const resolveAgentPolicy = (
     policyId: AgentPolicyId,

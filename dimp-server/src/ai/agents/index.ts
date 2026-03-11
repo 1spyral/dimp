@@ -1,5 +1,6 @@
 export {
     getAgentPolicyDefinition,
+    getAgentPolicyIds,
     resolveAgentPolicy,
     type AgentPolicyDefinition,
     type AgentPolicyId,

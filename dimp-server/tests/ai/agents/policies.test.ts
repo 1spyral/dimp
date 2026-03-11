@@ -1,8 +1,16 @@
-import { getAgentPolicyDefinition, resolveAgentPolicy } from "@/ai/agents"
+import {
+    getAgentPolicyDefinition,
+    getAgentPolicyIds,
+    resolveAgentPolicy,
+} from "@/ai/agents"
 import { getModelDefinition } from "@/ai/models"
 import { describe, expect, test } from "bun:test"
 
 describe("agent policies", () => {
+    test("exposes the registered policy ids", () => {
+        expect(getAgentPolicyIds()).toEqual(["discord-chat-default"])
+    })
+
     test("keeps discord chat policy mapped to the default platform model", () => {
         expect(getAgentPolicyDefinition("discord-chat-default")).toEqual({
             id: "discord-chat-default",
