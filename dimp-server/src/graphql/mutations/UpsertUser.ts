@@ -1,4 +1,5 @@
 import { userRepository } from "@/db/repositories"
+import { serializeErrorForLogging } from "@/logger"
 import { GraphQLError } from "graphql"
 import { builder } from "../builder"
 import type { Context } from "../context"
@@ -32,15 +33,8 @@ export const makeUpsertUserResolver =
         } catch (e: unknown) {
             ctx.logger.error(
                 {
-                    err: e,
+                    error: serializeErrorForLogging(e),
                     input: args.input,
-                    message:
-                        e instanceof Error
-                            ? e.message
-                            : typeof e === "string"
-                              ? e
-                              : undefined,
-                    stack: e instanceof Error ? e.stack : undefined,
                 },
                 "upsertUser failed"
             )
