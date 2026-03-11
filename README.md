@@ -9,6 +9,10 @@ dimp (Discord Imp) is a Discord bot that acts like a customizable user in your s
 
 See [SETUP.md](SETUP.md) for dev environment setup.
 
+## Instructions
+
+Agent-facing and shared operational guidance lives in [docs/instructions/README.md](docs/instructions/README.md).
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
