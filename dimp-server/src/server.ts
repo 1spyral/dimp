@@ -1,7 +1,7 @@
 import { db } from "@/drizzle"
 import { env } from "@/env"
 import { logger } from "@/logger"
-import { yoga } from "@elysiajs/graphql-yoga"
+import { yoga } from "@1spyral/elysia-graphql-yoga"
 import { schema } from "@graphql"
 import { Elysia } from "elysia"
 
