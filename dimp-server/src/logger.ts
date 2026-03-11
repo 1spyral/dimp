@@ -67,6 +67,73 @@ const serializeValueForLogging = (
     return String(value)
 }
 
+const getObjectProperty = (value: object, key: string): unknown => {
+    try {
+        return Reflect.get(value, key)
+    } catch {
+        return undefined
+    }
+}
+
+const serializeErrorLikeObjectForLogging = (
+    error: object,
+    seen: WeakSet<object>,
+    depth: number
+): Record<string, unknown> | undefined => {
+    const name = getObjectProperty(error, "name")
+    const message = getObjectProperty(error, "message")
+    const stack = getObjectProperty(error, "stack")
+    const cause = getObjectProperty(error, "cause")
+
+    if (
+        typeof name !== "string" &&
+        typeof message !== "string" &&
+        typeof stack !== "string" &&
+        cause === undefined
+    ) {
+        return undefined
+    }
+
+    if (seen.has(error)) {
+        return {
+            type:
+                typeof name === "string" && name.length > 0
+                    ? name
+                    : getObjectType(error),
+            message: typeof message === "string" ? message : undefined,
+            circular: true,
+        }
+    }
+
+    seen.add(error)
+
+    const details = Object.fromEntries(
+        Object.entries(error)
+            .filter(
+                ([key]) => !["name", "message", "stack", "cause"].includes(key)
+            )
+            .slice(0, MAX_LOG_ENTRIES)
+            .map(([key, value]) => [
+                key,
+                serializeValueForLogging(value, seen, depth + 1),
+            ])
+    )
+
+    return {
+        type:
+            typeof name === "string" && name.length > 0
+                ? name
+                : getObjectType(error),
+        message: typeof message === "string" ? message : undefined,
+        stack: typeof stack === "string" ? stack : undefined,
+        cause:
+            cause !== undefined
+                ? serializeValueForLogging(cause, seen, depth + 1)
+                : undefined,
+        details: Object.keys(details).length > 0 ? details : undefined,
+    }
+}
+
 export const serializeErrorForLogging = (
     error: unknown,
     seen: WeakSet<object> = new WeakSet(),
@@ -116,6 +183,18 @@ export const serializeErrorForLogging = (
         return {
             type: "string",
             message: error,
+        }
+    }
+
+    if (typeof error === "object" && error !== null) {
+        const serializedErrorLikeObject = serializeErrorLikeObjectForLogging(
+            error,
+            seen,
+            depth
+        )
+
+        if (serializedErrorLikeObject) {
+            return serializedErrorLikeObject
         }
     }
 

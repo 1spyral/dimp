@@ -15,7 +15,8 @@ cp env.example .env
 Set at least:
 
 - `DATABASE_URL` (required)
-- `OPENAI_API_KEY` (optional)
+- `ANTHROPIC_API_KEY` (required for chat responses)
+- `OPENAI_API_KEY` (optional, only needed if you wire an OpenAI-backed model into a workflow)
 
 ## Install deps
 
