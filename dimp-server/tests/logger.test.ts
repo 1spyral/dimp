@@ -35,4 +35,30 @@ describe("loggerConfig", () => {
         expect(serialized.cause).toBe("[Circular]")
         expect(() => JSON.stringify(serialized)).not.toThrow()
     })
+
+    test("serializes non-Error objects with non-enumerable name and message", () => {
+        const errorLike = {
+            specifier: "@langchain/core/utils/standard_schema",
+        }
+
+        Object.defineProperties(errorLike, {
+            name: {
+                value: "ResolveMessage",
+                enumerable: false,
+            },
+            message: {
+                value: "Cannot find module '@langchain/core/utils/standard_schema'",
+                enumerable: false,
+            },
+        })
+
+        expect(serializeErrorForLogging(errorLike)).toEqual({
+            type: "ResolveMessage",
+            message:
+                "Cannot find module '@langchain/core/utils/standard_schema'",
+            details: {
+                specifier: "@langchain/core/utils/standard_schema",
+            },
+        })
+    })
 })

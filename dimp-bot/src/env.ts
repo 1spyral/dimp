@@ -10,6 +10,8 @@ const envSchema = Type.Object(
             nodeEnvs.map(value => Type.Literal(value)),
             { default: "development" }
         ),
+        PORT: Type.Integer({ minimum: 1, maximum: 65535, default: 3000 }),
+        HOST: Type.String({ default: "0.0.0.0" }),
         LOG_LEVEL: Type.Union(
             logLevels.map(value => Type.Literal(value)),
             { default: "info" }
@@ -52,9 +54,42 @@ const parseUrl = (value: unknown, label: string): string => {
     return parsed
 }
 
+const parseInteger = (
+    value: unknown,
+    label: string,
+    fallback: number
+): number => {
+    if (value === undefined || value === "") {
+        return fallback
+    }
+
+    const parsed =
+        typeof value === "number"
+            ? value
+            : typeof value === "string"
+              ? Number.parseInt(value, 10)
+              : Number.NaN
+
+    if (!Number.isInteger(parsed) || parsed < 1 || parsed > 65535) {
+        throw new Error(`Invalid ${label}`)
+    }
+
+    return parsed
+}
+
+const parseStringWithFallback = (value: unknown, fallback: string): string => {
+    if (typeof value !== "string" || value.length === 0) {
+        return fallback
+    }
+
+    return value
+}
+
 const parseEnv = (input: Record<string, unknown>): Env => {
     const parsed: Env = {
         NODE_ENV: parseEnum(input.NODE_ENV, nodeEnvs, "development"),
+        PORT: parseInteger(input.PORT, "PORT", 3000),
+        HOST: parseStringWithFallback(input.HOST, "0.0.0.0"),
         LOG_LEVEL: parseEnum(input.LOG_LEVEL, logLevels, "info"),
         DISCORD_CLIENT_ID: parseString(
             input.DISCORD_CLIENT_ID,
