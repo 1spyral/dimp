@@ -24,34 +24,38 @@ const createTextResponse = (body: string, status = 200) =>
         headers: textHeaders,
     })
 
+export const createHealthcheckFetch = (state: HealthcheckState) => {
+    return (request: Request) => {
+        const pathname = new URL(request.url).pathname
+
+        if (pathname === "/readyz") {
+            return state.isReady()
+                ? createTextResponse("Ready")
+                : createTextResponse("Not Ready", 503)
+        }
+
+        if (pathname === "/livez") {
+            return state.isLive()
+                ? createTextResponse("Live")
+                : createTextResponse("Not Live", 503)
+        }
+
+        if (pathname === "/") {
+            return new Response("Healthcheck healthy", {
+                status: state.isLive() ? 200 : 503,
+                headers: deprecatedHeaders,
+            })
+        }
+
+        return createTextResponse("Not Found", 404)
+    }
+}
+
 export const startHealthcheckServer = (state: HealthcheckState) => {
     const server = Bun.serve({
         hostname: env.HOST,
         port: env.PORT,
-        fetch(request) {
-            const pathname = new URL(request.url).pathname
-
-            if (pathname === "/readyz") {
-                return state.isReady()
-                    ? createTextResponse("Ready")
-                    : createTextResponse("Not Ready", 503)
-            }
-
-            if (pathname === "/livez") {
-                return state.isLive()
-                    ? createTextResponse("Live")
-                    : createTextResponse("Not Live", 503)
-            }
-
-            if (pathname === "/") {
-                return new Response("Healthcheck healthy", {
-                    status: state.isLive() ? 200 : 503,
-                    headers: deprecatedHeaders,
-                })
-            }
-
-            return createTextResponse("Not Found", 404)
-        },
+        fetch: createHealthcheckFetch(state),
     })
 
     logger.info(

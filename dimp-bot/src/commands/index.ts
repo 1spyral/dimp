@@ -4,7 +4,7 @@ import {
     SlashCommandBuilder,
 } from "discord.js"
 
-interface Command {
+export interface Command {
     data: SlashCommandBuilder
     execute: (interaction: ChatInputCommandInteraction) => Promise<void>
 }

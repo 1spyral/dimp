@@ -1,50 +1,119 @@
-import { client } from "@/app"
-import { api } from "@/graphql"
-import { logger } from "@/logger"
-import { Events } from "discord.js"
+import { serializeErrorForLogging } from "@/logger"
+import type { Message } from "discord.js"
 
-// TODO: be picker with messages (ignore system messages)
+type BotApi = {
+    upsertUser: (input: {
+        id: string
+        username: string
+        discriminator: string
+    }) => Promise<unknown>
+    createMessage: (input: {
+        id: string
+        userId: string
+        channelId: string
+        guildId: string
+        discordCreatedAt: Date
+        content: string
+    }) => Promise<unknown>
+    generateChatResponse: (input: {
+        id: string
+        userId: string
+        channelId: string
+        guildId: string
+        content: string
+    }) => Promise<{
+        generateChatResponse: string
+    }>
+}
 
-// Write message to backend
-client.on(Events.MessageCreate, async message => {
-    // Ignore system messages
-    if (message.system) return
+type BotLogger = {
+    warn: (payload: unknown, message?: string) => void
+    error: (payload: unknown, message?: string) => void
+}
 
-    const [upsertUserResult, createMessageResult] = await Promise.allSettled([
-        api.upsertUser({
-            id: message.author.id,
-            username: message.author.username,
-            discriminator: message.author.discriminator,
-        }),
-        api.createMessage({
-            id: message.id,
-            userId: message.author.id,
-            channelId: message.channelId,
-            guildId: message.guildId!, // TODO: handle DMs
-            discordCreatedAt: message.createdAt,
-            content: message.content,
-        }),
-    ])
+type MessageCreateDependencies = {
+    api: BotApi
+    logger: BotLogger
+}
 
-    if (upsertUserResult.status === "rejected") {
-        logger.warn(`Failed to upsert user: ${upsertUserResult.reason}`)
+type MentionResponseDependencies = MessageCreateDependencies & {
+    getBotUserId: () => string
+}
+
+const logRejectedResult = (
+    logger: BotLogger,
+    action: string,
+    result: PromiseSettledResult<unknown>
+) => {
+    if (result.status === "rejected") {
+        logger.warn(
+            { error: serializeErrorForLogging(result.reason) },
+            `Failed to ${action}`
+        )
+    }
+}
+
+const sendReplyContent = async (
+    message: Pick<Message, "reply" | "channel">,
+    replyContent: string
+) => {
+    const maxLength = 2000
+
+    if (replyContent.length <= maxLength) {
+        await message.reply(replyContent)
+        return
     }
 
-    if (createMessageResult.status === "rejected") {
-        logger.warn(`Failed to create message: ${createMessageResult.reason}`)
+    for (let i = 0; i < replyContent.length; i += maxLength) {
+        const chunk = replyContent.slice(i, i + maxLength)
+        if (i === 0) {
+            await message.reply(chunk)
+        } else {
+            await message.channel.send(chunk)
+        }
     }
-})
+}
 
-// Respond to mentions
-client.on(Events.MessageCreate, async message => {
-    // Ignore system messages
-    if (message.system) return
+export const createPersistMessageHandler =
+    ({ api, logger }: MessageCreateDependencies) =>
+    async (message: Message) => {
+        if (message.system) return
 
-    try {
+        const [upsertUserResult, createMessageResult] =
+            await Promise.allSettled([
+                api.upsertUser({
+                    id: message.author.id,
+                    username: message.author.username,
+                    discriminator: message.author.discriminator,
+                }),
+                api.createMessage({
+                    id: message.id,
+                    userId: message.author.id,
+                    channelId: message.channelId,
+                    guildId: message.guildId!, // TODO: handle DMs
+                    discordCreatedAt: message.createdAt,
+                    content: message.content,
+                }),
+            ])
+
+        logRejectedResult(logger, "upsert user", upsertUserResult)
+        logRejectedResult(logger, "create message", createMessageResult)
+    }
+
+export const createMentionResponseHandler =
+    ({ api, logger, getBotUserId }: MentionResponseDependencies) =>
+    async (message: Message) => {
+        if (message.system) return
+
+        const botUserId = getBotUserId()
         if (
-            message.mentions.has(client.user!.id) &&
-            message.author !== client.user
+            !message.mentions.has(botUserId) ||
+            message.author.id === botUserId
         ) {
+            return
+        }
+
+        try {
             await message.channel.sendTyping()
 
             const response = await api.generateChatResponse({
@@ -55,25 +124,11 @@ client.on(Events.MessageCreate, async message => {
                 content: message.content,
             })
 
-            const replyContent = response.generateChatResponse
-            const maxLength = 2000
-
-            if (replyContent.length <= maxLength) {
-                await message.reply(replyContent)
-                return
-            }
-
-            // Discord messages must not exceed 2000 characters; chunk and send sequentially.
-            for (let i = 0; i < replyContent.length; i += maxLength) {
-                const chunk = replyContent.slice(i, i + maxLength)
-                if (i === 0) {
-                    await message.reply(chunk)
-                } else {
-                    await message.channel.send(chunk)
-                }
-            }
+            await sendReplyContent(message, response.generateChatResponse)
+        } catch (error) {
+            logger.error(
+                { error: serializeErrorForLogging(error) },
+                "Failed to generate chat response"
+            )
         }
-    } catch (error) {
-        logger.error(`Failed to generate chat response: ${error}`)
     }
-})

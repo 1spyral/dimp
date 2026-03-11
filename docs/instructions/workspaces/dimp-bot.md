@@ -8,6 +8,7 @@
 
 - Dev: `bun run --cwd dimp-bot dev`
 - Lint: `bun run --cwd dimp-bot lint`
+- Test: `bun run --cwd dimp-bot test`
 - Register slash commands: `bun run --cwd dimp-bot sync-commands`
 - GraphQL codegen: `bun run --cwd dimp-bot codegen`
 
@@ -20,4 +21,5 @@
 ## Validation
 
 - Always run `bun run --cwd dimp-bot lint` when this workspace changes.
+- Run `bun run --cwd dimp-bot test` when bot runtime behavior changes.
 - Run `bun run --cwd dimp-bot codegen` when GraphQL operations or codegen inputs change.
