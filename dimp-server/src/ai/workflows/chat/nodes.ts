@@ -4,16 +4,26 @@ import { AIMessage, HumanMessage } from "langchain"
 import type { ChatStateType } from "."
 import { agent } from "./agent"
 
+const toHumanMessageContent = (message: ChatStateType["message"]) => {
+    const displayName = message.username ?? message.user
+
+    if (!displayName) {
+        return message.content || ""
+    }
+
+    return `${displayName}: ${message.content || ""}`
+}
+
 export async function respondChat(state: ChatStateType) {
     const context = [
         ...state.history.map(msg => {
             if (msg.user == env.DISCORD_CLIENT_ID) {
                 return new AIMessage(msg.content || "")
             } else {
-                return new HumanMessage(msg.content || "")
+                return new HumanMessage(toHumanMessageContent(msg))
             }
         }),
-        new HumanMessage(state.message.content || ""),
+        new HumanMessage(toHumanMessageContent(state.message)),
     ]
 
     const response = await agent.invoke({ messages: context })

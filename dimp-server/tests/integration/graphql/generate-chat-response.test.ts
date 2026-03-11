@@ -87,12 +87,13 @@ describe("integration: GraphQL generateChatResponse", () => {
         )
         expect(capturedState).toEqual({
             history: [
-                { content: "alice: first", user: "u-older-1" },
-                { content: "u-older-2: second", user: "u-older-2" },
+                { content: "first", user: "u-older-1", username: "alice" },
+                { content: "second", user: "u-older-2", username: undefined },
             ],
             message: {
-                content: "carol: current message",
+                content: "current message",
                 user: "u-current",
+                username: "carol",
             },
         })
     })
@@ -130,10 +131,17 @@ describe("integration: GraphQL generateChatResponse", () => {
             "stubbed integration response"
         )
         expect(capturedState).toEqual({
-            history: [{ content: "bot reply", user: env.DISCORD_CLIENT_ID }],
+            history: [
+                {
+                    content: "bot reply",
+                    user: env.DISCORD_CLIENT_ID,
+                    username: undefined,
+                },
+            ],
             message: {
-                content: "dave: follow up",
+                content: "follow up",
                 user: "u-human",
+                username: "dave",
             },
         })
     })

@@ -1,6 +1,5 @@
 import { type ChatStateType } from "@/ai/workflows/chat"
 import { messages, users } from "@/db/schema"
-import { env } from "@/env"
 import type { Context } from "@/graphql/context"
 import { builder } from "@graphql"
 import { and, desc, eq, inArray, lt } from "drizzle-orm"
@@ -34,25 +33,6 @@ interface GenerateChatResponseResolverDeps {
         getAgents: Pick<Context, "getAgents">["getAgents"],
         state: ChatStateType
     ) => Promise<ChatStateType>
-}
-
-const formatChatMessageContent = ({
-    content,
-    userId,
-    username,
-    includeUsername = true,
-}: {
-    content: string | null
-    userId: string
-    username?: string | null
-    includeUsername?: boolean
-}) => {
-    if (!includeUsername) {
-        return content ?? ""
-    }
-
-    const displayName = username ?? userId
-    return `${displayName}: ${content ?? ""}`
 }
 
 export const makeGenerateChatResponseResolver =
@@ -99,22 +79,14 @@ export const makeGenerateChatResponseResolver =
 
             const initialState: ChatStateType = {
                 history: history.map(msg => ({
-                    content: formatChatMessageContent({
-                        ...msg,
-                        username: usernamesById.get(msg.userId),
-                        includeUsername: msg.userId !== env.DISCORD_CLIENT_ID,
-                    }),
+                    content: msg.content,
                     user: msg.userId,
+                    username: usernamesById.get(msg.userId),
                 })),
                 message: {
-                    content: formatChatMessageContent({
-                        content: args.input.content,
-                        userId: args.input.userId,
-                        username: usernamesById.get(args.input.userId),
-                        includeUsername:
-                            args.input.userId !== env.DISCORD_CLIENT_ID,
-                    }),
+                    content: args.input.content,
                     user: args.input.userId,
+                    username: usernamesById.get(args.input.userId),
                 },
             }
 

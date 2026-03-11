@@ -1,4 +1,3 @@
-import { env } from "@/env"
 import { makeGenerateChatResponseResolver } from "@/graphql/mutations/GenerateChatResponse"
 import { describe, expect, mock, test } from "bun:test"
 import { GraphQLError } from "graphql"
@@ -42,7 +41,7 @@ const createDb = (
 }
 
 describe("generateChatResponseResolver", () => {
-    test("prefixes known usernames for human chat context", async () => {
+    test("passes known usernames in structured chat state", async () => {
         const invokeChatWorkflow = mock(async (_getAgents, state) => ({
             ...state,
             response: "stubbed response",
@@ -66,10 +65,6 @@ describe("generateChatResponseResolver", () => {
             {
                 db: createDb(
                     [
-                        {
-                            content: "bot reply",
-                            userId: env.DISCORD_CLIENT_ID,
-                        },
                         {
                             content: "second",
                             userId: "u-older-2",
@@ -95,13 +90,13 @@ describe("generateChatResponseResolver", () => {
         expect(invokeChatWorkflow).toHaveBeenCalledTimes(1)
         expect(invokeChatWorkflow.mock.calls[0]?.[1]).toEqual({
             history: [
-                { content: "alice: first", user: "u-older-1" },
-                { content: "u-older-2: second", user: "u-older-2" },
-                { content: "bot reply", user: env.DISCORD_CLIENT_ID },
+                { content: "first", user: "u-older-1", username: "alice" },
+                { content: "second", user: "u-older-2", username: undefined },
             ],
             message: {
-                content: "carol: current message",
+                content: "current message",
                 user: "u-current",
+                username: "carol",
             },
         })
         expect(logger.error).not.toHaveBeenCalled()

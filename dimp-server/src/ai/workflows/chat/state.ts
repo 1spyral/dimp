@@ -4,6 +4,7 @@ import { Type, type Static } from "@sinclair/typebox"
 const ChatMessageSchema = Type.Object({
     content: Type.Union([Type.String(), Type.Null()]),
     user: Type.Optional(Type.String()),
+    username: Type.Optional(Type.String()),
 })
 
 export const ChatStateSchema = Type.Object({
