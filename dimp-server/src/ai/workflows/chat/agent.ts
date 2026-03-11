@@ -1,11 +1,19 @@
-import { claude_haiku_4_5 } from "@/ai/models/claude_haiku_4_5"
-import { anthropicPromptCachingMiddleware, createAgent } from "langchain"
+import { resolveAgentPolicy } from "@/ai/agents"
+import { createAgent } from "langchain"
 
 const PROMPT =
     "you are a discord user in a group chat, where there are multiple users. you type like a discord user, so dont use caps and keep it casual, and keep the messages short"
 
-export const agent = createAgent({
-    model: claude_haiku_4_5,
-    systemPrompt: PROMPT,
-    middleware: [anthropicPromptCachingMiddleware({ ttl: "1h" })],
-})
+export const CHAT_AGENT_POLICY_ID = "discord-chat-default"
+
+export const getChatAgentConfig = async () => {
+    const policy = await resolveAgentPolicy(CHAT_AGENT_POLICY_ID)
+
+    return {
+        model: policy.model,
+        systemPrompt: PROMPT,
+        middleware: policy.middleware,
+    }
+}
+
+export const agent = createAgent(await getChatAgentConfig())

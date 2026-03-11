@@ -21,6 +21,12 @@
 - Keep setup and runtime environment guidance in `dimp-server/SETUP.md`.
 - Do not hand-write migration files.
 - If GraphQL types or resolvers change, regenerate and commit `schema.graphql`.
+- Route AI model selection through the shared registry and agent policy layers in `src/ai/models/` and `src/ai/agents/` instead of importing provider-specific model instances directly into workflows.
+- Inference: keep provider-specific middleware attached at policy resolution time so future tenant- or workspace-specific model overrides do not require workflow rewrites.
+
+## Topic Docs
+
+- Read [dimp-server AI architecture](./dimp-server/ai-architecture.md) when changing model selection, agent policy resolution, provider-specific middleware assembly, or future tenant gateway integration.
 
 ## Validation
 

@@ -40,7 +40,6 @@
     "dimp-bot": {
       "name": "dimp-bot",
       "dependencies": {
-        "@langchain/openai": "^1.2.12",
         "@sinclair/typebox": "^0.34.48",
         "discord.js": "^14.25.1",
         "graphql": "^16.13.1",

@@ -10,8 +10,17 @@ These docs are AI-first operational guidance that humans can also read. They are
 - Prefer decision-oriented guidance over broad explanation.
 - Keep repo-wide workflow rules in `workflows/`.
 - Keep workspace-specific guidance in `workspaces/`.
+- Keep each top-level workspace doc as the entrypoint for that workspace.
 - Keep `AGENTS.md` files short and use them to route readers to canonical docs.
 - Include exact commands only when they are authoritative and supported by the repo today.
+
+## Splitting Large Docs
+
+- Prefer expanding an existing canonical doc first.
+- When a workspace doc starts accumulating one deep topic such as AI architecture, deployment, or testing nuance, split that topic into a focused subdocument under a workspace-specific folder and keep the top-level workspace doc as the index.
+- Top-level workspace docs should stay good entrypoints: scope, primary commands, local rules, validation, and links to deeper topic docs.
+- Topic docs should cover one durable concern each and be linked from the owning workspace doc.
+- Do not create a topic doc if the content is still short enough to fit cleanly inside the existing workspace doc.
 
 ## Allowed Content
 
@@ -37,6 +46,7 @@ Do not add:
 - Do not update docs for every tiny refactor.
 - Edit the most relevant canonical file in place instead of appending a running history log.
 - Prefer expanding an existing section over creating a new doc with overlapping guidance.
+- If a doc becomes too broad, split it by concern instead of letting one file become the dumping ground for unrelated rules.
 - If a change affects multiple workspaces or workflows, update the shared workflow doc first and add workspace-specific nuance only where needed.
 
 ## Evidence Standard

@@ -23,6 +23,7 @@ If two detailed docs overlap, follow the more specific doc. Workspace guidance w
 - Read [authoring.md](authoring.md) before editing instruction docs.
 - Read workflow docs in `workflows/` for cross-repo process requirements.
 - Read workspace docs in `workspaces/` before changing code in a specific app or package.
+- When a workspace doc links to deeper topic docs, treat the linked topic doc as part of the canonical guidance for that workspace.
 
 ## Canonical Files
 
@@ -31,6 +32,7 @@ If two detailed docs overlap, follow the more specific doc. Workspace guidance w
 - `workflows/testing.md`: when to run lint, formatting, unit, coverage, and integration checks
 - `workflows/generators.md`: migration generation, GraphQL schema generation, and bot GraphQL codegen
 - `workspaces/*.md`: workspace-specific commands, boundaries, and local rules
+- `workspaces/<workspace>/*.md`: deeper workspace-specific topic docs linked from the top-level workspace doc
 
 Agents must treat `workflows/pre-commit.md` and `workflows/pull-requests.md` as required finish-checklists, not optional reference docs.
 
