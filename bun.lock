@@ -24,7 +24,7 @@
         "@eslint/js": "^10.0.1",
         "@types/node": "^25.2.0",
         "@types/pino": "^7.0.5",
-        "bun-types": "^1.3.9",
+        "bun-types": "^1.3.10",
         "drizzle-kit": "^0.31.8",
         "eslint": "^9.39.2",
         "eslint-config-prettier": "^10.1.8",
@@ -56,7 +56,7 @@
         "@graphql-codegen/typescript-operations": "^5.0.7",
         "@types/node": "^25.2.0",
         "@types/pino": "^7.0.5",
-        "bun-types": "^1.3.9",
+        "bun-types": "^1.3.10",
         "eslint": "^9.39.2",
         "eslint-config-prettier": "^10.1.8",
         "eslint-import-resolver-typescript": "^4.4.4",
@@ -113,7 +113,7 @@
         "@eslint/js": "^10.0.1",
         "@types/node": "^25.2.0",
         "@types/pino": "^7.0.5",
-        "bun-types": "^1.3.9",
+        "bun-types": "^1.3.10",
         "drizzle-kit": "^0.31.8",
         "eslint": "^9.39.2",
         "eslint-config-prettier": "^10.1.8",
@@ -126,9 +126,6 @@
         "typescript-eslint": "^8.54.0",
       },
     },
-  },
-  "overrides": {
-    "graphql": "16.13.1",
   },
   "packages": {
     "@1spyral/elysia-graphql-yoga": ["@1spyral/elysia-graphql-yoga@1.4.1-1spyral.0", "", { "dependencies": { "graphql-mobius": "^0.1.11", "graphql-yoga": "^3.9.1" }, "peerDependencies": { "elysia": ">= 1.4.0", "graphql": "^16.6.0" } }, "sha512-472mquNxeUcHyyRKlOjnWmJGkgHQNr4/pOf+kSXcolSBqcbPsRCixkThKZDghWT2td8MO/PM2NXYeJqzp2N/GA=="],
@@ -785,7 +782,7 @@
 
     "buffer-from": ["buffer-from@1.1.2", "", {}, "sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ=="],
 
-    "bun-types": ["bun-types@1.3.9", "", { "dependencies": { "@types/node": "*" } }, "sha512-+UBWWOakIP4Tswh0Bt0QD0alpTY8cb5hvgiYeWCMet9YukHbzuruIEeXC2D7nMJPB12kbh8C7XJykSexEqGKJg=="],
+    "bun-types": ["bun-types@1.3.10", "", { "dependencies": { "@types/node": "*" } }, "sha512-tcpfCCl6XWo6nCVnpcVrxQ+9AYN1iqMIzgrSKYMB/fjLtV2eyAVEg7AxQJuCq/26R6HpKWykQXuSOq/21RYcbg=="],
 
     "busboy": ["busboy@1.6.0", "", { "dependencies": { "streamsearch": "^1.1.0" } }, "sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA=="],
 
