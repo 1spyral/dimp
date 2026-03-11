@@ -26,6 +26,14 @@
 - If schema or codegen inputs change, regenerate and commit generated outputs.
 - If a check cannot run, say exactly which command was skipped and why.
 
+## Required Finish Workflow
+
+- Before creating a commit, run every required formatting, lint, test, and generation command that applies to the files you changed.
+- Do not commit work that still needs a required formatter, linter, test, schema generation step, codegen step, or migration generation step.
+- Before finishing a task, create at least one commit for your changes unless the user explicitly tells you not to commit.
+- Before finishing a task, push your branch and create or update the PR unless the user explicitly tells you not to.
+- Use [docs/instructions/workflows/pre-commit.md](docs/instructions/workflows/pre-commit.md) and [docs/instructions/workflows/pull-requests.md](docs/instructions/workflows/pull-requests.md) as the canonical checklist.
+
 ## Living Docs Policy
 
 - `docs/instructions/` is a living knowledge base that agents are expected to maintain.

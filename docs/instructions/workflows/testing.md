@@ -3,6 +3,7 @@
 ## Always
 
 - Run `bun run --cwd <workspace> lint` for each touched workspace.
+- Treat these commands as pre-commit requirements when they apply, not post-commit cleanup.
 
 ## Formatting
 

@@ -32,6 +32,8 @@ If two detailed docs overlap, follow the more specific doc. Workspace guidance w
 - `workflows/generators.md`: migration generation, GraphQL schema generation, and bot GraphQL codegen
 - `workspaces/*.md`: workspace-specific commands, boundaries, and local rules
 
+Agents must treat `workflows/pre-commit.md` and `workflows/pull-requests.md` as required finish-checklists, not optional reference docs.
+
 ## Living Document Rule
 
 Keep these docs current as the repo evolves.
