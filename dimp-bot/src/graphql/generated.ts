@@ -156,6 +156,15 @@ export type UpdateMessageMutationVariables = Exact<{
 
 export type UpdateMessageMutation = { __typename?: 'Mutation', updateMessage?: { __typename?: 'Message', id: string } | null };
 
+export type UpsertUserMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  username: Scalars['String']['input'];
+  discriminator: Scalars['String']['input'];
+}>;
+
+
+export type UpsertUserMutation = { __typename?: 'Mutation', upsertUser: { __typename?: 'User', id: string } };
+
 
 export const CreateMessageDocument = gql`
     mutation createMessage($channelId: ID!, $content: String!, $discordCreatedAt: DateTime!, $discordDeletedAt: DateTime, $guildId: ID!, $id: ID!, $userId: ID!) {
@@ -182,6 +191,13 @@ export const UpdateMessageDocument = gql`
   }
 }
     `;
+export const UpsertUserDocument = gql`
+    mutation upsertUser($id: ID!, $username: String!, $discriminator: String!) {
+  upsertUser(input: {id: $id, username: $username, discriminator: $discriminator}) {
+    id
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -198,6 +214,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     updateMessage(variables: UpdateMessageMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<UpdateMessageMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateMessageMutation>({ document: UpdateMessageDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'updateMessage', 'mutation', variables);
+    },
+    upsertUser(variables: UpsertUserMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<UpsertUserMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpsertUserMutation>({ document: UpsertUserDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'upsertUser', 'mutation', variables);
     }
   };
 }
