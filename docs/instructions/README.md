@@ -20,7 +20,7 @@ If two detailed docs overlap, follow the more specific doc. Workspace guidance w
 
 ## Navigation
 
-- Read [authoring.md](/Users/lukezhan/.codex/worktrees/871c/dimp/docs/instructions/authoring.md) before editing instruction docs.
+- Read [authoring.md](authoring.md) before editing instruction docs.
 - Read workflow docs in `workflows/` for cross-repo process requirements.
 - Read workspace docs in `workspaces/` before changing code in a specific app or package.
 

@@ -12,8 +12,8 @@
 
 ## Required Reading
 
-- Read [docs/instructions/README.md](/Users/lukezhan/.codex/worktrees/871c/dimp/docs/instructions/README.md) before reorganizing docs or relying on the instruction system.
-- Read [docs/instructions/authoring.md](/Users/lukezhan/.codex/worktrees/871c/dimp/docs/instructions/authoring.md) before creating or editing instruction docs.
+- Read [docs/instructions/README.md](docs/instructions/README.md) before reorganizing docs or relying on the instruction system.
+- Read [docs/instructions/authoring.md](docs/instructions/authoring.md) before creating or editing instruction docs.
 - Read the relevant workflow doc in `docs/instructions/workflows/` before making changes.
 - Read the relevant workspace doc in `docs/instructions/workspaces/` before editing code in that workspace.
 

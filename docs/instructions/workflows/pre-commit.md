@@ -10,8 +10,8 @@
 
 Before committing, read:
 
-- [testing.md](/Users/lukezhan/.codex/worktrees/871c/dimp/docs/instructions/workflows/testing.md)
-- [generators.md](/Users/lukezhan/.codex/worktrees/871c/dimp/docs/instructions/workflows/generators.md)
+- [testing.md](testing.md)
+- [generators.md](generators.md)
 - The relevant workspace doc in `docs/instructions/workspaces/`
 
 ## Minimum Expectations
