@@ -2,9 +2,11 @@ import {
     getModelDefinition,
     type AiModelDefinition,
     type AiModelId,
+    type AiModelInitConfig,
 } from "@/ai/models"
 import {
     anthropicPromptCachingMiddleware,
+    initChatModel,
     modelFallbackMiddleware,
     type AgentMiddleware,
 } from "langchain"
@@ -19,6 +21,20 @@ const resolveModelDefinition = (
     modelId: AiModelId,
     context?: AgentPolicyResolutionContext
 ) => context?.modelOverrides?.[modelId] ?? getModelDefinition(modelId)
+
+const resolveModelInitConfig = (
+    model: AiModelDefinition,
+    context?: AgentPolicyResolutionContext
+): AiModelInitConfig => ({
+    modelProvider: model.provider,
+    ...model.initConfig,
+    ...context?.modelInitOverrides?.[model.id],
+})
+
+const createConfiguredModel = (
+    model: AiModelDefinition,
+    context?: AgentPolicyResolutionContext
+) => initChatModel(model.apiModel, resolveModelInitConfig(model, context))
 
 const buildProviderMiddleware = (
     model: AiModelDefinition,
@@ -41,10 +57,10 @@ const buildProviderMiddleware = (
     return middleware
 }
 
-export const resolveAgentPolicy = (
+export const resolveAgentPolicy = async (
     policyId: AgentPolicyId,
     context?: AgentPolicyResolutionContext
-): ResolvedAgentPolicy => {
+): Promise<ResolvedAgentPolicy> => {
     const definition = getAgentPolicyDefinition(policyId)
     const primaryModel = resolveModelDefinition(
         definition.primaryModel,
@@ -58,7 +74,7 @@ export const resolveAgentPolicy = (
         id: definition.id,
         primaryModel,
         fallbackModels,
-        model: primaryModel.modelRef,
+        model: await createConfiguredModel(primaryModel, context),
         middleware: buildProviderMiddleware(primaryModel, fallbackModels),
     }
 }

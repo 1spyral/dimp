@@ -6,8 +6,8 @@ const PROMPT =
 
 export const CHAT_AGENT_POLICY_ID = "discord-chat-default"
 
-export const getChatAgentConfig = () => {
-    const policy = resolveAgentPolicy(CHAT_AGENT_POLICY_ID)
+export const getChatAgentConfig = async () => {
+    const policy = await resolveAgentPolicy(CHAT_AGENT_POLICY_ID)
 
     return {
         model: policy.model,
@@ -16,4 +16,4 @@ export const getChatAgentConfig = () => {
     }
 }
 
-export const agent = createAgent(getChatAgentConfig())
+export const agent = createAgent(await getChatAgentConfig())

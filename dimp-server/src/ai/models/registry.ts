@@ -12,6 +12,10 @@ export type AiModelCapability =
     | "small"
     | "inexpensive"
 
+export interface AiModelInitConfig extends Partial<Record<string, unknown>> {
+    modelProvider?: AiModelProvider
+}
+
 export interface AiModelDefinition {
     id: AiModelId
     provider: AiModelProvider
@@ -19,6 +23,7 @@ export interface AiModelDefinition {
     apiModel: string
     modelRef: `${AiModelProvider}:${string}`
     capabilities: AiModelCapability[]
+    initConfig?: AiModelInitConfig
 }
 
 const platformModelRegistry = {
@@ -60,7 +65,3 @@ export const aiModelRegistry = platformModelRegistry
 
 export const getModelDefinition = (modelId: AiModelId): AiModelDefinition =>
     aiModelRegistry[modelId]
-
-export const createModel = (
-    modelId: AiModelId
-): AiModelDefinition["modelRef"] => getModelDefinition(modelId).modelRef
