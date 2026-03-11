@@ -6,6 +6,8 @@
     "start": "bun run --no-check src/app.ts",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
+    "test": "bun test ./tests --preload ./tests/setup.ts --env-file ./env.test",
+    "test:watch": "bun test ./tests --watch --preload ./tests/setup.ts --env-file ./env.test",
     "sync-commands": "bun run scripts/sync-commands.ts",
     "codegen": "graphql-codegen --config codegen.ts"
   },

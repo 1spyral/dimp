@@ -1,0 +1,9 @@
+export const validEnv = {
+    NODE_ENV: "test",
+    PORT: "3000",
+    HOST: "127.0.0.1",
+    LOG_LEVEL: "info",
+    DISCORD_CLIENT_ID: "1234567890",
+    DISCORD_TOKEN: "test-discord-token",
+    GRAPHQL_API_URL: "https://example.com/graphql",
+}

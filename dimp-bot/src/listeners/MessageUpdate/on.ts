@@ -1,20 +1,34 @@
-import { client } from "@/app"
-import { api } from "@/graphql"
-import { logger } from "@/logger"
-import { Events } from "discord.js"
+import { serializeErrorForLogging } from "@/logger"
+import type { Message } from "discord.js"
 
-// Write message to backend
-client.on(Events.MessageUpdate, async (_oldMessage, newMessage) => {
-    // Ignore system messages
-    if (newMessage.system) return
-
-    try {
-        await api.updateMessage({
-            id: newMessage.id,
-            content: newMessage.content || "",
-            discordUpdatedAt: newMessage.editedAt,
-        })
-    } catch (error) {
-        logger.error(`Failed to update message: ${error}`)
+type UpdateMessageDependencies = {
+    api: {
+        updateMessage: (input: {
+            id: string
+            content: string
+            discordUpdatedAt: Date | null
+        }) => Promise<unknown>
     }
-})
+    logger: {
+        error: (payload: unknown, message?: string) => void
+    }
+}
+
+export const createMessageUpdateHandler =
+    ({ api, logger }: UpdateMessageDependencies) =>
+    async (_oldMessage: Message | null, newMessage: Message) => {
+        if (newMessage.system) return
+
+        try {
+            await api.updateMessage({
+                id: newMessage.id,
+                content: newMessage.content || "",
+                discordUpdatedAt: newMessage.editedAt,
+            })
+        } catch (error) {
+            logger.error(
+                { error: serializeErrorForLogging(error) },
+                "Failed to update message"
+            )
+        }
+    }

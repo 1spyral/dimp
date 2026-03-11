@@ -1,10 +1,19 @@
-import { client } from "@/app"
-import { commands } from "@/commands"
-import { logger } from "@/logger"
-import { Events } from "discord.js"
+type ClientReadyDependencies = {
+    getCommandCount: () => number
+    logger: {
+        info: (message: string) => void
+    }
+}
 
-// Log when the client is ready
-client.once(Events.ClientReady, c => {
-    logger.info(`Logged in as ${c.user?.tag}`)
-    logger.info(`${commands.size} commands loaded.`)
-})
+type ReadyClient = {
+    user?: {
+        tag?: string
+    }
+}
+
+export const createClientReadyHandler =
+    ({ getCommandCount, logger }: ClientReadyDependencies) =>
+    (client: ReadyClient) => {
+        logger.info(`Logged in as ${client.user?.tag}`)
+        logger.info(`${getCommandCount()} commands loaded.`)
+    }

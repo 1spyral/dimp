@@ -85,7 +85,7 @@ const parseStringWithFallback = (value: unknown, fallback: string): string => {
     return value
 }
 
-const parseEnv = (input: Record<string, unknown>): Env => {
+export const parseEnv = (input: Record<string, unknown>): Env => {
     const parsed: Env = {
         NODE_ENV: parseEnum(input.NODE_ENV, nodeEnvs, "development"),
         PORT: parseInteger(input.PORT, "PORT", 3000),

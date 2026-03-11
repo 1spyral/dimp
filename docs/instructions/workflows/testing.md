@@ -22,6 +22,7 @@ Run these when the corresponding behavior changes:
 
 - `dimp-auth`: lint is the baseline required check
 - `dimp-bot`: lint is the baseline required check
+- `dimp-bot`: run `bun run --cwd dimp-bot test` when bot runtime behavior changes
 - `dimp-dashboard`: lint is the baseline required check
 
 Inference: add or update automated tests in the touched workspace whenever the change affects behavior and the workspace already has a clear testing pattern to extend.
