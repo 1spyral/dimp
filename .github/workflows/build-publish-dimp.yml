@@ -35,7 +35,7 @@ jobs:
             dockerfile: dimp-auth/Dockerfile
             target: migrate
             scope: dimp-auth-migrate
-            push_latest_on_main: false
+            push_latest_on_main: true
           - name: dimp-bot
             image: ghcr.io/${{ github.repository_owner }}/dimp-bot
             dockerfile: dimp-bot/Dockerfile
