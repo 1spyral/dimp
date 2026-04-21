@@ -1,5 +1,6 @@
 import { END, START, StateGraph } from "@langchain/langgraph"
-import { ChatState, respondChat } from "."
+import { respondChat } from "./nodes"
+import { ChatState } from "./state"
 
 export const workflow = new StateGraph(ChatState)
     .addNode("respondChat", respondChat)

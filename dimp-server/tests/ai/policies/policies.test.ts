@@ -1,12 +1,26 @@
-import {
-    getAgentPolicyDefinition,
-    getAgentPolicyIds,
-    resolveAgentPolicy,
-} from "@/ai/agents"
-import { getModelDefinition } from "@/ai/models"
-import { describe, expect, test } from "bun:test"
+import { describe, expect, mock, test } from "bun:test"
 
-describe("agent policies", () => {
+const initChatModelMock = mock(async () => ({ kind: "stubbed-model" }))
+const anthropicPromptCachingMiddlewareMock = mock(() => ({
+    kind: "anthropic-prompt-caching",
+}))
+const modelFallbackMiddlewareMock = mock((...modelRefs: string[]) => ({
+    kind: "fallback",
+    modelRefs,
+}))
+
+mock.module("langchain", () => ({
+    anthropicPromptCachingMiddleware: anthropicPromptCachingMiddlewareMock,
+    createAgent: mock(),
+    initChatModel: initChatModelMock,
+    modelFallbackMiddleware: modelFallbackMiddlewareMock,
+}))
+
+const { getModelDefinition } = await import("@/ai/models")
+const { getAgentPolicyDefinition, getAgentPolicyIds, resolveAgentPolicy } =
+    await import("@/ai/policies")
+
+describe("policies", () => {
     test("exposes the registered policy ids", () => {
         expect(getAgentPolicyIds()).toEqual(["discord-chat-default"])
     })

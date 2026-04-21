@@ -1,8 +1,8 @@
 import { env } from "@/env"
 import { Command, END } from "@langchain/langgraph"
 import { AIMessage, HumanMessage } from "langchain"
-import type { ChatStateType } from "."
 import { agent } from "./agent"
+import type { ChatStateType } from "./state"
 
 const toHumanMessageContent = (message: ChatStateType["message"]) => {
     const displayName = message.username ?? message.user

@@ -1,4 +1,4 @@
-import { resolveAgentPolicy } from "@/ai/agents"
+import { resolveAgentPolicy } from "@/ai/policies"
 import { createAgent } from "langchain"
 
 const PROMPT =
@@ -16,4 +16,16 @@ export const getChatAgentConfig = async () => {
     }
 }
 
-export const agent = createAgent(await getChatAgentConfig())
+let agentPromise: Promise<ReturnType<typeof createAgent>> | undefined
+
+const getAgent = async () => {
+    agentPromise ??= (async () => createAgent(await getChatAgentConfig()))()
+
+    return agentPromise
+}
+
+export const agent = {
+    invoke: async (
+        ...args: Parameters<Awaited<ReturnType<typeof getAgent>>["invoke"]>
+    ) => (await getAgent()).invoke(...args),
+}
