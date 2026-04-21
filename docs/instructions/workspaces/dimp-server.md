@@ -21,6 +21,7 @@
 - Keep setup and runtime environment guidance in `dimp-server/SETUP.md`.
 - Do not hand-write migration files.
 - If GraphQL types or resolvers change, regenerate and commit `schema.graphql`.
+- Guild records are persisted in the server DB and their seeded personalities live in `dimp-server/data/guilds/<guild-id>/soul.md`.
 - Route AI model selection through the shared registry and agent policy layers in `src/ai/models/` and `src/ai/agents/` instead of importing provider-specific model instances directly into workflows.
 - Inference: keep provider-specific middleware attached at policy resolution time so future tenant- or workspace-specific model overrides do not require workflow rewrites.
 

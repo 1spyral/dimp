@@ -12,6 +12,7 @@ describe("messageRepository", () => {
         const input = {
             id: "m-1",
             guildId: "g-1",
+            guildName: "Guild One",
             channelId: "c-1",
             userId: "u-1",
             content: "hello",
@@ -29,7 +30,15 @@ describe("messageRepository", () => {
 
         expect(result).toMatchObject({ id: "m-1", content: "hello" })
         expect(insert).toHaveBeenCalledWith(messages)
-        expect(values).toHaveBeenCalledWith(input)
+        expect(values).toHaveBeenCalledWith({
+            id: "m-1",
+            guildId: "g-1",
+            channelId: "c-1",
+            userId: "u-1",
+            content: "hello",
+            discordCreatedAt: now,
+            discordUpdatedAt: now,
+        })
         expect(onConflictDoNothing).toHaveBeenCalledTimes(1)
         expect(returning).toHaveBeenCalledTimes(1)
     })
@@ -45,6 +54,7 @@ describe("messageRepository", () => {
         const result = await createMessage(db, {
             id: "m-1",
             guildId: "g-1",
+            guildName: "Guild One",
             channelId: "c-1",
             userId: "u-1",
             content: "hello",

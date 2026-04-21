@@ -11,6 +11,9 @@ const createBaseMessage = (overrides: Partial<Record<string, unknown>> = {}) =>
             id: "user-1",
             username: "luke",
         },
+        guild: {
+            name: "Guild One",
+        },
         channel: {
             send: mock(async () => {}),
             sendTyping: mock(async () => {}),
@@ -78,6 +81,7 @@ describe("MessageCreate persistence", () => {
             userId: "user-1",
             channelId: "channel-1",
             guildId: "guild-1",
+            guildName: "Guild One",
             discordCreatedAt: createdAt,
             content: "hello <@bot-1>",
         })

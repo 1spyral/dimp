@@ -1,4 +1,4 @@
-import { messages, users } from "@/db/schema"
+import { guilds, messages, users } from "@/db/schema"
 import { db } from "@/drizzle"
 import { server } from "@/server"
 import { expect } from "bun:test"
@@ -83,6 +83,22 @@ export const seedUser = async (overrides: SeedUserOverrides = {}) => {
     }
 
     await db.insert(users).values(row)
+
+    return row
+}
+
+interface SeedGuildOverrides {
+    id?: string
+    name?: string
+}
+
+export const seedGuild = async (overrides: SeedGuildOverrides = {}) => {
+    const row = {
+        id: overrides.id ?? `ig-${randomUUID()}`,
+        name: overrides.name ?? "seed-guild",
+    }
+
+    await db.insert(guilds).values(row)
 
     return row
 }
