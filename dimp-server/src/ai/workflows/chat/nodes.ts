@@ -1,6 +1,6 @@
 import { env } from "@/env"
+import { AIMessage, HumanMessage } from "@langchain/core/messages"
 import { Command, END } from "@langchain/langgraph"
-import { AIMessage, HumanMessage } from "langchain"
 import { createChatAgent } from "./agent"
 import type { ChatStateType } from "./state"
 
