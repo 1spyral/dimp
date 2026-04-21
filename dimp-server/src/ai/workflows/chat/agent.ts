@@ -1,5 +1,5 @@
 import { resolveAgentPolicy } from "@/ai/agents"
-import { DEFAULT_GUILD_SOUL } from "@/guilds/soul"
+import { DEFAULT_GUILD_SOUL } from "@/config/guild-soul"
 import { createAgent } from "langchain"
 
 const STYLE_GUIDE =

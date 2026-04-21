@@ -1,5 +1,5 @@
+import { DEFAULT_GUILD_SOUL } from "@/config/guild-soul"
 import { db } from "@/drizzle"
-import { DEFAULT_GUILD_SOUL } from "@/guilds/soul"
 import { describe, expect, test } from "bun:test"
 import { graphqlRequest } from "../helpers"
 

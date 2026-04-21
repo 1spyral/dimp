@@ -1,6 +1,6 @@
+import { DEFAULT_GUILD_SOUL } from "@/config/guild-soul"
 import { guilds, messages, users } from "@/db/schema"
 import { db } from "@/drizzle"
-import { DEFAULT_GUILD_SOUL } from "@/guilds/soul"
 import { server } from "@/server"
 import { expect } from "bun:test"
 import { randomUUID } from "node:crypto"

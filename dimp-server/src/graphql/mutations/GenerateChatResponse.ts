@@ -1,7 +1,7 @@
 import { type ChatStateType } from "@/ai/workflows/chat"
+import { DEFAULT_GUILD_SOUL } from "@/config/guild-soul"
 import { messages, users } from "@/db/schema"
 import type { Context } from "@/graphql/context"
-import { DEFAULT_GUILD_SOUL } from "@/guilds/soul"
 import { serializeErrorForLogging } from "@/logger"
 import { builder } from "@graphql"
 import { and, desc, eq, inArray, lt } from "drizzle-orm"

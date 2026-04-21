@@ -1,5 +1,5 @@
+import { DEFAULT_GUILD_SOUL } from "@/config/guild-soul"
 import { guildInsertSchema } from "@/db/schema/guilds"
-import { DEFAULT_GUILD_SOUL } from "@/guilds/soul"
 import { type Static } from "@sinclair/typebox"
 import { Value } from "@sinclair/typebox/value"
 import { describe, expect, test } from "bun:test"

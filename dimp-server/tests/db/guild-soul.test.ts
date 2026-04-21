@@ -1,4 +1,4 @@
-import { DEFAULT_GUILD_SOUL } from "@/guilds/soul"
+import { DEFAULT_GUILD_SOUL } from "@/config/guild-soul"
 import { describe, expect, test } from "bun:test"
 
 describe("DEFAULT_GUILD_SOUL", () => {

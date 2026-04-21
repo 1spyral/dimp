@@ -1,5 +1,5 @@
+import { DEFAULT_GUILD_SOUL } from "@/config/guild-soul"
 import { timestamps } from "@/db/columns.helpers"
-import { DEFAULT_GUILD_SOUL } from "@/guilds/soul"
 import * as t from "drizzle-orm/pg-core"
 import { pgTable } from "drizzle-orm/pg-core"
 import {

@@ -1,6 +1,6 @@
+import { DEFAULT_GUILD_SOUL } from "@/config/guild-soul"
 import { getGuildById, upsertGuild } from "@/db/repositories/guilds"
 import { guilds } from "@/db/schema"
-import { DEFAULT_GUILD_SOUL } from "@/guilds/soul"
 import { describe, expect, mock, test } from "bun:test"
 
 describe("guildRepository", () => {
