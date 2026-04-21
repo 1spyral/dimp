@@ -1,4 +1,4 @@
-import { resolveAgentPolicy } from "@/ai/agents"
+import { resolveAgentPolicy } from "@/ai/policies"
 import { DEFAULT_GUILD_SOUL } from "@/config/guild-soul"
 import { createAgent } from "langchain"
 
@@ -23,4 +23,18 @@ export const getChatAgentConfig = async (soul = DEFAULT_GUILD_SOUL) => {
 export const createChatAgent = async (soul = DEFAULT_GUILD_SOUL) =>
     createAgent(await getChatAgentConfig(soul))
 
-export const agent = await createChatAgent()
+let agentPromise:
+    | Promise<Awaited<ReturnType<typeof createChatAgent>>>
+    | undefined
+
+const getAgent = async () => {
+    agentPromise ??= createChatAgent()
+
+    return agentPromise
+}
+
+export const agent = {
+    invoke: async (
+        ...args: Parameters<Awaited<ReturnType<typeof getAgent>>["invoke"]>
+    ) => (await getAgent()).invoke(...args),
+}

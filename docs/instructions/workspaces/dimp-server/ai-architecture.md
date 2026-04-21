@@ -13,18 +13,18 @@ This document describes the durable architecture for AI model selection and agen
 
 ## Model Catalog
 
-- `src/ai/models/registry.ts` is the canonical catalog of built-in models.
+- `src/ai/models.ts` is the canonical catalog of built-in models.
 - Each model entry should contain stable metadata only:
   provider, source, API model name, provider-qualified model ref, reusable capability tags, and any durable model init defaults.
 - Keep provider quirks out of the model catalog unless they are durable metadata shared by multiple policies.
 
 ## Agent Policies
 
-- `src/ai/agents/policies/types.ts` defines shared contracts for policy definitions and resolved policy output.
-- Keep one policy definition per file under `src/ai/agents/policies/`, even when there is only one active policy.
-- `src/ai/agents/policies/registry.ts` is the map from policy id to policy definition.
-- `src/ai/agents/policies/resolve.ts` is responsible for model resolution and provider-specific middleware assembly.
-- `src/ai/agents/policies/index.ts` is the re-export surface for the rest of the server.
+- `src/ai/policies/types.ts` defines shared contracts for policy definitions and resolved policy output.
+- Keep one policy definition per file under `src/ai/policies/`, even when there is only one active policy.
+- `src/ai/policies/registry.ts` is the map from policy id to policy definition.
+- `src/ai/policies/resolve.ts` is responsible for model resolution and provider-specific middleware assembly.
+- `src/ai/policies/index.ts` is the re-export surface for the rest of the server.
 
 ## Workflow Boundary
 
