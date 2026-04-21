@@ -20,12 +20,10 @@ describe("createMessageResolver", () => {
             id: input.guildId,
             name: input.guildName,
         }))
-        const ensureGuildSoulFile = mock(async () => undefined)
         const createMessage = mock(async () => ({ ...input }))
         const logger = createMockContextLogger()
         const resolver = makeCreateMessageResolver({
             upsertGuild,
-            ensureGuildSoulFile,
             createMessage,
         })
 
@@ -38,7 +36,6 @@ describe("createMessageResolver", () => {
             id: "g-1",
             name: "Guild One",
         })
-        expect(ensureGuildSoulFile).toHaveBeenCalledWith("g-1")
         expect(createMessage).toHaveBeenCalledTimes(1)
         expect(createMessage).toHaveBeenCalledWith(db, input)
         expect(logger.error).not.toHaveBeenCalled()
@@ -50,14 +47,12 @@ describe("createMessageResolver", () => {
             id: input.guildId,
             name: input.guildName,
         }))
-        const ensureGuildSoulFile = mock(async () => undefined)
         const createMessage = mock(async () => {
             throw dbError
         })
         const logger = createMockContextLogger()
         const resolver = makeCreateMessageResolver({
             upsertGuild,
-            ensureGuildSoulFile,
             createMessage,
         })
         const db = {} as never
@@ -70,7 +65,6 @@ describe("createMessageResolver", () => {
             id: "g-1",
             name: "Guild One",
         })
-        expect(ensureGuildSoulFile).toHaveBeenCalledWith("g-1")
         expect(createMessage).toHaveBeenCalledWith(db, input)
         expect(logger.error).toHaveBeenCalledTimes(1)
     })

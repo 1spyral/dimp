@@ -11,7 +11,12 @@ const createDb = (
     userRows: Array<{
         id: string
         username: string
-    }>
+    }>,
+    guildRow: {
+        soul: string
+    } = {
+        soul: "test soul",
+    }
 ) => {
     let selectCallCount = 0
 
@@ -37,6 +42,11 @@ const createDb = (
                 })),
             }
         }),
+        query: {
+            guilds: {
+                findFirst: mock(async () => guildRow),
+            },
+        },
     } as never
 }
 
@@ -89,6 +99,7 @@ describe("generateChatResponseResolver", () => {
         expect(result).toBe("stubbed response")
         expect(invokeChatWorkflow).toHaveBeenCalledTimes(1)
         expect(invokeChatWorkflow.mock.calls[0]?.[1]).toEqual({
+            soul: "test soul",
             history: [
                 { content: "first", user: "u-older-1", username: "alice" },
                 { content: "second", user: "u-older-2", username: undefined },

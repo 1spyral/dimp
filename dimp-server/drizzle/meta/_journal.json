@@ -50,6 +50,13 @@
       "when": 1776806966578,
       "tag": "0006_add_guilds_updated_at_trigger",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1776807530589,
+      "tag": "0007_add_guild_soul_column",
+      "breakpoints": true
     }
   ]
 }

@@ -2,7 +2,7 @@ import { env } from "@/env"
 import { Command, END } from "@langchain/langgraph"
 import { AIMessage, HumanMessage } from "langchain"
 import type { ChatStateType } from "."
-import { agent } from "./agent"
+import { createChatAgent } from "./agent"
 
 const toHumanMessageContent = (message: ChatStateType["message"]) => {
     const displayName = message.username ?? message.user
@@ -26,6 +26,7 @@ export async function respondChat(state: ChatStateType) {
         new HumanMessage(toHumanMessageContent(state.message)),
     ]
 
+    const agent = await createChatAgent(state.soul)
     const response = await agent.invoke({ messages: context })
 
     return new Command({

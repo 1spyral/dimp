@@ -1,5 +1,6 @@
 import { guilds, messages, users } from "@/db/schema"
 import { db } from "@/drizzle"
+import { DEFAULT_GUILD_SOUL } from "@/guilds/soul"
 import { server } from "@/server"
 import { expect } from "bun:test"
 import { randomUUID } from "node:crypto"
@@ -90,12 +91,14 @@ export const seedUser = async (overrides: SeedUserOverrides = {}) => {
 interface SeedGuildOverrides {
     id?: string
     name?: string
+    soul?: string
 }
 
 export const seedGuild = async (overrides: SeedGuildOverrides = {}) => {
     const row = {
         id: overrides.id ?? `ig-${randomUUID()}`,
         name: overrides.name ?? "seed-guild",
+        soul: overrides.soul ?? DEFAULT_GUILD_SOUL,
     }
 
     await db.insert(guilds).values(row)

@@ -1,5 +1,4 @@
 import { guildRepository, messageRepository } from "@/db/repositories"
-import { ensureGuildSoulFile } from "@/guilds/soul"
 import { serializeErrorForLogging } from "@/logger"
 import { builder, MessageRef } from "@graphql"
 import { GraphQLError } from "graphql"
@@ -24,7 +23,6 @@ interface CreateMessageResolverArgs {
 
 interface CreateMessageResolverDeps {
     upsertGuild: typeof guildRepository.upsertGuild
-    ensureGuildSoulFile: typeof ensureGuildSoulFile
     createMessage: typeof messageRepository.createMessage
 }
 
@@ -40,7 +38,6 @@ export const makeCreateMessageResolver =
                 id: args.input.guildId,
                 name: args.input.guildName,
             })
-            await deps.ensureGuildSoulFile(args.input.guildId)
 
             return await deps.createMessage(ctx.db, args.input)
         } catch (e: unknown) {
@@ -58,7 +55,6 @@ export const makeCreateMessageResolver =
 
 export const createMessageResolver = makeCreateMessageResolver({
     upsertGuild: guildRepository.upsertGuild,
-    ensureGuildSoulFile,
     createMessage: messageRepository.createMessage,
 })
 
