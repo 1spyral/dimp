@@ -28,6 +28,7 @@ export type CreateMessageInput = {
   discordDeletedAt?: InputMaybe<Scalars['DateTime']['input']>;
   discordUpdatedAt: Scalars['DateTime']['input'];
   guildId: Scalars['ID']['input'];
+  guildName: Scalars['String']['input'];
   id: Scalars['ID']['input'];
   userId: Scalars['ID']['input'];
 };
@@ -128,6 +129,7 @@ export type CreateMessageMutationVariables = Exact<{
   discordCreatedAt: Scalars['DateTime']['input'];
   discordDeletedAt?: InputMaybe<Scalars['DateTime']['input']>;
   guildId: Scalars['ID']['input'];
+  guildName: Scalars['String']['input'];
   id: Scalars['ID']['input'];
   userId: Scalars['ID']['input'];
 }>;
@@ -167,9 +169,9 @@ export type UpsertUserMutation = { __typename?: 'Mutation', upsertUser: { __type
 
 
 export const CreateMessageDocument = gql`
-    mutation createMessage($channelId: ID!, $content: String!, $discordCreatedAt: DateTime!, $discordDeletedAt: DateTime, $guildId: ID!, $id: ID!, $userId: ID!) {
+    mutation createMessage($channelId: ID!, $content: String!, $discordCreatedAt: DateTime!, $discordDeletedAt: DateTime, $guildId: ID!, $guildName: String!, $id: ID!, $userId: ID!) {
   createMessage(
-    input: {channelId: $channelId, content: $content, discordCreatedAt: $discordCreatedAt, discordUpdatedAt: $discordCreatedAt, discordDeletedAt: $discordDeletedAt, guildId: $guildId, id: $id, userId: $userId}
+    input: {channelId: $channelId, content: $content, discordCreatedAt: $discordCreatedAt, discordUpdatedAt: $discordCreatedAt, discordDeletedAt: $discordDeletedAt, guildId: $guildId, guildName: $guildName, id: $id, userId: $userId}
   ) {
     id
   }

@@ -1,4 +1,5 @@
 import { type ChatStateType } from "@/ai/workflows/chat"
+import { DEFAULT_GUILD_SOUL } from "@/config/guild-soul"
 import { messages, users } from "@/db/schema"
 import type { Context } from "@/graphql/context"
 import { serializeErrorForLogging } from "@/logger"
@@ -74,11 +75,18 @@ export const makeGenerateChatResponseResolver =
                 })
                 .from(users)
                 .where(inArray(users.id, participantIds))
+            const guild = await ctx.db.query.guilds.findFirst({
+                columns: {
+                    soul: true,
+                },
+                where: (guild, { eq }) => eq(guild.id, args.input.guildId),
+            })
             const usernamesById = new Map(
                 knownUsers.map(user => [user.id, user.username])
             )
 
             const initialState: ChatStateType = {
+                soul: guild?.soul ?? DEFAULT_GUILD_SOUL,
                 history: history.map(msg => ({
                     content: msg.content,
                     user: msg.userId,

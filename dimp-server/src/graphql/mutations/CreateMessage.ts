@@ -1,4 +1,4 @@
-import { messageRepository } from "@/db/repositories"
+import { guildRepository, messageRepository } from "@/db/repositories"
 import { serializeErrorForLogging } from "@/logger"
 import { builder, MessageRef } from "@graphql"
 import { GraphQLError } from "graphql"
@@ -7,6 +7,7 @@ const CreateMessageInput = builder.inputType("CreateMessageInput", {
     fields: t => ({
         id: t.id({ required: true }),
         guildId: t.id({ required: true }),
+        guildName: t.string({ required: true }),
         channelId: t.id({ required: true }),
         userId: t.id({ required: true }),
         content: t.string({ required: true }),
@@ -21,6 +22,7 @@ interface CreateMessageResolverArgs {
 }
 
 interface CreateMessageResolverDeps {
+    upsertGuild: typeof guildRepository.upsertGuild
     createMessage: typeof messageRepository.createMessage
 }
 
@@ -32,6 +34,11 @@ export const makeCreateMessageResolver =
         ctx: Pick<Context, "db" | "logger">
     ) => {
         try {
+            await deps.upsertGuild(ctx.db, {
+                id: args.input.guildId,
+                name: args.input.guildName,
+            })
+
             return await deps.createMessage(ctx.db, args.input)
         } catch (e: unknown) {
             ctx.logger.error(
@@ -46,8 +53,10 @@ export const makeCreateMessageResolver =
         }
     }
 
-export const createMessageResolver =
-    makeCreateMessageResolver(messageRepository)
+export const createMessageResolver = makeCreateMessageResolver({
+    upsertGuild: guildRepository.upsertGuild,
+    createMessage: messageRepository.createMessage,
+})
 
 builder.mutationField("createMessage", t =>
     t.field({

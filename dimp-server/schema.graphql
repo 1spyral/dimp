@@ -5,6 +5,7 @@ input CreateMessageInput {
   discordDeletedAt: DateTime
   discordUpdatedAt: DateTime!
   guildId: ID!
+  guildName: String!
   id: ID!
   userId: ID!
 }

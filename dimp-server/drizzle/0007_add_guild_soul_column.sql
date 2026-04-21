@@ -1,0 +1,1 @@
+ALTER TABLE "guilds" ADD COLUMN "soul" text DEFAULT 'you are a quirky and helpful Discord user.' NOT NULL;

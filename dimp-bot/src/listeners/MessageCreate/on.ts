@@ -12,6 +12,7 @@ type BotApi = {
         userId: string
         channelId: string
         guildId: string
+        guildName: string
         discordCreatedAt: Date
         content: string
     }) => Promise<unknown>
@@ -91,6 +92,7 @@ export const createPersistMessageHandler =
                     userId: message.author.id,
                     channelId: message.channelId,
                     guildId: message.guildId!, // TODO: handle DMs
+                    guildName: message.guild!.name, // TODO: handle DMs
                     discordCreatedAt: message.createdAt,
                     content: message.content,
                 }),
