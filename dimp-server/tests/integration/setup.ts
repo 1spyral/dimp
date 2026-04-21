@@ -26,7 +26,7 @@ if (!globalThis.__dimpIntegrationHooksRegistered) {
 
     beforeEach(async () => {
         await pgClient`
-            TRUNCATE TABLE "messages", "users" RESTART IDENTITY CASCADE
+            TRUNCATE TABLE "messages", "users", "guilds" RESTART IDENTITY CASCADE
         `
     })
 

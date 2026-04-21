@@ -7,9 +7,9 @@ const invokeMock = mock(async () => ({
 }))
 
 mock.module("@/ai/workflows/chat/agent", () => ({
-    agent: {
+    createChatAgent: mock(async () => ({
         invoke: invokeMock,
-    },
+    })),
 }))
 
 const { respondChat } = await import("@/ai/workflows/chat")
@@ -21,6 +21,7 @@ describe("respondChat", () => {
 
     test("formats human messages with usernames before invoking the agent", async () => {
         await respondChat({
+            soul: "reply like a weird little helper",
             history: [
                 {
                     content: "first",

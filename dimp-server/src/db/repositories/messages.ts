@@ -5,7 +5,9 @@ import { eq } from "drizzle-orm"
 type DB = Pick<Context, "db">["db"]
 
 export type MessageRow = typeof messages.$inferSelect
-export type CreateMessageInput = typeof messages.$inferInsert
+export type CreateMessageInput = typeof messages.$inferInsert & {
+    guildName: string
+}
 export type UpdateMessageInput = Pick<
     typeof messages.$inferInsert,
     "id" | "content" | "discordUpdatedAt" | "discordDeletedAt"
@@ -15,9 +17,10 @@ export const createMessage = async (
     db: DB,
     input: CreateMessageInput
 ): Promise<MessageRow | undefined> => {
+    const { guildName: _guildName, ...messageInput } = input
     const [row] = await db
         .insert(messages)
-        .values(input)
+        .values(messageInput)
         .onConflictDoNothing()
         .returning()
 

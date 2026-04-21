@@ -1,7 +1,7 @@
 import type { ChatStateType } from "@/ai/workflows/chat"
 import { env } from "@/env"
 import { beforeEach, describe, expect, mock, test } from "bun:test"
-import { graphqlRequest, seedMessage, seedUser } from "../helpers"
+import { graphqlRequest, seedGuild, seedMessage, seedUser } from "../helpers"
 
 let invokeImpl: (state: ChatStateType) => Promise<ChatStateType>
 let capturedState: ChatStateType | undefined
@@ -25,6 +25,7 @@ describe("integration: GraphQL generateChatResponse", () => {
     })
 
     test("builds chat state from prior channel history and returns workflow response", async () => {
+        await seedGuild({ id: "g-1", name: "guild one" })
         await seedUser({ id: "u-older-1", username: "alice" })
         await seedUser({ id: "u-current", username: "carol" })
         await seedMessage({
@@ -86,6 +87,7 @@ describe("integration: GraphQL generateChatResponse", () => {
             "stubbed integration response"
         )
         expect(capturedState).toEqual({
+            soul: "you are a quirky and helpful Discord user.",
             history: [
                 { content: "first", user: "u-older-1", username: "alice" },
                 { content: "second", user: "u-older-2", username: undefined },
@@ -99,6 +101,7 @@ describe("integration: GraphQL generateChatResponse", () => {
     })
 
     test("keeps bot history unprefixed while prefixing known human usernames", async () => {
+        await seedGuild({ id: "g-1", name: "guild one" })
         await seedUser({ id: "u-human", username: "dave" })
         await seedMessage({
             id: "100",
@@ -131,6 +134,7 @@ describe("integration: GraphQL generateChatResponse", () => {
             "stubbed integration response"
         )
         expect(capturedState).toEqual({
+            soul: "you are a quirky and helpful Discord user.",
             history: [
                 {
                     content: "bot reply",
@@ -147,6 +151,7 @@ describe("integration: GraphQL generateChatResponse", () => {
     })
 
     test("returns a GraphQL error when workflow invocation fails", async () => {
+        await seedGuild({ id: "g-1", name: "guild one" })
         invokeImpl = async () => {
             throw new Error("workflow boom")
         }

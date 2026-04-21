@@ -8,6 +8,7 @@ const ChatMessageSchema = Type.Object({
 })
 
 export const ChatStateSchema = Type.Object({
+    soul: Type.String(),
     history: Type.Array(ChatMessageSchema),
     message: ChatMessageSchema,
     response: Type.Optional(Type.String()),
@@ -16,6 +17,7 @@ export const ChatStateSchema = Type.Object({
 export type ChatStateType = Static<typeof ChatStateSchema>
 
 export const ChatState = Annotation.Root({
+    soul: Annotation<ChatStateType["soul"]>(),
     history: Annotation<ChatStateType["history"]>(),
     message: Annotation<ChatStateType["message"]>(),
     response: Annotation<ChatStateType["response"]>(),
