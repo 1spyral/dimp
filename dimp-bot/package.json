@@ -14,7 +14,7 @@
   "type": "module",
   "dependencies": {
     "@sinclair/typebox": "^0.34.48",
-    "discord.js": "^14.25.1",
+    "discord.js": "^14.26.3",
     "graphql": "^16.13.1",
     "graphql-request": "^7.4.0",
     "graphql-tag": "^2.12.6",
