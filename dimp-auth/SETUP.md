@@ -37,3 +37,9 @@ bun run db:migrate
 ```bash
 bun run dev
 ```
+
+The auth service exposes Kubernetes-style health endpoints on `http://HOST:PORT`:
+
+- `GET /livez` returns `200 Live`
+- `GET /readyz` returns `200 Ready`
+- `GET /` remains available as a deprecated legacy healthcheck path
