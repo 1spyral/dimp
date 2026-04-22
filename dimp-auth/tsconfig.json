@@ -9,8 +9,6 @@
         },
         "types": ["bun-types"],
 
-        "strict": true,
-
-        "baseUrl": "."
+        "strict": true
     }
 }
