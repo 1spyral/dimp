@@ -41,7 +41,7 @@
     "graphql-scalars": "^1.25.0",
     "langchain": "^1.2.27",
     "pino": "^10.3.0",
-    "postgres": "^3.4.8"
+    "postgres": "^3.4.9"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
