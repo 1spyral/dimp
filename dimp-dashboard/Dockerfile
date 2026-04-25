@@ -13,7 +13,7 @@ RUN bun install --frozen-lockfile --filter dimp-dashboard
 COPY dimp-dashboard dimp-dashboard
 RUN bun run --filter dimp-dashboard build
 
-FROM nginx:1.29.6-alpine AS runtime
+FROM nginx:1.29.8-alpine AS runtime
 
 COPY --from=build /app/dimp-dashboard/dist /usr/share/nginx/html
 
